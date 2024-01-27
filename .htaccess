@@ -15,9 +15,9 @@ RewriteRule . /ethicalhacking/index.php [L]
 
 # END WordPress
 # BEGIN Simply Static
-# Las directivas (líneas) entre «BEGIN Simply Static» y «END Simply Static» son
-# generadas dinámicamente y solo deberían ser modificadas mediante filtros de WordPress.
-# Cualquier cambio en las directivas que hay entre esos marcadores serán sobrescritas.
+# The directives (lines) between "BEGIN Simply Static" and "END Simply Static" are
+# dynamically generated, and should only be modified via WordPress filters.
+# Any changes to the directives between these markers will be overwritten.
 <Files "C:\xampp\htdocs\ethicalhacking/wp-content/uploads\simply-static\\db6b6ccca62d21bf48174cd7c9ee0274-debug.txt">
 require all denied
 require host localhost
