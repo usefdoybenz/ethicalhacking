@@ -1,0 +1,400 @@
+# Translation of Themes - Oaknut in Spanish (Spain)
+# This file is distributed under the same license as the Themes - Oaknut package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2023-08-23 07:40:47+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: GlotPress/4.0.0-alpha.7\n"
+"Language: es\n"
+"Project-Id-Version: Themes - Oaknut\n"
+
+#. Description of the theme
+#, gp-priority: high
+msgid "Oaknut is a block theme designed to help you create Linktree-esque profile pages. Get up and running quickly with one of the 23 prebuilt theme styles, or create your own design with the 14 fonts and 8 button styles included in the theme. Oaknut is built to be fast, easy to use, and fun!"
+msgstr "Oaknut es un tema de bloques diseñado para ayudarte a crear páginas de perfil al estilo Linktree. Ponte en marcha rápidamente con uno de los 23 estilos de tema predefinidos, o crea tu propio diseño con las 14 fuentes y los 8 estilos de botón incluidos en el tema. ¡Oaknut está diseñado para ser rápido, fácil de usar y divertido!"
+
+#. Theme Name of the theme
+#, gp-priority: high
+msgid "Oaknut"
+msgstr "Oaknut"
+
+#: styles/vibe.json
+msgctxt "Style variation name"
+msgid "Vibe"
+msgstr "Vibe"
+
+#: styles/top-shelf.json
+msgctxt "Style variation name"
+msgid "Top Shelf"
+msgstr "Top Shelf"
+
+#: styles/tokuma.json
+msgctxt "Style variation name"
+msgid "Tokuma"
+msgstr "Tokuma"
+
+#: styles/stalenhag.json
+msgctxt "Style variation name"
+msgid "Stålenhag"
+msgstr "Stålenhag"
+
+#: styles/scarlet-midnight.json
+msgctxt "Style variation name"
+msgid "Scarlet Midnight"
+msgstr "Scarlet Midnight"
+
+#: styles/royal.json
+msgctxt "Style variation name"
+msgid "Royal"
+msgstr "Royal"
+
+#: styles/roseanna.json
+msgctxt "Style variation name"
+msgid "Roseanna"
+msgstr "Roseanna"
+
+#: styles/razzle-dazzle.json
+msgctxt "Style variation name"
+msgid "Razzle Dazzle"
+msgstr "Razzle Dazzle"
+
+#: styles/rare-delight.json
+msgctxt "Style variation name"
+msgid "Rare Delight"
+msgstr "Rare Delight"
+
+#: styles/orange-juice.json
+msgctxt "Style variation name"
+msgid "Orange Juice"
+msgstr "Orange Juice"
+
+#: styles/night-shift.json
+msgctxt "Style variation name"
+msgid "Night Shift"
+msgstr "Night Shift"
+
+#: styles/midnight.json
+msgctxt "Style variation name"
+msgid "Midnight"
+msgstr "Midnight"
+
+#: styles/mauve.json
+msgctxt "Style variation name"
+msgid "Mauve"
+msgstr "Mauve"
+
+#: styles/massimo.json
+msgctxt "Style variation name"
+msgid "Massimo"
+msgstr "Massimo"
+
+#: styles/lemmings.json
+msgctxt "Style variation name"
+msgid "Lemmings"
+msgstr "Lemmings"
+
+#: styles/fiscal-jungle.json
+msgctxt "Style variation name"
+msgid "Fiscal Jungle"
+msgstr "Fiscal Jungle"
+
+#: styles/eggplant.json
+msgctxt "Style variation name"
+msgid "Eggplant"
+msgstr "Eggplant"
+
+#: styles/domesticated-mango.json
+msgctxt "Style variation name"
+msgid "Domesticated Mango"
+msgstr "Domesticated Mango"
+
+#: styles/dieter.json
+msgctxt "Style variation name"
+msgid "Dieter"
+msgstr "Dieter"
+
+#: styles/depths.json
+msgctxt "Style variation name"
+msgid "Depths"
+msgstr "Depths"
+
+#: styles/chestnut.json
+msgctxt "Style variation name"
+msgid "Chestnut"
+msgstr "Chestnut"
+
+#: styles/bittersweet.json
+msgctxt "Style variation name"
+msgid "Bittersweet"
+msgstr "Bittersweet"
+
+#: theme.json
+msgctxt "Template part name"
+msgid "Footer"
+msgstr "Pie de página"
+
+#: theme.json
+msgctxt "Template part name"
+msgid "Header"
+msgstr "Cabecera"
+
+#: theme.json
+msgctxt "Space size name"
+msgid "8"
+msgstr "8"
+
+#: theme.json
+msgctxt "Space size name"
+msgid "7"
+msgstr "7"
+
+#: theme.json
+msgctxt "Space size name"
+msgid "6"
+msgstr "6"
+
+#: theme.json
+msgctxt "Space size name"
+msgid "5"
+msgstr "5"
+
+#: theme.json
+msgctxt "Space size name"
+msgid "4"
+msgstr "4"
+
+#: theme.json
+msgctxt "Space size name"
+msgid "3"
+msgstr "3"
+
+#: theme.json
+msgctxt "Space size name"
+msgid "2"
+msgstr "2"
+
+#: theme.json
+msgctxt "Space size name"
+msgid "1"
+msgstr "1"
+
+#: theme.json styles/bittersweet.json styles/chestnut.json styles/depths.json
+#: styles/dieter.json styles/domesticated-mango.json styles/eggplant.json
+#: styles/fiscal-jungle.json styles/lemmings.json styles/massimo.json
+#: styles/mauve.json styles/midnight.json styles/night-shift.json
+#: styles/orange-juice.json styles/rare-delight.json styles/razzle-dazzle.json
+#: styles/roseanna.json styles/royal.json styles/scarlet-midnight.json
+#: styles/stalenhag.json styles/tokuma.json styles/top-shelf.json
+#: styles/vibe.json
+msgctxt "Color name"
+msgid "Background"
+msgstr "Fondo"
+
+#: theme.json styles/bittersweet.json styles/chestnut.json styles/depths.json
+#: styles/dieter.json styles/domesticated-mango.json styles/eggplant.json
+#: styles/fiscal-jungle.json styles/lemmings.json styles/massimo.json
+#: styles/mauve.json styles/midnight.json styles/night-shift.json
+#: styles/orange-juice.json styles/rare-delight.json styles/razzle-dazzle.json
+#: styles/roseanna.json styles/royal.json styles/scarlet-midnight.json
+#: styles/stalenhag.json styles/tokuma.json styles/top-shelf.json
+#: styles/vibe.json
+msgctxt "Color name"
+msgid "Foreground"
+msgstr "Primer plano"
+
+#: theme.json
+msgctxt "Font family name"
+msgid "System Monospace"
+msgstr "System Monospace"
+
+#: theme.json
+msgctxt "Font family name"
+msgid "System Serif"
+msgstr "System Serif"
+
+#: theme.json
+msgctxt "Font family name"
+msgid "System Sans Serif"
+msgstr "System Sans Serif"
+
+#: theme.json
+msgctxt "Font family name"
+msgid "Space Grotesk"
+msgstr "Space Grotesk"
+
+#: theme.json
+msgctxt "Font family name"
+msgid "Red Hat Text"
+msgstr "Red Hat Text"
+
+#: theme.json
+msgctxt "Font family name"
+msgid "Red Hat Mono"
+msgstr "Red Hat Mono"
+
+#: theme.json
+msgctxt "Font family name"
+msgid "Recursive"
+msgstr "Recursive"
+
+#: theme.json
+msgctxt "Font family name"
+msgid "Lora"
+msgstr "Lora"
+
+#: theme.json
+msgctxt "Font family name"
+msgid "Libre Bodoni"
+msgstr "Libre Bodoni"
+
+#: theme.json
+msgctxt "Font family name"
+msgid "Inter"
+msgstr "Inter"
+
+#: theme.json
+msgctxt "Font family name"
+msgid "Figtree"
+msgstr "Figtree"
+
+#: theme.json
+msgctxt "Font family name"
+msgid "Edu QLD Beginner"
+msgstr "Edu QLD Beginner"
+
+#: theme.json
+msgctxt "Font family name"
+msgid "Dancing Script"
+msgstr "Dancing Script"
+
+#: theme.json
+msgctxt "Font family name"
+msgid "Bitter"
+msgstr "Bitter"
+
+#: theme.json
+msgctxt "Font size name"
+msgid "Heading 6"
+msgstr "Encabezado 6"
+
+#: theme.json
+msgctxt "Font size name"
+msgid "Heading 5"
+msgstr "Encabezado 5"
+
+#: theme.json
+msgctxt "Font size name"
+msgid "Heading 4"
+msgstr "Encabezado 4"
+
+#: theme.json
+msgctxt "Font size name"
+msgid "Heading 3"
+msgstr "Encabezado 3"
+
+#: theme.json
+msgctxt "Font size name"
+msgid "Heading 2"
+msgstr "Encabezado 2"
+
+#: theme.json
+msgctxt "Font size name"
+msgid "Heading 1"
+msgstr "Encabezado 1"
+
+#: theme.json
+msgctxt "Font size name"
+msgid "Huge"
+msgstr "Enorme"
+
+#: theme.json
+msgctxt "Font size name"
+msgid "Extra large"
+msgstr "Extra grande"
+
+#: theme.json
+msgctxt "Font size name"
+msgid "Large"
+msgstr "Grande"
+
+#: theme.json
+msgctxt "Font size name"
+msgid "Medium"
+msgstr "Mediana"
+
+#: theme.json
+msgctxt "Font size name"
+msgid "Small"
+msgstr "Pequeña"
+
+#: theme.json
+msgctxt "Font size name"
+msgid "Tiny"
+msgstr "Diminuta"
+
+#: patterns/starter-content.php
+msgctxt "Pattern title"
+msgid "Starter content for the theme."
+msgstr "Contenido inicial para el tema."
+
+#: functions.php:109
+msgid "Rounded Shape"
+msgstr "Forma redondeada"
+
+#: functions.php:102
+msgid "Space Between"
+msgstr "Espacio intermedio"
+
+#: functions.php:95
+msgid "Ribbon Shape"
+msgstr "Forma de cinta"
+
+#: functions.php:90
+msgid "Pointed Shape"
+msgstr "Forma puntiaguda"
+
+#: functions.php:85
+msgid "Chevron Right Shape"
+msgstr "Forma de galón derecho"
+
+#: functions.php:80
+msgid "Chevron Left Shape"
+msgstr "Forma de galón izquierdo"
+
+#: functions.php:66
+msgid "Rabbet Shape"
+msgstr "Forma de rabillo"
+
+#: functions.php:62
+msgid "Bevel Shape"
+msgstr "Forma biselada"
+
+#: functions.php:58
+msgid "Angle Shape"
+msgstr "Forma angular"
+
+#: functions.php:54
+msgid "Drop Shadow"
+msgstr "Añadir sombra"
+
+#: functions.php:30
+msgid "Oaknut Patterns"
+msgstr "Patrones de Oaknut"
+
+#. Author URI of the theme
+#, gp-priority: low
+msgid "https://andersnoren.se"
+msgstr "https://andersnoren.se"
+
+#. Author of the theme
+#, gp-priority: low
+msgid "Anders Norén"
+msgstr "Anders Norén"
+
+#. Theme URI of the theme
+#, gp-priority: low
+msgid "https://andersnoren.se/teman/oaknut-wordpress-theme/"
+msgstr "https://andersnoren.se/teman/oaknut-wordpress-theme/"
