@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="max-image-preview:large">
-<title>Ataque a SSH con fuerza bruta &#8211; Ethical Hacking</title>
+<title>Intrusión en rutas no autorizadas (Path Traversal) &#8211; Ethical Hacking</title>
 <link rel="alternate" type="application/rss+xml" title="Ethical Hacking &raquo; Feed" href="https://usefdoybenz.github.io/ethicalhacking/feed/">
 <link rel="alternate" type="application/rss+xml" title="Ethical Hacking &raquo; Feed de los comentarios" href="https://usefdoybenz.github.io/ethicalhacking/comments/feed/">
 <script>
@@ -77,13 +77,13 @@ p{line-height: var(--wp--custom--typography--line-height--body);}</style>
 		}</style>
 <link rel="stylesheet" id="oaknut-styles-css" href="https://usefdoybenz.github.io/ethicalhacking/wp-content/themes/oaknut/style.css?ver=1.0.1" media="all">
 <link rel="https://api.w.org/" href="https://usefdoybenz.github.io/ethicalhacking/wp-json/">
-<link rel="alternate" type="application/json" href="https://usefdoybenz.github.io/ethicalhacking/wp-json/wp/v2/pages/19">
+<link rel="alternate" type="application/json" href="https://usefdoybenz.github.io/ethicalhacking/wp-json/wp/v2/pages/69">
 <link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://usefdoybenz.github.io/ethicalhacking/xmlrpc.php?rsd">
 <meta name="generator" content="WordPress 6.4.2">
-<link rel="canonical" href="https://usefdoybenz.github.io/ethicalhacking/ataquefuerzabrutassh/">
-<link rel="shortlink" href="https://usefdoybenz.github.io/ethicalhacking/?p=19">
-<link rel="alternate" type="application/json+oembed" href="https://usefdoybenz.github.io/ethicalhacking/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fusefdoybenz.github.io%2Fethicalhacking%2Fataquefuerzabrutassh%2F">
-<link rel="alternate" type="text/xml+oembed" href="https://usefdoybenz.github.io/ethicalhacking/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fusefdoybenz.github.io%2Fethicalhacking%2Fataquefuerzabrutassh%2F#038;format=xml">
+<link rel="canonical" href="https://usefdoybenz.github.io/ethicalhacking/intrusion-en-rutas-no-autorizadas-path-traversal/">
+<link rel="shortlink" href="https://usefdoybenz.github.io/ethicalhacking/?p=69">
+<link rel="alternate" type="application/json+oembed" href="https://usefdoybenz.github.io/ethicalhacking/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fusefdoybenz.github.io%2Fethicalhacking%2Fintrusion-en-rutas-no-autorizadas-path-traversal%2F">
+<link rel="alternate" type="text/xml+oembed" href="https://usefdoybenz.github.io/ethicalhacking/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fusefdoybenz.github.io%2Fethicalhacking%2Fintrusion-en-rutas-no-autorizadas-path-traversal%2F#038;format=xml">
 <style id="wp-fonts-local">@font-face{font-family:Bitter;font-style:normal;font-weight:100 900;font-display:fallback;src:url('https://usefdoybenz.github.io/ethicalhacking/wp-content/themes/oaknut/assets/fonts/bitter.woff2') format('woff2');font-stretch:normal;}
 @font-face{font-family:Bitter;font-style:italic;font-weight:100 900;font-display:fallback;src:url('https://usefdoybenz.github.io/ethicalhacking/wp-content/themes/oaknut/assets/fonts/bitter.woff2') format('woff2');font-stretch:normal;}
 @font-face{font-family:"Dancing Script";font-style:normal;font-weight:100 900;font-display:fallback;src:url('https://usefdoybenz.github.io/ethicalhacking/wp-content/themes/oaknut/assets/fonts/dancing-script.woff2') format('woff2');font-stretch:normal;}
@@ -103,7 +103,7 @@ p{line-height: var(--wp--custom--typography--line-height--body);}</style>
 @font-face{font-family:"Space Grotesk";font-style:normal;font-weight:100 900;font-display:fallback;src:url('https://usefdoybenz.github.io/ethicalhacking/wp-content/themes/oaknut/assets/fonts/space-grotesk.woff2') format('woff2');font-stretch:normal;}</style>
 </head>
 
-<body class="page-template-default page page-id-19 wp-embed-responsive">
+<body class="page-template-default page page-id-69 wp-embed-responsive">
 
 <div class="wp-site-blocks">
 <header class="alignfull site-header wp-block-template-part">
@@ -124,10 +124,10 @@ p{line-height: var(--wp--custom--typography--line-height--body);}</style>
 
 	
 	<div class="wp-block-query is-layout-flow wp-block-query-is-layout-flow">
-		<ul class="wp-block-post-template is-layout-flow wp-block-post-template-is-layout-flow"><li class="wp-block-post post-19 page type-page status-publish hentry">
+		<ul class="wp-block-post-template is-layout-flow wp-block-post-template-is-layout-flow"><li class="wp-block-post post-69 page type-page status-publish hentry">
 		
 		<div class="wp-block-group has-global-padding is-layout-constrained wp-container-core-group-layout-3 wp-block-group-is-layout-constrained" style="padding-top:0;padding-bottom:var(--wp--preset--spacing--80)">
-			<h2 class="has-text-align-center wp-block-post-title"><a href="https://usefdoybenz.github.io/ethicalhacking/ataquefuerzabrutassh/" target="_self">Ataque a SSH con fuerza bruta</a></h2>
+			<h2 class="has-text-align-center wp-block-post-title"><a href="https://usefdoybenz.github.io/ethicalhacking/intrusion-en-rutas-no-autorizadas-path-traversal/" target="_self">Intrusión en rutas no autorizadas (Path Traversal)</a></h2>
 
 			
 
@@ -136,59 +136,63 @@ p{line-height: var(--wp--custom--typography--line-height--body);}</style>
 
 
 
-<p class="has-text-align-left">Un «ataque de fuerza bruta SSH» es un tipo de ataque informático en el cual un atacante intenta descubrir la contraseña de un usuario mediante la prueba repetida de múltiples combinaciones de contraseñas hasta encontrar la correcta. En el contexto de SSH (Secure Shell), este ataque implica intentos repetitivos de iniciar sesión en un sistema remoto utilizando diferentes contraseñas con la esperanza de encontrar la combinación correcta y ganar acceso no autorizado.</p>
+<p>Path traversal es una vulnerabilidad de seguridad informática que ocurre cuando un atacante intenta acceder o manipular archivos y directorios fuera de la ruta original prevista por una aplicación. Este tipo de ataque explota la falta de restricciones adecuadas en la validación de las rutas de archivo, permitiendo al atacante navegar a través de directorios no autorizados y acceder a información confidencial o ejecutar código malicioso. </p>
 
 
 
-<p class="has-text-align-left">Podemos utilizar una lista de usuarios y contraseñas por defecto o crear nosotros una propia, en ciertos casos podremos obtener una lista de usuarios que un propio sitio web nos lista a como los miembros de un equipo de desarrollo o usuarios de la propia corporación.</p>
+<p>Para este ejemplo utilizaremos la máquina Inject de la plataforma Hack The box (10.10.11.204)</p>
 
 
 
-<p>Ejemplo:</p>
+<p>En el sitio web encontramos una ruta que permite subir un archivo, en este caso una imágen:</p>
 
 
 
-<p>En la máquina Servenom 10.10.10.184 de HTB ( Hack The Box, entorno para hacking ético) encontramos &nbsp;disponible el puerto 22 de SSH, nos decidimos por una lista de usuarios potenciales y otra lista de contraseñas, a continuación utilizamos Hydra para realizar un ataque de fuerza bruta:</p>
+<p>http://10.10.11.204:8080/upload</p>
 
 
 
-<p><strong><mark style="background-color:rgba(0, 0, 0, 0);color:#471818" class="has-inline-color">hydra -L user.txt -P pass.txt ssh://10.10.10.184</mark></strong></p>
+<figure class="wp-block-image size-full is-resized"><img fetchpriority="high" decoding="async" width="807" height="347" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image.png" alt="" class="wp-image-70" style="width:1128px;height:auto"></figure>
 
 
 
-<figure class="wp-block-image size-full is-resized"><img fetchpriority="high" decoding="async" width="1735" height="186" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-1.png" alt="" class="wp-image-21" style="width:1450px;height:auto"></figure>
+<p>Al subir un archivo (anonymous.jpg) y visualizarlo nos muestra la ruta donde se ha almacenado:</p>
 
 
 
-<p>En otro ejemplo, en la máquina Writer de HTB, (10.10.11.101) hemos encontrado un posible nombre de usuario (kyle) y en este caso realizaremos el ataque de fuerza bruta con hydra y empleando el diccionario de contraseña por defecto de Kali Linux rockyou.txt :</p>
+<p>http://10.10.11.204:8080/show_image?img=anonymous.jpg</p>
 
 
 
-<p><strong><mark style="background-color:rgba(0, 0, 0, 0);color:#320707" class="has-inline-color">hydra -l kyle -P rockyou.txt ssh://10.10.10.101</mark></strong></p>
+<figure class="wp-block-image size-full is-resized"><img decoding="async" width="788" height="167" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-1.png" alt="" class="wp-image-71" style="width:1126px;height:auto"></figure>
 
 
 
-<figure class="wp-block-image size-full is-resized"><img decoding="async" width="1707" height="290" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-2.png" alt="" class="wp-image-22" style="width:1450px;height:auto"></figure>
+<p>La ruta show_image?img= está apuntando a un archivo existente, lo que nos permite explotar la vulnerabilidad de enumerar archivos y directorios internos del servidor web, con esto conseguimos leer el archivo passwd y enumerar usuarios de la máquina, por tanto, tenemos capacidad de directory listing que nos permite enumerar archivos por ejemplo de la ruta /var.</p>
 
 
 
-<figure class="wp-block-image size-full is-resized"><img decoding="async" width="853" height="214" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-6.png" alt="" class="wp-image-29" style="width:1450px;height:auto"></figure>
+<p>Para poder realizar esto en este caso utilizamos la herramienta Burguete que actúa como un proxy entre en el navegador y el servidor web interceptando la comunicación http:</p>
 
 
 
-<p>En entornos empresariales&nbsp; se puede utilizar el comando netexec para encontrar un posible usuario y contraseña con acceso remoto a un servidor SSH, en este caso users es un archivo con una lista de potentes usuarios y &nbsp;password para la contraseñas, el ejemplo de abajo muestra el resultado para la màquina windows de Wifinetic  en Hack The Box (10.10.11.247):</p>
+<p>/show_image?img=../../../../../../etc/passwd</p>
 
 
 
-<p><strong><mark style="background-color:rgba(0, 0, 0, 0);color:#330404" class="has-inline-color">netexec ssh 10.10.11.247 -u users -p password</mark></strong></p>
+<figure class="wp-block-image size-full is-resized"><img decoding="async" width="825" height="394" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-2.png" alt="" class="wp-image-72" style="width:1124px;height:auto"></figure>
 
 
 
-<figure class="wp-block-image size-full is-resized"><img loading="lazy" decoding="async" width="893" height="292" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-3.png" alt="" class="wp-image-23" style="width:1437px;height:auto"></figure>
+<figure class="wp-block-image size-full is-resized"><img loading="lazy" decoding="async" width="820" height="831" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-3.png" alt="" class="wp-image-73" style="width:1121px;height:auto"></figure>
 
 
 
-<figure class="wp-block-image size-full is-resized"><img loading="lazy" decoding="async" width="921" height="159" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-5.png" alt="" class="wp-image-25" style="width:1450px;height:auto"></figure>
+<p>/show_image?img=../../../../../../var/www/WebApp</p>
+
+
+
+<figure class="wp-block-image size-full is-resized"><img loading="lazy" decoding="async" width="1274" height="433" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-4.png" alt="" class="wp-image-74" style="width:1153px;height:auto"></figure>
 </div>
 
 			
