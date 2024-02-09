@@ -4,9 +4,9 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="max-image-preview:large">
-<title>Intrusión en rutas no autorizadas (Path Traversal) &#8211; Ethical Hacking</title>
-<link rel="alternate" type="application/rss+xml" title="Ethical Hacking &raquo; Feed" href="https://usefdoybenz.github.io/ethicalhacking/feed/">
-<link rel="alternate" type="application/rss+xml" title="Ethical Hacking &raquo; Feed de los comentarios" href="https://usefdoybenz.github.io/ethicalhacking/comments/feed/">
+<title>Subida de archivo malicioso (web shell) &#8211; Hacking Usef</title>
+<link rel="alternate" type="application/rss+xml" title="Hacking Usef &raquo; Feed" href="https://usefdoybenz.github.io/ethicalhacking/feed/">
+<link rel="alternate" type="application/rss+xml" title="Hacking Usef &raquo; Feed de los comentarios" href="https://usefdoybenz.github.io/ethicalhacking/comments/feed/">
 <script>
 window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/14.0.0\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/14.0.0\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/usefdoybenz.github.io\/ethicalhacking\/wp-includes\/js\/wp-emoji-release.min.js?ver=6.4.3"}};
 /*! This file is auto-generated */
@@ -77,13 +77,13 @@ p{line-height: var(--wp--custom--typography--line-height--body);}</style>
 		}</style>
 <link rel="stylesheet" id="oaknut-styles-css" href="https://usefdoybenz.github.io/ethicalhacking/wp-content/themes/oaknut/style.css?ver=1.0.1" media="all">
 <link rel="https://api.w.org/" href="https://usefdoybenz.github.io/ethicalhacking/wp-json/">
-<link rel="alternate" type="application/json" href="https://usefdoybenz.github.io/ethicalhacking/wp-json/wp/v2/pages/69">
+<link rel="alternate" type="application/json" href="https://usefdoybenz.github.io/ethicalhacking/wp-json/wp/v2/pages/85">
 <link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://usefdoybenz.github.io/ethicalhacking/xmlrpc.php?rsd">
 <meta name="generator" content="WordPress 6.4.3">
-<link rel="canonical" href="https://usefdoybenz.github.io/ethicalhacking/path-traversal/">
-<link rel="shortlink" href="https://usefdoybenz.github.io/ethicalhacking/?p=69">
-<link rel="alternate" type="application/json+oembed" href="https://usefdoybenz.github.io/ethicalhacking/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fusefdoybenz.github.io%2Fethicalhacking%2Fpath-traversal%2F">
-<link rel="alternate" type="text/xml+oembed" href="https://usefdoybenz.github.io/ethicalhacking/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fusefdoybenz.github.io%2Fethicalhacking%2Fpath-traversal%2F#038;format=xml">
+<link rel="canonical" href="https://usefdoybenz.github.io/ethicalhacking/subidadearchivomaliciosoweb-shell/">
+<link rel="shortlink" href="https://usefdoybenz.github.io/ethicalhacking/?p=85">
+<link rel="alternate" type="application/json+oembed" href="https://usefdoybenz.github.io/ethicalhacking/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fusefdoybenz.github.io%2Fethicalhacking%2Fsubidadearchivomaliciosoweb-shell%2F">
+<link rel="alternate" type="text/xml+oembed" href="https://usefdoybenz.github.io/ethicalhacking/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fusefdoybenz.github.io%2Fethicalhacking%2Fsubidadearchivomaliciosoweb-shell%2F#038;format=xml">
 <style id="wp-fonts-local">@font-face{font-family:Bitter;font-style:normal;font-weight:100 900;font-display:fallback;src:url('https://usefdoybenz.github.io/ethicalhacking/wp-content/themes/oaknut/assets/fonts/bitter.woff2') format('woff2');font-stretch:normal;}
 @font-face{font-family:Bitter;font-style:italic;font-weight:100 900;font-display:fallback;src:url('https://usefdoybenz.github.io/ethicalhacking/wp-content/themes/oaknut/assets/fonts/bitter.woff2') format('woff2');font-stretch:normal;}
 @font-face{font-family:"Dancing Script";font-style:normal;font-weight:100 900;font-display:fallback;src:url('https://usefdoybenz.github.io/ethicalhacking/wp-content/themes/oaknut/assets/fonts/dancing-script.woff2') format('woff2');font-stretch:normal;}
@@ -103,12 +103,12 @@ p{line-height: var(--wp--custom--typography--line-height--body);}</style>
 @font-face{font-family:"Space Grotesk";font-style:normal;font-weight:100 900;font-display:fallback;src:url('https://usefdoybenz.github.io/ethicalhacking/wp-content/themes/oaknut/assets/fonts/space-grotesk.woff2') format('woff2');font-stretch:normal;}</style>
 </head>
 
-<body class="page-template-default page page-id-69 wp-embed-responsive">
+<body class="page-template-default page page-id-85 wp-embed-responsive">
 
 <div class="wp-site-blocks">
 <header class="alignfull site-header wp-block-template-part">
 <div class="wp-block-group has-global-padding is-layout-constrained wp-block-group-is-layout-constrained" style="padding-top:var(--wp--preset--spacing--40);padding-right:0;padding-bottom:var(--wp--preset--spacing--80);padding-left:0">
-	<h1 class="has-text-align-center wp-block-site-title has-heading-4-font-size"><a href="https://usefdoybenz.github.io/ethicalhacking" target="_self" rel="home">Ethical Hacking</a></h1>
+	<h1 class="has-text-align-center wp-block-site-title has-heading-4-font-size"><a href="https://usefdoybenz.github.io/ethicalhacking" target="_self" rel="home">Hacking Usef</a></h1>
 </div>
 </header>
 
@@ -124,10 +124,10 @@ p{line-height: var(--wp--custom--typography--line-height--body);}</style>
 
 	
 	<div class="wp-block-query is-layout-flow wp-block-query-is-layout-flow">
-		<ul class="wp-block-post-template is-layout-flow wp-block-post-template-is-layout-flow"><li class="wp-block-post post-69 page type-page status-publish hentry">
+		<ul class="wp-block-post-template is-layout-flow wp-block-post-template-is-layout-flow"><li class="wp-block-post post-85 page type-page status-publish hentry">
 		
 		<div class="wp-block-group has-global-padding is-layout-constrained wp-container-core-group-layout-3 wp-block-group-is-layout-constrained" style="padding-top:0;padding-bottom:var(--wp--preset--spacing--80)">
-			<h2 class="has-text-align-center wp-block-post-title"><a href="https://usefdoybenz.github.io/ethicalhacking/path-traversal/" target="_self">Intrusión en rutas no autorizadas (Path Traversal)</a></h2>
+			<h2 class="has-text-align-center wp-block-post-title"><a href="https://usefdoybenz.github.io/ethicalhacking/subidadearchivomaliciosoweb-shell/" target="_self">Subida de archivo malicioso (web shell)</a></h2>
 
 			
 
@@ -136,63 +136,135 @@ p{line-height: var(--wp--custom--typography--line-height--body);}</style>
 
 
 
-<p>Path traversal es una vulnerabilidad de seguridad informática que ocurre cuando un atacante intenta acceder o manipular archivos y directorios fuera de la ruta original prevista por una aplicación. Este tipo de ataque explota la falta de restricciones adecuadas en la validación de las rutas de archivo, permitiendo al atacante navegar a través de directorios no autorizados y acceder a información confidencial o ejecutar código malicioso. </p>
+<p>Una «web shell» es un script o programa malicioso que se instala en un servidor web con el propósito de proporcionar a los atacantes acceso remoto y control sobre el sistema a través de una interfaz basada en web. Este tipo de herramienta es utilizada en ciberataques para ejecutar comandos, manipular archivos y llevar a cabo acciones maliciosas en el servidor comprometido.</p>
 
 
 
-<p>Para este ejemplo utilizaremos la máquina Inject de la plataforma Hack The box (10.10.11.204)</p>
+<p>El propósito de este escenario es poder subir un archivo a un sitio web, dicho archivo contiene un script que al ser ejecutado nosotros como  atacantes obtendremos acceso remoto y control total sobre la máquina víctima.</p>
 
 
 
-<p>En el sitio web encontramos una ruta que permite subir un archivo, en este caso una imágen:</p>
+<p>Para este caso emplearemos  la máquina Soccer de la plataforma Hack The Box (10.10.11.194) .</p>
 
 
 
-<p>http://10.10.11.204:8080/upload </p>
+<p>En el sitio web observamos que nos permite subir un archivo en PHP :</p>
 
 
 
-<figure class="wp-block-image size-full is-resized"><img fetchpriority="high" decoding="async" width="807" height="347" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image.png" alt="" class="wp-image-70" style="width:1128px;height:auto"></figure>
+<figure class="wp-block-image size-full is-resized"><img fetchpriority="high" decoding="async" width="1038" height="445" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-5.png" alt="" class="wp-image-86" style="width:998px;height:auto"></figure>
 
 
 
-<p>Al subir un archivo (anonymous.jpg) y visualizarlo nos muestra la ruta donde se ha almacenado:</p>
+<p>Primero creamos el archivo malicioso que contiene un código escrito en PHP con una secuencia ejecutable en BASH en nuestra máquina atacante Linux, el código si se llega a ejecutar nos permitirá una reverse shell y por tanto acceso a la máquina víctima, el comando malicioso específica la IP de la máquina atacante y el puerto de escucha:</p>
 
 
 
-<p>http://10.10.11.204:8080/show_image?img=anonymous.jpg</p>
+<figure class="wp-block-image size-full is-resized"><img decoding="async" width="529" height="101" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-6.png" alt="" class="wp-image-87" style="width:981px;height:auto"></figure>
 
 
 
-<figure class="wp-block-image size-full is-resized"><img decoding="async" width="788" height="167" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-1.png" alt="" class="wp-image-71" style="width:1126px;height:auto"></figure>
+<figure class="wp-block-image size-full is-resized"><img decoding="async" width="1442" height="292" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-7.png" alt="" class="wp-image-88" style="width:977px;height:auto"></figure>
 
 
 
-<p>La ruta show_image?img= está apuntando a un archivo existente, lo que nos permite explotar la vulnerabilidad de enumerar archivos y directorios internos del servidor web, con esto conseguimos leer el archivo passwd y enumerar usuarios de la máquina, por tanto, con esta intrusión tenemos capacidad de directory listing que nos permite enumerar archivos críticos, por ejemplo los de la ruta /var .</p>
+<p>Una vez subido el archivo  nos ponemos en escucha desde la máquina atacante (10.10.14.14) en el puerto establecido (443):</p>
 
 
 
-<p>Para poder realizar esto en este caso utilizamos la herramienta Burpsuite que actúa como un proxy entre en el navegador y el servidor web interceptando la comunicación HTTP:</p>
+<figure class="wp-block-image size-full is-resized"><img loading="lazy" decoding="async" width="436" height="120" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-8.png" alt="" class="wp-image-89" style="width:974px;height:auto"></figure>
 
 
 
-<p>/show_image?img=../../../../../../etc/passwd</p>
+<p>Una vez ejecutado el archivo obtendremos acceso en la máquina atacante, en este caso el archivo se ejecuta desde el navegador cargando el archivo subido o en su caso se puede hacer una solicitud con el comando curl al mismo sitio:</p>
 
 
 
-<figure class="wp-block-image size-full is-resized"><img decoding="async" width="825" height="394" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-2.png" alt="" class="wp-image-72" style="width:1124px;height:auto"></figure>
+<p>http://soccer.htb/tiny/uploads/malicious.php</p>
 
 
 
-<figure class="wp-block-image size-full is-resized"><img loading="lazy" decoding="async" width="820" height="831" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-3.png" alt="" class="wp-image-73" style="width:1121px;height:auto"></figure>
+<figure class="wp-block-image size-full is-resized"><img loading="lazy" decoding="async" width="845" height="205" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-9.png" alt="" class="wp-image-90" style="width:973px;height:auto"></figure>
 
 
 
-<p>/show_image?img=../../../../../../var/www/WebApp</p>
+<p></p>
 
 
 
-<figure class="wp-block-image size-full is-resized"><img loading="lazy" decoding="async" width="1274" height="433" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-4.png" alt="" class="wp-image-74" style="width:1153px;height:auto"></figure>
+<p></p>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<p></p>
 </div>
 
 			
@@ -209,9 +281,7 @@ p{line-height: var(--wp--custom--typography--line-height--body);}</style>
 
 
 <footer class="alignfull site-footer wp-block-template-part">
-<div class="wp-block-group has-global-padding is-layout-constrained wp-block-group-is-layout-constrained" style="padding-top:var(--wp--preset--spacing--80);padding-bottom:var(--wp--preset--spacing--30)">
-<p class="has-text-align-center has-tiny-font-size">Created by Youssef Douay</p>
-</div>
+<div class="wp-block-group has-global-padding is-layout-constrained wp-block-group-is-layout-constrained" style="padding-top:var(--wp--preset--spacing--80);padding-bottom:var(--wp--preset--spacing--30)"></div>
 </footer>
 </div>
 <script id="wp-block-template-skip-link-js-after">( function() {

@@ -4,11 +4,11 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="max-image-preview:large">
-<title>Inyecciones de Login SQL + NoSQL &#8211; Ethical Hacking</title>
-<link rel="alternate" type="application/rss+xml" title="Ethical Hacking &raquo; Feed" href="https://usefdoybenz.github.io/ethicalhacking/feed/">
-<link rel="alternate" type="application/rss+xml" title="Ethical Hacking &raquo; Feed de los comentarios" href="https://usefdoybenz.github.io/ethicalhacking/comments/feed/">
+<title>Manipulación de Cookie (ataque de Padding Oracle) &#8211; Hacking Usef</title>
+<link rel="alternate" type="application/rss+xml" title="Hacking Usef &raquo; Feed" href="https://usefdoybenz.github.io/ethicalhacking/feed/">
+<link rel="alternate" type="application/rss+xml" title="Hacking Usef &raquo; Feed de los comentarios" href="https://usefdoybenz.github.io/ethicalhacking/comments/feed/">
 <script>
-window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/14.0.0\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/14.0.0\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/usefdoybenz.github.io\/ethicalhacking\/wp-includes\/js\/wp-emoji-release.min.js?ver=6.4.2"}};
+window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/14.0.0\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/14.0.0\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/usefdoybenz.github.io\/ethicalhacking\/wp-includes\/js\/wp-emoji-release.min.js?ver=6.4.3"}};
 /*! This file is auto-generated */
 !function(i,n){var o,s,e;function c(e){try{var t={supportTests:e,timestamp:(new Date).valueOf()};sessionStorage.setItem(o,JSON.stringify(t))}catch(e){}}function p(e,t,n){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);var t=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data),r=(e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(n,0,0),new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data));return t.every(function(e,t){return e===r[t]})}function u(e,t,n){switch(t){case"flag":return n(e,"🏳️‍⚧️","🏳️​⚧️")?!1:!n(e,"🇺🇳","🇺​🇳")&&!n(e,"🏴󠁧󠁢󠁥󠁮󠁧󠁿","🏴​󠁧​󠁢​󠁥​󠁮​󠁧​󠁿");case"emoji":return!n(e,"🫱🏻‍🫲🏿","🫱🏻​🫲🏿")}return!1}function f(e,t,n){var r="undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?new OffscreenCanvas(300,150):i.createElement("canvas"),a=r.getContext("2d",{willReadFrequently:!0}),o=(a.textBaseline="top",a.font="600 32px Arial",{});return e.forEach(function(e){o[e]=t(a,e,n)}),o}function t(e){var t=i.createElement("script");t.src=e,t.defer=!0,i.head.appendChild(t)}"undefined"!=typeof Promise&&(o="wpEmojiSettingsSupports",s=["flag","emoji"],n.supports={everything:!0,everythingExceptFlag:!0},e=new Promise(function(e){i.addEventListener("DOMContentLoaded",e,{once:!0})}),new Promise(function(t){var n=function(){try{var e=JSON.parse(sessionStorage.getItem(o));if("object"==typeof e&&"number"==typeof e.timestamp&&(new Date).valueOf()<e.timestamp+604800&&"object"==typeof e.supportTests)return e.supportTests}catch(e){}return null}();if(!n){if("undefined"!=typeof Worker&&"undefined"!=typeof OffscreenCanvas&&"undefined"!=typeof URL&&URL.createObjectURL&&"undefined"!=typeof Blob)try{var e="postMessage("+f.toString()+"("+[JSON.stringify(s),u.toString(),p.toString()].join(",")+"));",r=new Blob([e],{type:"text/javascript"}),a=new Worker(URL.createObjectURL(r),{name:"wpTestEmojiSupports"});return void(a.onmessage=function(e){c(n=e.data),a.terminate(),t(n)})}catch(e){}c(n=f(s,u,p))}t(n)}).then(function(e){for(var t in e)n.supports[t]=e[t],n.supports.everything=n.supports.everything&&n.supports[t],"flag"!==t&&(n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&n.supports[t]);n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&!n.supports.flag,n.DOMReady=!1,n.readyCallback=function(){n.DOMReady=!0}}).then(function(){return e}).then(function(){var e;n.supports.everything||(n.readyCallback(),(e=n.source||{}).concatemoji?t(e.concatemoji):e.wpemoji&&e.twemoji&&(t(e.twemoji),t(e.wpemoji)))}))}((window,document),window._wpemojiSettings);
 </script>
@@ -27,7 +27,6 @@ window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/14
 <style id="wp-block-post-featured-image-inline-css">.wp-block-post-featured-image{margin-left:0;margin-right:0}.wp-block-post-featured-image a{display:block;height:100%}.wp-block-post-featured-image img{box-sizing:border-box;height:auto;max-width:100%;vertical-align:bottom;width:100%}.wp-block-post-featured-image.alignfull img,.wp-block-post-featured-image.alignwide img{width:100%}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-dim{background-color:#000;inset:0;position:absolute}.wp-block-post-featured-image{position:relative}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-gradient{background-color:transparent}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-dim-0{opacity:0}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-dim-10{opacity:.1}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-dim-20{opacity:.2}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-dim-30{opacity:.3}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-dim-40{opacity:.4}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-dim-50{opacity:.5}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-dim-60{opacity:.6}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-dim-70{opacity:.7}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-dim-80{opacity:.8}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-dim-90{opacity:.9}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-dim-100{opacity:1}.wp-block-post-featured-image:where(.alignleft,.alignright){width:100%}</style>
 <style id="wp-block-paragraph-inline-css">.is-small-text{font-size:.875em}.is-regular-text{font-size:1em}.is-large-text{font-size:2.25em}.is-larger-text{font-size:3em}.has-drop-cap:not(:focus):first-letter{float:left;font-size:8.4em;font-style:normal;font-weight:100;line-height:.68;margin:.05em .1em 0 0;text-transform:uppercase}body.rtl .has-drop-cap:not(:focus):first-letter{float:none;margin-left:.1em}p.has-drop-cap.has-background{overflow:hidden}p.has-background{padding:1.25em 2.375em}:where(p.has-text-color:not(.has-link-color)) a{color:inherit}p.has-text-align-left[style*="writing-mode:vertical-lr"],p.has-text-align-right[style*="writing-mode:vertical-rl"]{rotate:180deg}
 p{line-height: var(--wp--custom--typography--line-height--body);}</style>
-<style id="wp-block-quote-inline-css">.wp-block-quote{box-sizing:border-box;overflow-wrap:break-word}.wp-block-quote.is-large:where(:not(.is-style-plain)),.wp-block-quote.is-style-large:where(:not(.is-style-plain)){margin-bottom:1em;padding:0 1em}.wp-block-quote.is-large:where(:not(.is-style-plain)) p,.wp-block-quote.is-style-large:where(:not(.is-style-plain)) p{font-size:1.5em;font-style:italic;line-height:1.6}.wp-block-quote.is-large:where(:not(.is-style-plain)) cite,.wp-block-quote.is-large:where(:not(.is-style-plain)) footer,.wp-block-quote.is-style-large:where(:not(.is-style-plain)) cite,.wp-block-quote.is-style-large:where(:not(.is-style-plain)) footer{font-size:1.125em;text-align:right}</style>
 <style id="wp-block-image-inline-css">.wp-block-image img{box-sizing:border-box;height:auto;max-width:100%;vertical-align:bottom}.wp-block-image[style*=border-radius] img,.wp-block-image[style*=border-radius]>a{border-radius:inherit}.wp-block-image.has-custom-border img{box-sizing:border-box}.wp-block-image.aligncenter{text-align:center}.wp-block-image.alignfull img,.wp-block-image.alignwide img{height:auto;width:100%}.wp-block-image .aligncenter,.wp-block-image .alignleft,.wp-block-image .alignright,.wp-block-image.aligncenter,.wp-block-image.alignleft,.wp-block-image.alignright{display:table}.wp-block-image .aligncenter>figcaption,.wp-block-image .alignleft>figcaption,.wp-block-image .alignright>figcaption,.wp-block-image.aligncenter>figcaption,.wp-block-image.alignleft>figcaption,.wp-block-image.alignright>figcaption{caption-side:bottom;display:table-caption}.wp-block-image .alignleft{float:left;margin:.5em 1em .5em 0}.wp-block-image .alignright{float:right;margin:.5em 0 .5em 1em}.wp-block-image .aligncenter{margin-left:auto;margin-right:auto}.wp-block-image figcaption{margin-bottom:1em;margin-top:.5em}.wp-block-image .is-style-rounded img,.wp-block-image.is-style-circle-mask img,.wp-block-image.is-style-rounded img{border-radius:9999px}@supports ((-webkit-mask-image:none) or (mask-image:none)) or (-webkit-mask-image:none){.wp-block-image.is-style-circle-mask img{border-radius:0;-webkit-mask-image:url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="50"/></svg>');mask-image:url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="50"/></svg>');mask-mode:alpha;-webkit-mask-position:center;mask-position:center;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:contain;mask-size:contain}}.wp-block-image :where(.has-border-color){border-style:solid}.wp-block-image :where([style*=border-top-color]){border-top-style:solid}.wp-block-image :where([style*=border-right-color]){border-right-style:solid}.wp-block-image :where([style*=border-bottom-color]){border-bottom-style:solid}.wp-block-image :where([style*=border-left-color]){border-left-style:solid}.wp-block-image :where([style*=border-width]){border-style:solid}.wp-block-image :where([style*=border-top-width]){border-top-style:solid}.wp-block-image :where([style*=border-right-width]){border-right-style:solid}.wp-block-image :where([style*=border-bottom-width]){border-bottom-style:solid}.wp-block-image :where([style*=border-left-width]){border-left-style:solid}.wp-block-image figure{margin:0}.wp-lightbox-container{display:flex;flex-direction:column;position:relative}.wp-lightbox-container img{cursor:zoom-in}.wp-lightbox-container img:hover+button{opacity:1}.wp-lightbox-container button{align-items:center;-webkit-backdrop-filter:blur(16px) saturate(180%);backdrop-filter:blur(16px) saturate(180%);background-color:rgba(90,90,90,.25);border:none;border-radius:4px;cursor:zoom-in;display:flex;height:20px;justify-content:center;opacity:0;padding:0;position:absolute;right:16px;text-align:center;top:16px;transition:opacity .2s ease;width:20px;z-index:100}.wp-lightbox-container button:focus-visible{outline:3px auto rgba(90,90,90,.25);outline:3px auto -webkit-focus-ring-color;outline-offset:3px}.wp-lightbox-container button:hover{cursor:pointer;opacity:1}.wp-lightbox-container button:focus{opacity:1}.wp-lightbox-container button:focus,.wp-lightbox-container button:hover,.wp-lightbox-container button:not(:hover):not(:active):not(.has-background){background-color:rgba(90,90,90,.25);border:none}.wp-lightbox-overlay{box-sizing:border-box;cursor:zoom-out;height:100vh;left:0;overflow:hidden;position:fixed;top:0;visibility:hidden;width:100vw;z-index:100000}.wp-lightbox-overlay .close-button{align-items:center;cursor:pointer;display:flex;justify-content:center;min-height:40px;min-width:40px;padding:0;position:absolute;right:calc(env(safe-area-inset-right) + 16px);top:calc(env(safe-area-inset-top) + 16px);z-index:5000000}.wp-lightbox-overlay .close-button:focus,.wp-lightbox-overlay .close-button:hover,.wp-lightbox-overlay .close-button:not(:hover):not(:active):not(.has-background){background:none;border:none}.wp-lightbox-overlay .lightbox-image-container{height:var(--wp--lightbox-container-height);left:50%;overflow:hidden;position:absolute;top:50%;transform:translate(-50%,-50%);transform-origin:top left;width:var(--wp--lightbox-container-width);z-index:9999999999}.wp-lightbox-overlay .wp-block-image{align-items:center;box-sizing:border-box;display:flex;height:100%;justify-content:center;margin:0;position:relative;transform-origin:0 0;width:100%;z-index:3000000}.wp-lightbox-overlay .wp-block-image img{height:var(--wp--lightbox-image-height);min-height:var(--wp--lightbox-image-height);min-width:var(--wp--lightbox-image-width);width:var(--wp--lightbox-image-width)}.wp-lightbox-overlay .wp-block-image figcaption{display:none}.wp-lightbox-overlay button{background:none;border:none}.wp-lightbox-overlay .scrim{background-color:#fff;height:100%;opacity:.9;position:absolute;width:100%;z-index:2000000}.wp-lightbox-overlay.active{animation:turn-on-visibility .25s both;visibility:visible}.wp-lightbox-overlay.active img{animation:turn-on-visibility .35s both}.wp-lightbox-overlay.hideanimationenabled:not(.active){animation:turn-off-visibility .35s both}.wp-lightbox-overlay.hideanimationenabled:not(.active) img{animation:turn-off-visibility .25s both}@media (prefers-reduced-motion:no-preference){.wp-lightbox-overlay.zoom.active{animation:none;opacity:1;visibility:visible}.wp-lightbox-overlay.zoom.active .lightbox-image-container{animation:lightbox-zoom-in .4s}.wp-lightbox-overlay.zoom.active .lightbox-image-container img{animation:none}.wp-lightbox-overlay.zoom.active .scrim{animation:turn-on-visibility .4s forwards}.wp-lightbox-overlay.zoom.hideanimationenabled:not(.active){animation:none}.wp-lightbox-overlay.zoom.hideanimationenabled:not(.active) .lightbox-image-container{animation:lightbox-zoom-out .4s}.wp-lightbox-overlay.zoom.hideanimationenabled:not(.active) .lightbox-image-container img{animation:none}.wp-lightbox-overlay.zoom.hideanimationenabled:not(.active) .scrim{animation:turn-off-visibility .4s forwards}}@keyframes turn-on-visibility{0%{opacity:0}to{opacity:1}}@keyframes turn-off-visibility{0%{opacity:1;visibility:visible}99%{opacity:0;visibility:visible}to{opacity:0;visibility:hidden}}@keyframes lightbox-zoom-in{0%{transform:translate(calc(-50vw + var(--wp--lightbox-initial-left-position)),calc(-50vh + var(--wp--lightbox-initial-top-position))) scale(var(--wp--lightbox-scale))}to{transform:translate(-50%,-50%) scale(1)}}@keyframes lightbox-zoom-out{0%{transform:translate(-50%,-50%) scale(1);visibility:visible}99%{visibility:visible}to{transform:translate(calc(-50vw + var(--wp--lightbox-initial-left-position)),calc(-50vh + var(--wp--lightbox-initial-top-position))) scale(var(--wp--lightbox-scale));visibility:hidden}}</style>
 <style id="wp-block-separator-inline-css">@charset "UTF-8";.wp-block-separator{border:1px solid;border-left:none;border-right:none}.wp-block-separator.is-style-dots{background:none!important;border:none;height:auto;line-height:1;text-align:center}.wp-block-separator.is-style-dots:before{color:currentColor;content:"···";font-family:serif;font-size:1.5em;letter-spacing:2em;padding-left:2em}</style>
 <style id="wp-block-post-template-inline-css">.wp-block-post-template{list-style:none;margin-bottom:0;margin-top:0;max-width:100%;padding:0}.wp-block-post-template.wp-block-post-template{background:none}.wp-block-post-template.is-flex-container{display:flex;flex-direction:row;flex-wrap:wrap;gap:1.25em}.wp-block-post-template.is-flex-container>li{margin:0;width:100%}@media (min-width:600px){.wp-block-post-template.is-flex-container.is-flex-container.columns-2>li{width:calc(50% - .625em)}.wp-block-post-template.is-flex-container.is-flex-container.columns-3>li{width:calc(33.33333% - .83333em)}.wp-block-post-template.is-flex-container.is-flex-container.columns-4>li{width:calc(25% - .9375em)}.wp-block-post-template.is-flex-container.is-flex-container.columns-5>li{width:calc(20% - 1em)}.wp-block-post-template.is-flex-container.is-flex-container.columns-6>li{width:calc(16.66667% - 1.04167em)}}@media (max-width:600px){.wp-block-post-template-is-layout-grid.wp-block-post-template-is-layout-grid.wp-block-post-template-is-layout-grid.wp-block-post-template-is-layout-grid{grid-template-columns:1fr}}.wp-block-post-template-is-layout-constrained>li>.alignright,.wp-block-post-template-is-layout-flow>li>.alignright{-webkit-margin-start:2em;-webkit-margin-end:0;float:right;margin-inline-end:0;margin-inline-start:2em}.wp-block-post-template-is-layout-constrained>li>.alignleft,.wp-block-post-template-is-layout-flow>li>.alignleft{-webkit-margin-start:0;-webkit-margin-end:2em;float:left;margin-inline-end:2em;margin-inline-start:0}.wp-block-post-template-is-layout-constrained>li>.aligncenter,.wp-block-post-template-is-layout-flow>li>.aligncenter{-webkit-margin-start:auto;-webkit-margin-end:auto;margin-inline-end:auto;margin-inline-start:auto}
@@ -78,13 +77,13 @@ p{line-height: var(--wp--custom--typography--line-height--body);}</style>
 		}</style>
 <link rel="stylesheet" id="oaknut-styles-css" href="https://usefdoybenz.github.io/ethicalhacking/wp-content/themes/oaknut/style.css?ver=1.0.1" media="all">
 <link rel="https://api.w.org/" href="https://usefdoybenz.github.io/ethicalhacking/wp-json/">
-<link rel="alternate" type="application/json" href="https://usefdoybenz.github.io/ethicalhacking/wp-json/wp/v2/pages/33">
+<link rel="alternate" type="application/json" href="https://usefdoybenz.github.io/ethicalhacking/wp-json/wp/v2/pages/94">
 <link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://usefdoybenz.github.io/ethicalhacking/xmlrpc.php?rsd">
-<meta name="generator" content="WordPress 6.4.2">
-<link rel="canonical" href="https://usefdoybenz.github.io/ethicalhacking/inyeccionesdeloginsqlnosql/">
-<link rel="shortlink" href="https://usefdoybenz.github.io/ethicalhacking/?p=33">
-<link rel="alternate" type="application/json+oembed" href="https://usefdoybenz.github.io/ethicalhacking/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fusefdoybenz.github.io%2Fethicalhacking%2Finyeccionesdeloginsqlnosql%2F">
-<link rel="alternate" type="text/xml+oembed" href="https://usefdoybenz.github.io/ethicalhacking/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fusefdoybenz.github.io%2Fethicalhacking%2Finyeccionesdeloginsqlnosql%2F#038;format=xml">
+<meta name="generator" content="WordPress 6.4.3">
+<link rel="canonical" href="https://usefdoybenz.github.io/ethicalhacking/manipulacion-decookieataque-de-padding-oracle/">
+<link rel="shortlink" href="https://usefdoybenz.github.io/ethicalhacking/?p=94">
+<link rel="alternate" type="application/json+oembed" href="https://usefdoybenz.github.io/ethicalhacking/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fusefdoybenz.github.io%2Fethicalhacking%2Fmanipulacion-decookieataque-de-padding-oracle%2F">
+<link rel="alternate" type="text/xml+oembed" href="https://usefdoybenz.github.io/ethicalhacking/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fusefdoybenz.github.io%2Fethicalhacking%2Fmanipulacion-decookieataque-de-padding-oracle%2F#038;format=xml">
 <style id="wp-fonts-local">@font-face{font-family:Bitter;font-style:normal;font-weight:100 900;font-display:fallback;src:url('https://usefdoybenz.github.io/ethicalhacking/wp-content/themes/oaknut/assets/fonts/bitter.woff2') format('woff2');font-stretch:normal;}
 @font-face{font-family:Bitter;font-style:italic;font-weight:100 900;font-display:fallback;src:url('https://usefdoybenz.github.io/ethicalhacking/wp-content/themes/oaknut/assets/fonts/bitter.woff2') format('woff2');font-stretch:normal;}
 @font-face{font-family:"Dancing Script";font-style:normal;font-weight:100 900;font-display:fallback;src:url('https://usefdoybenz.github.io/ethicalhacking/wp-content/themes/oaknut/assets/fonts/dancing-script.woff2') format('woff2');font-stretch:normal;}
@@ -104,12 +103,12 @@ p{line-height: var(--wp--custom--typography--line-height--body);}</style>
 @font-face{font-family:"Space Grotesk";font-style:normal;font-weight:100 900;font-display:fallback;src:url('https://usefdoybenz.github.io/ethicalhacking/wp-content/themes/oaknut/assets/fonts/space-grotesk.woff2') format('woff2');font-stretch:normal;}</style>
 </head>
 
-<body class="page-template-default page page-id-33 wp-embed-responsive">
+<body class="page-template-default page page-id-94 wp-embed-responsive">
 
 <div class="wp-site-blocks">
 <header class="alignfull site-header wp-block-template-part">
 <div class="wp-block-group has-global-padding is-layout-constrained wp-block-group-is-layout-constrained" style="padding-top:var(--wp--preset--spacing--40);padding-right:0;padding-bottom:var(--wp--preset--spacing--80);padding-left:0">
-	<h1 class="has-text-align-center wp-block-site-title has-heading-4-font-size"><a href="https://usefdoybenz.github.io/ethicalhacking" target="_self" rel="home">Ethical Hacking</a></h1>
+	<h1 class="has-text-align-center wp-block-site-title has-heading-4-font-size"><a href="https://usefdoybenz.github.io/ethicalhacking" target="_self" rel="home">Hacking Usef</a></h1>
 </div>
 </header>
 
@@ -125,61 +124,95 @@ p{line-height: var(--wp--custom--typography--line-height--body);}</style>
 
 	
 	<div class="wp-block-query is-layout-flow wp-block-query-is-layout-flow">
-		<ul class="wp-block-post-template is-layout-flow wp-block-post-template-is-layout-flow"><li class="wp-block-post post-33 page type-page status-publish hentry">
+		<ul class="wp-block-post-template is-layout-flow wp-block-post-template-is-layout-flow"><li class="wp-block-post post-94 page type-page status-publish hentry">
 		
 		<div class="wp-block-group has-global-padding is-layout-constrained wp-container-core-group-layout-3 wp-block-group-is-layout-constrained" style="padding-top:0;padding-bottom:var(--wp--preset--spacing--80)">
-			<h2 class="has-text-align-center wp-block-post-title"><a href="https://usefdoybenz.github.io/ethicalhacking/inyeccionesdeloginsqlnosql/" target="_self">Inyecciones de Login SQL + NoSQL</a></h2>
+			<h2 class="has-text-align-center wp-block-post-title"><a href="https://usefdoybenz.github.io/ethicalhacking/manipulacion-decookieataque-de-padding-oracle/" target="_self">Manipulación de Cookie (ataque de Padding Oracle)</a></h2>
 
 			
 
 			<div class="entry-content wp-block-post-content is-layout-flow wp-block-post-content-is-layout-flow">
-<p>Definición:  </p>
+<p>Definición:</p>
 
 
 
-<p class="has-text-align-left"><strong>Inyección SQL:</strong> La inyección SQL es una vulnerabilidad de seguridad que ocurre cuando los datos no se validan o se filtran adecuadamente antes de ser enviados a un servidor SQL. Los atacantes pueden manipular las consultas SQL a través de la entrada de datos para ejecutar comandos no autorizados en la base de datos, lo que podría resultar en la divulgación de información sensible o la modificación/eliminación no autorizada de datos.</p>
+<p>Un «Padding Oracle» es una vulnerabilidad criptográfica que se aprovecha al manipular el relleno (padding) en mensajes cifrados. Este tipo de ataque suele centrarse en sistemas que utilizan cifrado de bloques en modos como CBC (Cipher Block Chaining). El atacante intenta deducir información sensible al analizar las respuestas del sistema (oracle) a errores de relleno en los mensajes cifrados.</p>
 
 
 
-<p><strong>NoSQL Injection:</strong> La inyección NoSQL es una variante de la inyección de SQL, pero se dirige a bases de datos NoSQL en lugar de bases de datos SQL tradicionales. Al igual que en la inyección SQL, los atacantes explotan fallos en la validación de datos para manipular las consultas a bases de datos NoSQL y realizar acciones no autorizadas. Esto puede incluir la recuperación de datos sensibles o la alteración de la lógica de la aplicación que utiliza la base de datos NoSQL.</p>
+<p>PadBuster es una herramienta de prueba de penetración utilizada para llevar a cabo ataques de Padding Oracle en aplicaciones web que utilizan cifrado en bloques, utilizando esta técnica se puede manipular una cookie con el objetivo de conocer el patrón de  cifrado de la misma  y obtener otra cookie que nos permita acceder a la sesión de un usuario no autorizado.</p>
 
 
 
-<p>Usaremos los comando de inyección que nos ofrece los payloads del sitio de Githab para casa caso.</p>
+<p>Para esta técnica se va a emplear la máquina Lazy de la plataforma de Hack The Box (10.10.10.18).</p>
 
 
 
-<blockquote class="wp-block-quote">
-<p><strong>&gt;&gt;&gt;Login SQL payload:</strong></p>
-</blockquote>
+<p>El usuario admin de la máquina tiene privilegios, pero como no conocemos la contraseña vamos a proceder a realizar un ataque con la herramienta Padbuster  y obtener su cookie de sesión.</p>
 
 
 
-<p><a href="https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/SQL%20Injection">https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/SQL%20Injection</a></p>
+<p>Primero debemos conocer la cookie de un usuario normal, en este caso el usuario se llama tester123 : </p>
 
 
 
-<p>En ese case nos encontramos ante un panel de autenticación que utiliza servidor web Apache y un motor de búsqueda MySql, para burlar el acceso podremos inyectar un listado de comandos hasta dar con el adecuado que nos permitirá autenticar sin disponer de usuario y contraseña, el ejemplo de abajo pertenece a la máquina Writer de HTB (10.10.11.101)</p>
+<figure class="wp-block-image size-full is-resized"><img fetchpriority="high" decoding="async" width="809" height="415" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-10.png" alt="" class="wp-image-95" style="width:882px;height:auto"></figure>
 
 
 
-<figure class="wp-block-image size-full is-resized"><img fetchpriority="high" decoding="async" width="424" height="438" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-7.png" alt="" class="wp-image-34" style="width:669px;height:auto"></figure>
+<p>Utilizando la herramienta de desarrollo del propio navegador podemos visualizar la cookie del usuario tester123 : </p>
 
 
 
-<figure class="wp-block-image size-full is-resized"><img decoding="async" width="803" height="856" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-8.png" alt="" class="wp-image-35" style="width:668px;height:auto"></figure>
+<p>b9Znp%2FQiNZn7bs4KSAjBrepi%2BTBR0Mb5</p>
 
 
 
-<p>En este caso se ha podido burlar la autenticación usando el comando siguiente:<strong> <mark style="background-color:rgba(0, 0, 0, 0)" class="has-inline-color has-foreground-color">admin&#8217; &#8212; &#8211;</mark></strong></p>
+<figure class="wp-block-image size-full is-resized"><img decoding="async" width="1914" height="395" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-12.png" alt="" class="wp-image-97" style="width:887px;height:auto"></figure>
 
 
 
-<figure class="wp-block-image size-full is-resized"><img decoding="async" width="345" height="360" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-9.png" alt="" class="wp-image-36" style="width:687px;height:auto"></figure>
+<p>A continuación ejecutamos la herramienta padbuster que apunta al sitio web y emplea la cookie para analizar el patrón de cifrado, durante esta primera fase será necesario seleccionar las opciones recomendadas:</p>
 
 
 
-<figure class="wp-block-image size-full is-resized"><img loading="lazy" decoding="async" width="771" height="284" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-10.png" alt="" class="wp-image-37" style="width:691px;height:auto"></figure>
+<p>padbuster http://10.10.10.18/index.php &#8216;b9Znp%2FQiNZn7bs4KSAjBrepi%2BTBR0Mb5&#8217; 8 -cookies &#8216;auth=b9Znp%2FQiNZn7bs4KSAjBrepi%2BTBR0Mb5&#8217;</p>
+
+
+
+<figure class="wp-block-image size-full is-resized"><img decoding="async" width="1388" height="463" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-13.png" alt="" class="wp-image-98" style="width:893px;height:auto"></figure>
+
+
+
+<p>La primera fase concluye y como podemos observar que el cifrado de bloques que emplea esta herramienta funciona correctamente y nos muestra el valor de la cookie del usuario tester123: user=tester123</p>
+
+
+
+<figure class="wp-block-image size-full is-resized"><img loading="lazy" decoding="async" width="991" height="234" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-14.png" alt="" class="wp-image-99" style="width:894px;height:auto"></figure>
+
+
+
+<p>En la siguiente fase vamos a  emplear de nuevo la herramienta padbuster  pero esta vez siguiendo el patrón de cifrado le vamos a solicitar que nos crea una cookie de sesión  donde se cumpla  user=admin, es decir, obtener la cookie de sesión del usuario administrador:</p>
+
+
+
+<figure class="wp-block-image size-full is-resized"><img loading="lazy" decoding="async" width="900" height="181" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-15.png" alt="" class="wp-image-100" style="width:908px;height:auto"></figure>
+
+
+
+<p>Finalmente la hemos obtenido: BAitGdYuupMjA3gl1aFoOwAAAAAAAAAA</p>
+
+
+
+<p>A continuación, simplemente la sustituimos  por la cookie del usuario tester123 y eso nos permite convertirnos en usuario administrador:</p>
+
+
+
+<figure class="wp-block-image size-full is-resized"><img loading="lazy" decoding="async" width="1918" height="417" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-18.png" alt="" class="wp-image-103" style="width:914px;height:auto"></figure>
+
+
+
+<figure class="wp-block-image size-full is-resized"><img loading="lazy" decoding="async" width="873" height="330" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-16.png" alt="" class="wp-image-101" style="width:910px;height:auto"></figure>
 
 
 
@@ -187,23 +220,7 @@ p{line-height: var(--wp--custom--typography--line-height--body);}</style>
 
 
 
-<p><strong>&gt;&gt;&gt;Login No SQL payload:</strong></p>
-
-
-
-<p><a href="https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/NoSQL%20Injection">https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/NoSQL%20Injection</a></p>
-
-
-
-<p>Para este caso usaremos el panel de autenticación de la máquina NodeBlog (10.10.11.139) de Hack The Box, esta máquina  utiliza la base de datos MongoDB y Nginx como servidor web, en un primer intento de login se descubre que el usuario admin existe debido a que el mensaje de error solo señala invalida la contraseña y no al usuario admin, pero será necesario burlar la autenticación debido que no conocemos la contraseña:</p>
-
-
-
-<figure class="wp-block-image size-full is-resized"><img loading="lazy" decoding="async" width="345" height="389" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-17.png" alt="" class="wp-image-49" style="width:684px;height:auto"></figure>
-
-
-
-<figure class="wp-block-image size-full is-resized"><img loading="lazy" decoding="async" width="439" height="456" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-18.png" alt="" class="wp-image-50" style="width:692px;height:auto"></figure>
+<p></p>
 
 
 
@@ -211,27 +228,99 @@ p{line-height: var(--wp--custom--typography--line-height--body);}</style>
 
 
 
-<figure class="wp-block-image size-full is-resized"><img loading="lazy" decoding="async" width="624" height="410" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-16.png" alt="" class="wp-image-48" style="width:697px;height:auto"></figure>
+<p></p>
 
 
 
-<p>Con este ejemplo usaremos Burpsuite Y FoxyProxy para interceptar la comunicación que enviamos desde el navegador al servidor web y tras probar varios comandos que nos ofrece el payload de Github arriba indicado conseguimos acceder al panel de administración, el comando se envía en formato JSON:</p>
+<p></p>
 
 
 
-<p>{«user»:»admin», «password»: {«$ne»: null}}</p>
+<p></p>
 
 
 
-<figure class="wp-block-image size-full is-resized"><img loading="lazy" decoding="async" width="817" height="599" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-12.png" alt="" class="wp-image-39" style="width:692px;height:auto"></figure>
+<p></p>
 
 
 
-<p>Al enviar esta instrucción  hemos conseguido burlar la autenticación, el payload envía un comando donde se indica que el user es admin (algo que ya hemos descubierto anteriormente ) y el campo  password no es null, es decir no es un campo vacío y el motor de búsqueda lo interpretó como un dato válido, lo cual en la lógica de programación es un dato true o verdadero y el acceso es concedido al panel de Administración.  </p>
+<p></p>
 
 
 
-<figure class="wp-block-image size-full is-resized"><img loading="lazy" decoding="async" width="511" height="863" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-15.png" alt="" class="wp-image-42" style="width:688px;height:auto"></figure>
+<p></p>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<p></p>
+
+
+
+<p></p>
 </div>
 
 			
@@ -248,9 +337,7 @@ p{line-height: var(--wp--custom--typography--line-height--body);}</style>
 
 
 <footer class="alignfull site-footer wp-block-template-part">
-<div class="wp-block-group has-global-padding is-layout-constrained wp-block-group-is-layout-constrained" style="padding-top:var(--wp--preset--spacing--80);padding-bottom:var(--wp--preset--spacing--30)">
-<p class="has-text-align-center has-tiny-font-size">Created by Youssef Douay</p>
-</div>
+<div class="wp-block-group has-global-padding is-layout-constrained wp-block-group-is-layout-constrained" style="padding-top:var(--wp--preset--spacing--80);padding-bottom:var(--wp--preset--spacing--30)"></div>
 </footer>
 </div>
 <script id="wp-block-template-skip-link-js-after">( function() {
