@@ -223,6 +223,15 @@
                         <p>Confirmamos <strong>88/TCP Kerberos</strong> y <strong>445/TCP SMB</strong> abiertos.</p>
                     </div>
 
+                    <div class="image-showcase">
+                        <div class="image-container">
+                            <img src="./images/nmap-detailed-scan.png" alt="Escaneo detallado Nmap de HTB Forest (10.10.10.161)">
+                            <div class="image-caption">
+                                <strong>Reconocimiento:</strong> Escaneo detallado con nmap mostrando puertos críticos: 88 (Kerberos), 389 (LDAP), 445 (SMB) y otros servicios de Active Directory en HTB Forest.
+                            </div>
+                        </div>
+                    </div>
+
                     <h4>Fase 2: Enumeración de Dominio y Usuarios</h4>
                     <div class="code-block">
                         <div class="code-label">Descubrir dominio y sistema</div>
@@ -240,6 +249,15 @@ svc-alfresco
 EOF</code>
                     </div>
 
+                    <div class="image-showcase">
+                        <div class="image-container">
+                            <img src="./images/rpcclient-users-enumeration.png" alt="Enumeración de usuarios con rpcclient en HTB Forest">
+                            <div class="image-caption">
+                                <strong>Enumeración:</strong> Listado de usuarios del dominio usando rpcclient con acceso anónimo, identificando cuentas como svc-alfresco y otros usuarios críticos.
+                            </div>
+                        </div>
+                    </div>
+
 
                     <h4>Fase 3: AS-REP Roasting</h4>
                     <div class="code-block">
@@ -249,6 +267,15 @@ EOF</code>
 
                     <div class="alert alert-warning">
                         <p>Si alguna cuenta tiene <em>DONT_REQ_PREAUTH</em>, se obtendrá un hash tipo <strong>$krb5asrep$</strong> listo para crackear.</p>
+                    </div>
+
+                    <div class="image-showcase">
+                        <div class="image-container">
+                            <img src="./images/getnpusers-asrep-hash.png" alt="GetNPUsers.py extrayendo hash AS-REP">
+                            <div class="image-caption">
+                                <strong>AS-REP Roasting:</strong> Ejecución de GetNPUsers.py mostrando la extracción exitosa de hash AS-REP para cuentas con preauthentication deshabilitada.
+                            </div>
+                        </div>
                     </div>
 
                     <h4>Fase 4: Cracking de Hash</h4>
@@ -261,6 +288,15 @@ john --show asrep_hashes.txt
 # Hashcat (modo 18200)
 hashcat -m 18200 asrep_hashes.txt /usr/share/wordlists/rockyou.txt --force
 hashcat -m 18200 --show asrep_hashes.txt</code>
+                    </div>
+
+                    <div class="image-showcase">
+                        <div class="image-container">
+                            <img src="./images/john-cracking-password.png" alt="John the Ripper crackeando hash AS-REP">
+                            <div class="image-caption">
+                                <strong>Cracking:</strong> John the Ripper crackeando exitosamente el hash AS-REP y revelando la contraseña 's3rvice' para la cuenta svc-alfresco.
+                            </div>
+                        </div>
                     </div>
 
 
