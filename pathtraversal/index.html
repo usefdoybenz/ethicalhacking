@@ -362,8 +362,19 @@
 
         /* Images */
         .image-container {
-            margin: 2rem 0;
+            margin: 3rem 0;
             text-align: center;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .image-container:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.15);
         }
 
         .image-container img {
@@ -371,6 +382,14 @@
             height: auto;
             border-radius: 8px;
             border: 1px solid var(--border-color);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .image-caption {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            font-style: italic;
         }
 
         /* Lists */
@@ -608,9 +627,19 @@
 
                     <h4>URL de Upload Original:</h4>
                     <div class="url-display">http://10.10.11.204:8080/upload</div>
+                    
+                    <div class="image-container">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image.png" alt="Interfaz de upload de archivos en HTB Inject" loading="lazy">
+                        <p class="image-caption">Interfaz web para subir archivos en la máquina HTB Inject</p>
+                    </div>
 
                     <h4>URL de Visualización Vulnerable:</h4>
                     <div class="url-display">http://10.10.11.204:8080/show_image?img=anonymous.jpg</div>
+                    
+                    <div class="image-container">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-1.png" alt="Visualización del archivo subido en el navegador" loading="lazy">
+                        <p class="image-caption">Visualización del archivo anonymous.jpg a través del parámetro vulnerable 'img'</p>
+                    </div>
 
                     <div class="alert alert-info">
                         <p><strong>Análisis de la Vulnerabilidad:</strong></p>
@@ -631,8 +660,18 @@ User-Agent: Mozilla/5.0 (compatible; HackingUsef/1.0)
 Accept: text/html,application/xhtml+xml</code>
                     </div>
 
+                    <div class="image-container">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-2.png" alt="Intercepción de la petición con Burp Suite" loading="lazy">
+                        <p class="image-caption">Intercepción y modificación de la petición HTTP con Burp Suite para ejecutar el payload</p>
+                    </div>
+                    
                     <div class="alert alert-warning">
                         <p><strong>Resultado obtenido:</strong> El payload permite acceder al archivo <code>/etc/passwd</code>, revelando usuarios del sistema como root, daemon, bin, sys, sync, games, man, lp, mail, news, www-data, y otros usuarios críticos.</p>
+                    </div>
+                    
+                    <div class="image-container">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-3.png" alt="Contenido del archivo /etc/passwd obtenido" loading="lazy">
+                        <p class="image-caption">Contenido del archivo /etc/passwd obtenido exitosamente mediante Path Traversal</p>
                     </div>
 
                     <h4>Payload de Explotación - Directorio WebApp:</h4>
@@ -649,6 +688,11 @@ Host: 10.10.11.204:8080</code>
                         <li>Código fuente de la aplicación</li>
                         <li>Dependencias y librerías utilizadas</li>
                     </ul>
+                    
+                    <div class="image-container">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-4.png" alt="Directory listing de la aplicación WebApp" loading="lazy">
+                        <p class="image-caption">Directory listing del directorio /var/www/WebApp revelando la estructura de la aplicación</p>
+                    </div>
                 </div>
             </section>
 
@@ -749,49 +793,6 @@ Host: 10.10.11.204:8080</code>
                     </ul>
                 </div>
 
-                <h3>Validación Segura (Ejemplo en PHP)</h3>
-                <div class="code-block">
-                    <div class="code-label">PHP Secure Code</div>
-                    <code><?php
-function secureFileAccess($filename) {
-    // Definir directorio base permitido
-    $baseDir = '/var/www/uploads/';
-    
-    // Sanitizar entrada
-    $filename = basename($filename);
-    
-    // Construir ruta completa
-    $fullPath = realpath($baseDir . $filename);
-    
-    // Verificar que está dentro del directorio permitido
-    if (strpos($fullPath, realpath($baseDir)) !== 0) {
-        throw new Exception('Path traversal attempt detected');
-    }
-    
-    // Verificar que el archivo existe
-    if (!file_exists($fullPath)) {
-        throw new Exception('File not found');
-    }
-    
-    return $fullPath;
-}
-?></code>
-                </div>
-
-                <h3>Configuración de Servidor</h3>
-                <div class="code-block">
-                    <div class="code-label">Apache .htaccess</div>
-                    <code># Denegar acceso a archivos de sistema
-<Files ~ "^\.(htaccess|htpasswd|ini|phps|fla|psd|log|sh)$">
-    Order Allow,Deny
-    Deny from all
-</Files>
-
-# Prevenir acceso a directorios superiores
-RewriteEngine On
-RewriteCond %{THE_REQUEST} \s[^?]*\.\./[^?\s]* [NC]
-RewriteRule .* - [F]</code>
-                </div>
             </section>
 
             <section class="section">
