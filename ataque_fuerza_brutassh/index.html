@@ -5,6 +5,208 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="max-image-preview:large">
 <title>Ataque a SSH con fuerza bruta &#8211; Ethical Hacking</title>
+
+<!-- Matrix Rain Canvas -->
+<style>
+/* Matrix Rain Background */
+#matrix-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: linear-gradient(135deg, #000 0%, #001100 100%);
+}
+
+/* Matrix Logo */
+.matrix-logo {
+    display: inline-block;
+    color: #00FF00;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00, 0 0 30px #00FF00;
+    animation: matrixGlow 2s ease-in-out infinite alternate;
+    background: linear-gradient(45deg, #00FF00, #00AA00, #00FF00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+}
+
+.matrix-logo::before {
+    content: '▶ ';
+    color: #00FF00;
+    animation: matrixBlink 1s infinite;
+}
+
+.matrix-logo::after {
+    content: ' ◀';
+    color: #00FF00;
+    animation: matrixBlink 1s infinite reverse;
+}
+
+@keyframes matrixGlow {
+    0% { text-shadow: 0 0 5px #00FF00, 0 0 10px #00FF00, 0 0 15px #00FF00; }
+    100% { text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00, 0 0 30px #00FF00, 0 0 40px #00FF00; }
+}
+
+@keyframes matrixBlink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0.3; }
+}
+
+/* Enhanced Body Styles */
+body {
+    background: linear-gradient(135deg, #000 0%, #001100 25%, #000 50%, #001100 75%, #000 100%);
+    background-size: 400% 400%;
+    animation: matrixBackground 8s ease infinite;
+    overflow-x: hidden;
+}
+
+@keyframes matrixBackground {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Matrix-style content containers */
+.wp-block-group {
+    background: rgba(0, 20, 0, 0.85);
+    border: 2px solid #00FF00;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.3), inset 0 0 20px rgba(0, 255, 0, 0.1);
+    backdrop-filter: blur(5px);
+    margin: 20px 0;
+    transition: all 0.3s ease;
+}
+
+.wp-block-group:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 30px rgba(0, 255, 0, 0.4), inset 0 0 30px rgba(0, 255, 0, 0.2);
+}
+
+/* Matrix-style headers */
+h1, h2, h3, h4, h5, h6 {
+    color: #00FF00 !important;
+    text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00;
+    font-family: 'Courier New', monospace !important;
+    border-bottom: 2px solid #00FF00;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+h1::before, h2::before {
+    content: '>>> ';
+    color: #00AA00;
+    animation: matrixBlink 1.5s infinite;
+}
+
+/* Matrix-style paragraphs */
+p {
+    color: #00DD00 !important;
+    font-family: 'Courier New', monospace;
+    line-height: 1.6;
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+    background: rgba(0, 15, 0, 0.3);
+    padding: 15px;
+    border-left: 3px solid #00FF00;
+    margin: 15px 0;
+    border-radius: 4px;
+}
+
+/* Matrix-style code blocks */
+mark {
+    background: linear-gradient(45deg, #001100, #003300) !important;
+    color: #00FF00 !important;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    text-shadow: 0 0 10px #00FF00;
+    border: 1px solid #00FF00;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+}
+
+/* Matrix-style images */
+.wp-block-image {
+    border: 2px solid #00FF00;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.4);
+    background: rgba(0, 20, 0, 0.8);
+    padding: 10px;
+}
+
+.wp-block-image img {
+    border-radius: 4px;
+    filter: brightness(0.9) contrast(1.2) hue-rotate(90deg);
+    transition: all 0.3s ease;
+}
+
+.wp-block-image:hover img {
+    filter: brightness(1) contrast(1.3) hue-rotate(90deg);
+    transform: scale(1.02);
+}
+
+/* Matrix-style links */
+a {
+    color: #00FF00 !important;
+    text-decoration: none;
+    text-shadow: 0 0 5px #00FF00;
+    transition: all 0.3s ease;
+    border-bottom: 1px dotted #00FF00;
+}
+
+a:hover {
+    color: #00FFFF !important;
+    text-shadow: 0 0 10px #00FFFF;
+    border-bottom-color: #00FFFF;
+}
+
+/* Matrix terminal effect for code */
+.matrix-terminal {
+    background: #000;
+    border: 2px solid #00FF00;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+    font-family: 'Courier New', monospace;
+    color: #00FF00;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.matrix-terminal::before {
+    content: '[MATRIX_TERMINAL] > ';
+    color: #00AA00;
+    display: block;
+    margin-bottom: 10px;
+    animation: matrixBlink 2s infinite;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: #000;
+    border: 1px solid #00FF00;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(45deg, #00FF00, #00AA00);
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(45deg, #00FFFF, #00AAAA);
+}
+</style>
 <link rel="alternate" type="application/rss+xml" title="Ethical Hacking &raquo; Feed" href="https://usefdoybenz.github.io/ethicalhacking/feed/">
 <link rel="alternate" type="application/rss+xml" title="Ethical Hacking &raquo; Feed de los comentarios" href="https://usefdoybenz.github.io/ethicalhacking/comments/feed/">
 <script>
@@ -105,10 +307,13 @@ p{line-height: var(--wp--custom--typography--line-height--body);}</style>
 
 <body class="page-template-default page page-id-19 wp-embed-responsive">
 
+<!-- Matrix Rain Canvas -->
+<canvas id="matrix-canvas"></canvas>
+
 <div class="wp-site-blocks">
 <header class="alignfull site-header wp-block-template-part">
 <div class="wp-block-group has-global-padding is-layout-constrained wp-block-group-is-layout-constrained" style="padding-top:var(--wp--preset--spacing--40);padding-right:0;padding-bottom:var(--wp--preset--spacing--80);padding-left:0">
-	<h1 class="has-text-align-center wp-block-site-title has-heading-4-font-size"><a href="https://usefdoybenz.github.io/ethicalhacking" target="_self" rel="home">Ethical Hacking</a></h1>
+	<h1 class="has-text-align-center wp-block-site-title has-heading-4-font-size"><a href="https://usefdoybenz.github.io/ethicalhacking" target="_self" rel="home"><span class="matrix-logo">ETHICAL HACKING</span></a></h1>
 </div>
 </header>
 
@@ -248,5 +453,121 @@ p{line-height: var(--wp--custom--typography--line-height--body);}</style>
 		// Inject the skip link.
 		sibling.parentElement.insertBefore( skipLink, sibling );
 	}() );</script>
+
+<!-- Matrix Rain Animation Script -->
+<script>
+// Matrix Rain Effect
+class MatrixRain {
+    constructor() {
+        this.canvas = document.getElementById('matrix-canvas');
+        this.ctx = this.canvas.getContext('2d');
+        
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+        
+        this.katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+        this.latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        this.nums = '0123456789';
+        this.alphabet = this.katakana + this.latin + this.nums;
+        
+        this.fontSize = 16;
+        this.columns = this.canvas.width / this.fontSize;
+        
+        this.rainDrops = [];
+        
+        for(let x = 0; x < this.columns; x++) {
+            this.rainDrops[x] = 1;
+        }
+        
+        this.draw();
+        
+        window.addEventListener('resize', () => this.handleResize());
+    }
+    
+    draw() {
+        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        
+        this.ctx.fillStyle = '#00FF00';
+        this.ctx.font = this.fontSize + 'px monospace';
+        
+        for(let i = 0; i < this.rainDrops.length; i++) {
+            // Randomly select character
+            const text = this.alphabet.charAt(Math.floor(Math.random() * this.alphabet.length));
+            
+            // Add glow effect
+            this.ctx.shadowColor = '#00FF00';
+            this.ctx.shadowBlur = 10;
+            
+            this.ctx.fillText(text, i * this.fontSize, this.rainDrops[i] * this.fontSize);
+            
+            // Reset shadow
+            this.ctx.shadowBlur = 0;
+            
+            if(this.rainDrops[i] * this.fontSize > this.canvas.height && Math.random() > 0.975) {
+                this.rainDrops[i] = 0;
+            }
+            this.rainDrops[i]++;
+        }
+        
+        requestAnimationFrame(() => this.draw());
+    }
+    
+    handleResize() {
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+        this.columns = this.canvas.width / this.fontSize;
+        
+        this.rainDrops = [];
+        for(let x = 0; x < this.columns; x++) {
+            this.rainDrops[x] = 1;
+        }
+    }
+}
+
+// Initialize Matrix Rain when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    new MatrixRain();
+});
+
+// Add matrix-style typing effect to headers
+document.addEventListener('DOMContentLoaded', () => {
+    const headers = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+    
+    headers.forEach((header, index) => {
+        setTimeout(() => {
+            header.style.opacity = '0';
+            header.style.transform = 'translateY(20px)';
+            header.style.transition = 'all 0.6s ease';
+            
+            setTimeout(() => {
+                header.style.opacity = '1';
+                header.style.transform = 'translateY(0)';
+            }, 100);
+        }, index * 200);
+    });
+});
+
+// Add matrix-style fade-in effect for content
+document.addEventListener('DOMContentLoaded', () => {
+    const elements = document.querySelectorAll('p, .wp-block-image, mark');
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    });
+    
+    elements.forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'all 0.8s ease';
+        observer.observe(el);
+    });
+});
+</script>
 </body>
 </html>

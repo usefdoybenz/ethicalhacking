@@ -7,6 +7,133 @@
     <meta name="keywords" content="SSH brute force, hydra, netexec, hacking ético, pentesting, ciberseguridad">
     <title>Ataque de Fuerza Bruta SSH - Tutorial Completo | HackingUsef</title>
     
+    <!-- Matrix Rain Canvas -->
+    <style>
+    /* Matrix Rain Background */
+    #matrix-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        background: linear-gradient(135deg, #000 0%, #001100 100%);
+    }
+    
+    /* Matrix Logo */
+    .matrix-logo {
+        display: inline-block;
+        color: #00FF00;
+        font-family: 'Courier New', monospace;
+        font-weight: bold;
+        text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00, 0 0 30px #00FF00;
+        animation: matrixGlow 2s ease-in-out infinite alternate;
+        background: linear-gradient(45deg, #00FF00, #00AA00, #00FF00);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        position: relative;
+    }
+    
+    .matrix-logo::before {
+        content: '▶ ';
+        color: #00FF00;
+        animation: matrixBlink 1s infinite;
+    }
+    
+    .matrix-logo::after {
+        content: ' ◀';
+        color: #00FF00;
+        animation: matrixBlink 1s infinite reverse;
+    }
+    
+    @keyframes matrixGlow {
+        0% { text-shadow: 0 0 5px #00FF00, 0 0 10px #00FF00, 0 0 15px #00FF00; }
+        100% { text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00, 0 0 30px #00FF00, 0 0 40px #00FF00; }
+    }
+    
+    @keyframes matrixBlink {
+        0%, 50% { opacity: 1; }
+        51%, 100% { opacity: 0.3; }
+    }
+    
+    /* Enhanced Body Styles for Matrix theme */
+    body {
+        background: linear-gradient(135deg, #000 0%, #001100 25%, #000 50%, #001100 75%, #000 100%) !important;
+        background-size: 400% 400% !important;
+        animation: matrixBackground 8s ease infinite !important;
+        overflow-x: hidden !important;
+    }
+    
+    @keyframes matrixBackground {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+    
+    /* Matrix-style containers */
+    .container, .example, .tool-card {
+        background: rgba(0, 20, 0, 0.85) !important;
+        border: 2px solid #00FF00 !important;
+        border-radius: 8px !important;
+        box-shadow: 0 0 20px rgba(0, 255, 0, 0.3), inset 0 0 20px rgba(0, 255, 0, 0.1) !important;
+        backdrop-filter: blur(5px) !important;
+    }
+    
+    /* Matrix-style headers */
+    h1, h2, h3, h4, h5, h6 {
+        color: #00FF00 !important;
+        text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00 !important;
+        font-family: 'Courier New', monospace !important;
+        border-bottom: 2px solid #00FF00 !important;
+        padding-bottom: 10px !important;
+    }
+    
+    h1::before, h2::before {
+        content: '>>> ';
+        color: #00AA00;
+        animation: matrixBlink 1.5s infinite;
+    }
+    
+    /* Matrix-style text */
+    p, .subtitle {
+        color: #00DD00 !important;
+        font-family: 'Courier New', monospace !important;
+        text-shadow: 0 0 5px rgba(0, 255, 0, 0.5) !important;
+    }
+    
+    /* Matrix-style code blocks */
+    .code-block {
+        background: #000 !important;
+        border: 2px solid #00FF00 !important;
+        box-shadow: 0 0 20px rgba(0, 255, 0, 0.3) !important;
+    }
+    
+    .code-block code {
+        color: #00FF00 !important;
+        text-shadow: 0 0 10px #00FF00 !important;
+    }
+    
+    /* Matrix-style alerts */
+    .alert {
+        background: rgba(0, 20, 0, 0.8) !important;
+        border: 2px solid #00FF00 !important;
+        box-shadow: 0 0 15px rgba(0, 255, 0, 0.3) !important;
+    }
+    
+    /* Matrix-style links */
+    a {
+        color: #00FF00 !important;
+        text-shadow: 0 0 5px #00FF00 !important;
+        border-bottom: 1px dotted #00FF00 !important;
+    }
+    
+    a:hover {
+        color: #00FFFF !important;
+        text-shadow: 0 0 10px #00FFFF !important;
+    }
+    </style>
+    
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -270,13 +397,16 @@
 </head>
 
 <body>
+    <!-- Matrix Rain Canvas -->
+    <canvas id="matrix-canvas"></canvas>
+    
     <div class="container">
         <header class="header">
             <a href="../" class="back-link">
                 <i class="fas fa-arrow-left"></i>
                 Volver al inicio
             </a>
-            <h1>Ataque de Fuerza Bruta SSH</h1>
+            <h1><span class="matrix-logo">ATAQUE DE FUERZA BRUTA SSH</span></h1>
             <p class="subtitle">Técnicas de pentesting para servicios SSH con Hydra y NetExec</p>
         </header>
 
@@ -483,5 +613,118 @@ hydra -v -l admin -P rockyou.txt ssh://target</code>
             <p>Contenido educativo para profesionales de la seguridad informática</p>
         </footer>
     </div>
+    
+    <!-- Matrix Rain Animation Script -->
+    <script>
+    // Matrix Rain Effect
+    class MatrixRain {
+        constructor() {
+            this.canvas = document.getElementById('matrix-canvas');
+            this.ctx = this.canvas.getContext('2d');
+            
+            this.canvas.width = window.innerWidth;
+            this.canvas.height = window.innerHeight;
+            
+            this.katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+            this.latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            this.nums = '0123456789';
+            this.alphabet = this.katakana + this.latin + this.nums;
+            
+            this.fontSize = 16;
+            this.columns = this.canvas.width / this.fontSize;
+            
+            this.rainDrops = [];
+            
+            for(let x = 0; x < this.columns; x++) {
+                this.rainDrops[x] = 1;
+            }
+            
+            this.draw();
+            
+            window.addEventListener('resize', () => this.handleResize());
+        }
+        
+        draw() {
+            this.ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+            
+            this.ctx.fillStyle = '#00FF00';
+            this.ctx.font = this.fontSize + 'px monospace';
+            
+            for(let i = 0; i < this.rainDrops.length; i++) {
+                const text = this.alphabet.charAt(Math.floor(Math.random() * this.alphabet.length));
+                
+                this.ctx.shadowColor = '#00FF00';
+                this.ctx.shadowBlur = 10;
+                
+                this.ctx.fillText(text, i * this.fontSize, this.rainDrops[i] * this.fontSize);
+                
+                this.ctx.shadowBlur = 0;
+                
+                if(this.rainDrops[i] * this.fontSize > this.canvas.height && Math.random() > 0.975) {
+                    this.rainDrops[i] = 0;
+                }
+                this.rainDrops[i]++;
+            }
+            
+            requestAnimationFrame(() => this.draw());
+        }
+        
+        handleResize() {
+            this.canvas.width = window.innerWidth;
+            this.canvas.height = window.innerHeight;
+            this.columns = this.canvas.width / this.fontSize;
+            
+            this.rainDrops = [];
+            for(let x = 0; x < this.columns; x++) {
+                this.rainDrops[x] = 1;
+            }
+        }
+    }
+    
+    // Initialize Matrix Rain when DOM is loaded
+    document.addEventListener('DOMContentLoaded', () => {
+        new MatrixRain();
+    });
+    
+    // Add matrix-style typing effect to headers
+    document.addEventListener('DOMContentLoaded', () => {
+        const headers = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+        
+        headers.forEach((header, index) => {
+            setTimeout(() => {
+                header.style.opacity = '0';
+                header.style.transform = 'translateY(20px)';
+                header.style.transition = 'all 0.6s ease';
+                
+                setTimeout(() => {
+                    header.style.opacity = '1';
+                    header.style.transform = 'translateY(0)';
+                }, 100);
+            }, index * 200);
+        });
+    });
+    
+    // Add matrix-style fade-in effect for content
+    document.addEventListener('DOMContentLoaded', () => {
+        const elements = document.querySelectorAll('p, .example, .code-block, .tool-card');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        });
+        
+        elements.forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.8s ease';
+            observer.observe(el);
+        });
+    });
+    </script>
 </body>
 </html>
