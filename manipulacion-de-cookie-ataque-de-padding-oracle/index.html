@@ -294,14 +294,6 @@ cookie_original="YWRtaW4%3D%7C1234567890abcdef"
 curl -b "session=$cookie_original" http://target.com/admin
 curl -b "session=${cookie_original}XX" http://target.com/admin</code>
                     </div>
-                    <div class="image-showcase">
-                        <div class="image-container">
-                            <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-13.png" alt="Padding Oracle detection">
-                            <div class="image-caption">
-                                🕵️ <strong>Detección de Oracle:</strong> Comparación de respuestas del servidor mostrando comportamientos diferenciados. Se observa "Padding error" para padding inválido vs "Access denied" para datos inválidos, confirmando la presencia del oracle vulnerable.
-                            </div>
-                        </div>
-                    </div>
 
                     <div class="alert alert-info">
                         <p>Oracle identificado: el servidor devuelve <strong>"Padding error"</strong> vs <strong>"Access denied"</strong> según el tipo de error criptográfico.</p>
@@ -326,14 +318,6 @@ echo "1234567890abcdef" | xxd
 # 16 bytes = AES-128-CBC probable</code>
                     </div>
 
-                    <div class="image-showcase">
-                        <div class="image-container">
-                            <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-14.png" alt="Cookie structure analysis">
-                            <div class="image-caption">
-                                🔍 <strong>Análisis de Estructura:</strong> Decodificación y análisis de la cookie cifrada mostrando el plaintext "admin" y la longitud del ciphertext de 16 bytes, confirmando AES-128-CBC como algoritmo de cifrado utilizado.
-                            </div>
-                        </div>
-                    </div>
 
                     <h4>Fase 3: Explotación con PadBuster</h4>
                     <div class="code-block">
@@ -357,14 +341,6 @@ perl padBuster.pl http://target.com/admin \\
 # - -plaintext: mostrar resultado descifrado</code>
                     </div>
 
-                    <div class="image-showcase">
-                        <div class="image-container">
-                            <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-15.png" alt="PadBuster execution">
-                            <div class="image-caption">
-                                ⚙️ <strong>PadBuster en Acción:</strong> Ejecución del ataque automatizado mostrando el progreso del descifrado bloque por bloque. Se observa cómo la herramienta explota el oracle para revelar el contenido cifrado de la cookie de sesión.
-                            </div>
-                        </div>
-                    </div>
 
                     <div class="code-block">
                         <div class="code-label">Descifrado manual con Python</div>
@@ -438,23 +414,7 @@ curl -b "session=$new_cookie" http://target.com/admin
 # Expected: HTTP 200 "Welcome admin"</code>
                     </div>
 
-                    <div class="image-showcase">
-                        <div class="image-container">
-                            <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-16.png" alt="Malicious payload generation">
-                            <div class="image-caption">
-                                🔥 <strong>Generación de Payload:</strong> Creación exitosa de una cookie maliciosa con privilegios administrativos. Se muestra cómo PadBuster genera un ciphertext válido para datos controlados, permitiendo escalación de privilegios.
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="image-showcase">
-                        <div class="image-container">
-                            <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-16.png" alt="Malicious payload generation">
-                            <div class="image-caption">
-                                🔥 <strong>Generación de Payload:</strong> Creación exitosa de una cookie maliciosa con privilegios administrativos. Se muestra cómo PadBuster genera un ciphertext válido para datos controlados, permitiendo escalación de privilegios.
-                            </div>
-                        </div>
-                    </div>
 
                     <h4>Fase 5: Explotación Completa y Persistencia</h4>
                     <div class="code-block">
@@ -477,14 +437,6 @@ curl -b "session=$malicious_cookie" \
      http://target.com/admin/api</code>
                     </div>
 
-                    <div class="image-showcase">
-                        <div class="image-container">
-                            <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-17.png" alt="Administrative access achieved">
-                            <div class="image-caption">
-                                ✅ <strong>Acceso Administrativo:</strong> Bypass exitoso de autenticación usando la cookie generada maliciosamente. Se observa acceso completo al panel administrativo con capacidades de gestión de usuarios y configuración del sistema.
-                            </div>
-                        </div>
-                    </div>
 
                     <div class="alert alert-info">
                         <p><strong>Resultado:</strong> Acceso administrativo completo obtenido mediante bypass criptográfico, capacidad de crear usuarios, acceder a logs sensibles y generar API keys persistentes.</p>

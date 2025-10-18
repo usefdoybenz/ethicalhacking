@@ -108,73 +108,6 @@
 
         .footer { text-align: center; padding: 3rem 0 2rem; border-top: 1px solid var(--border-color); margin-top: 4rem; color: var(--text-muted); }
 
-        /* Modern Image Containers */
-        .image-showcase {
-            display: grid;
-            gap: 2rem;
-            margin: 3rem 0;
-            padding: 2rem;
-            background: rgba(26, 26, 26, 0.9);
-            border: 2px solid var(--primary-color);
-            border-radius: 12px;
-            box-shadow: 0 0 30px rgba(0, 255, 136, 0.2), inset 0 0 20px rgba(0, 255, 136, 0.05);
-        }
-
-        .image-container {
-            position: relative;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1.5rem;
-            transition: all 0.4s ease;
-            overflow: hidden;
-        }
-
-        .image-container:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
-            border-color: var(--primary-color);
-        }
-
-        .image-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
-            animation: scanLine 3s infinite;
-        }
-
-        @keyframes scanLine {
-            0% { left: -100%; }
-            100% { left: 100%; }
-        }
-
-        .image-container img {
-            width: 100%;
-            height: auto;
-            border-radius: 6px;
-            border: 1px solid var(--border-color);
-            transition: all 0.3s ease;
-        }
-
-        .image-container:hover img {
-            transform: scale(1.02);
-            border-color: var(--primary-color);
-        }
-
-        .image-caption {
-            margin-top: 1rem;
-            padding: 0.8rem;
-            background: rgba(0, 255, 136, 0.05);
-            border-left: 3px solid var(--primary-color);
-            color: var(--text-primary);
-            font-size: 0.9rem;
-            line-height: 1.4;
-            border-radius: 0 4px 4px 0;
-        }
 
         @media (max-width: 768px) {
             .container { padding: 1rem; }
@@ -307,27 +240,11 @@ svc-alfresco
 EOF</code>
                     </div>
 
-                    <div class="image-showcase">
-                        <div class="image-container">
-                            <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-18.png" alt="Domain user enumeration HTB Forest">
-                            <div class="image-caption">
-                                🔍 <strong>Enumeración de Usuarios:</strong> Extracción exitosa de usuarios del dominio HTB.local usando rpcclient con acceso anónimo. Se identifican cuentas de usuario incluyendo la cuenta de servicio 'svc-alfresco' que será nuestro objetivo para AS-REP Roasting.
-                            </div>
-                        </div>
-                    </div>
 
                     <h4>Fase 3: AS-REP Roasting</h4>
                     <div class="code-block">
                         <div class="code-label">Impacket - GetNPUsers</div>
                         <code>python3 GetNPUsers.py htb.local/ -no-pass -usersfile users -format hashcat -outputfile asrep_hashes.txt</code>
-                    </div>
-                    <div class="image-showcase">
-                        <div class="image-container">
-                            <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-19.png" alt="GetNPUsers AS-REP hash extraction">
-                            <div class="image-caption">
-                                ⚙️ <strong>Extracción de Hash AS-REP:</strong> GetNPUsers de Impacket identifica exitosamente la cuenta 'svc-alfresco' con preauthentication deshabilitado y extrae el hash Kerberos $krb5asrep$ listo para cracking offline.
-                            </div>
-                        </div>
                     </div>
 
                     <div class="alert alert-warning">
@@ -346,14 +263,6 @@ hashcat -m 18200 asrep_hashes.txt /usr/share/wordlists/rockyou.txt --force
 hashcat -m 18200 --show asrep_hashes.txt</code>
                     </div>
 
-                    <div class="image-showcase">
-                        <div class="image-container">
-                            <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-20.png" alt="Hash cracking with John the Ripper">
-                            <div class="image-caption">
-                                🔥 <strong>Cracking Exitoso:</strong> John the Ripper recupera con éxito la contraseña 's3rvice' de la cuenta svc-alfresco a partir del hash AS-REP usando el diccionario rockyou.txt. Credenciales válidas obtenidas para acceso al dominio.
-                            </div>
-                        </div>
-                    </div>
 
                     <h4>Fase 5: Validación de Credenciales y Acceso</h4>
                     <div class="code-block">
@@ -366,14 +275,6 @@ netexec smb 10.10.10.161 -u 'svc-alfresco' -p 's3rvice' --shares
 evil-winrm -i 10.10.10.161 -u 'svc-alfresco' -p 's3rvice'</code>
                     </div>
 
-                    <div class="image-showcase">
-                        <div class="image-container">
-                            <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-1.png" alt="Credential validation and WinRM access">
-                            <div class="image-caption">
-                                ✅ <strong>Acceso Remoto Logrado:</strong> Validación exitosa de las credenciales recuperadas usando NetExec y establecimiento de sesión WinRM interactiva con evil-winrm. Acceso completo al sistema Windows obtenido mediante AS-REP Roasting.
-                            </div>
-                        </div>
-                    </div>
 
                     <div class="alert alert-info">
                         <p><strong>Resultado:</strong> Credenciales válidas recuperadas y acceso remoto interactivo con WinRM.</p>
