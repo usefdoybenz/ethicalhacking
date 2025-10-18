@@ -356,8 +356,19 @@
 
         /* Images */
         .image-container {
-            margin: 2rem 0;
+            margin: 3rem 0;
             text-align: center;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .image-container:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.15);
         }
 
         .image-container img {
@@ -365,6 +376,14 @@
             height: auto;
             border-radius: 8px;
             border: 1px solid var(--border-color);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .image-caption {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            font-style: italic;
         }
 
         /* Lists */
@@ -524,6 +543,11 @@
                     </div>
 
                     <p>En este escenario, nos enfrentamos a un panel de autenticación que utiliza servidor web Apache y motor de base de datos MySQL. Para eludir el mecanismo de autenticación, implementaremos una serie de payloads de inyección SQL hasta identificar el comando adecuado.</p>
+                    
+                    <div class="image-container">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-7.png" alt="Panel de autenticación de HTB Writer" loading="lazy">
+                        <p class="image-caption">Panel de autenticación vulnerable de la máquina HTB Writer</p>
+                    </div>
 
                     <h4>Proceso de Explotación:</h4>
                     <ol>
@@ -532,9 +556,19 @@
                         <li><strong>Bypass exitoso:</strong> Autenticación conseguida</li>
                     </ol>
 
+                    <div class="image-container">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-8.png" alt="Proceso de inyección SQL en HTB Writer" loading="lazy">
+                        <p class="image-caption">Proceso de prueba de diferentes payloads de inyección SQL</p>
+                    </div>
+                    
                     <div class="code-block">
                         <div class="code-label">Payload SQL Exitoso</div>
                         <code>admin'-- -</code>
+                    </div>
+                    
+                    <div class="image-container">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-9.png" alt="Bypass exitoso de autenticación SQL" loading="lazy">
+                        <p class="image-caption">Bypass exitoso utilizando el payload 'admin'-- -'</p>
                     </div>
 
                     <div class="alert alert-info">
@@ -557,6 +591,11 @@
                     <div class="code-block">
                         <div class="code-label">SQL Query Inyectada</div>
                         <code>SELECT * FROM users WHERE username='admin'-- -' AND password='[PASSWORD]'</code>
+                    </div>
+                    
+                    <div class="image-container">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-10.png" alt="Acceso conseguido al panel de administración" loading="lazy">
+                        <p class="image-caption">Acceso conseguido al panel de administración tras el bypass SQL exitoso</p>
                     </div>
                 </div>
             </section>
@@ -601,6 +640,16 @@
                             <li><strong>Usuario válido:</strong> "Contraseña no válida" ← Indica que 'admin' existe</li>
                         </ul>
                     </div>
+                    
+                    <div class="image-container">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-17.png" alt="Panel de login NodeBlog con error diferencial" loading="lazy">
+                        <p class="image-caption">Panel de login de HTB NodeBlog mostrando error diferencial que revela usuario válido</p>
+                    </div>
+                    
+                    <div class="image-container">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-18.png" alt="Respuesta del servidor confirmando usuario admin" loading="lazy">
+                        <p class="image-caption">Respuesta del servidor confirmando que el usuario 'admin' existe</p>
+                    </div>
 
                     <h4>Proceso de Explotación con Burp Suite:</h4>
                     <ol>
@@ -618,6 +667,16 @@
                     <div class="code-block">
                         <div class="code-label">Payload JSON Modificado</div>
                         <code>{"user":"admin", "password": {"$ne": null}}</code>
+                    </div>
+                    
+                    <div class="image-container">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-16.png" alt="Configuración de Burp Suite y FoxyProxy" loading="lazy">
+                        <p class="image-caption">Configuración de Burp Suite con FoxyProxy para interceptar tráfico HTTP</p>
+                    </div>
+                    
+                    <div class="image-container">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-12.png" alt="Intercepción y modificación del payload NoSQL" loading="lazy">
+                        <p class="image-caption">Intercepción y modificación de la petición con el payload NoSQL {"$ne": null}</p>
                     </div>
 
                     <div class="alert alert-sql">
@@ -638,6 +697,11 @@
   "username": "admin",
   "password": {"$ne": null}
 })</code>
+                    </div>
+                    
+                    <div class="image-container">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-15.png" alt="Acceso conseguido al panel de administración NodeBlog" loading="lazy">
+                        <p class="image-caption">Acceso exitoso al panel de administración tras el bypass NoSQL</p>
                     </div>
                 </div>
 
