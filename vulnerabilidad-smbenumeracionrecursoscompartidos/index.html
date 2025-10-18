@@ -256,6 +256,11 @@
                         <code>sudo nmap -p- --open -sS --min-rate 5000 -vvv -n -Pn 10.10.10.100 -oG allPorts
 nmap -sCV -p445,88,135,139,389,636 10.10.10.100</code>
                     </div>
+                    <figure class="wp-block-image size-full">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-20.png" alt="Nmap scan HTB Active SMB ports" style="border-radius: 8px; border: 1px solid var(--border-color); margin: 2rem 0;">
+                        <figcaption style="text-align: center; margin-top: 1rem; color: var(--text-secondary); font-style: italic;">🔍 <strong>Escaneo Nmap HTB Active:</strong> Resultado del escaneo de puertos en la máquina Active (10.10.10.100). Se confirma que el puerto 445/TCP SMB está abierto junto con servicios típicos de Active Directory como Kerberos (88/TCP) y LDAP.</figcaption>
+                    </figure>
+
                     <div class="alert alert-info">
                         <p>Confirmamos que el puerto <strong>445/TCP SMB</strong> está abierto junto con otros servicios típicos de AD.</p>
                     </div>
@@ -272,6 +277,11 @@ smbmap -H 10.10.10.100
 # Enumeración detallada con netexec
 netexec smb 10.10.10.100 --shares</code>
                     </div>
+
+                    <figure class="wp-block-image size-full">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-21.png" alt="smbclient share enumeration HTB Active" style="border-radius: 8px; border: 1px solid var(--border-color); margin: 2rem 0;">
+                        <figcaption style="text-align: center; margin-top: 1rem; color: var(--text-secondary); font-style: italic;">📂 <strong>Listado de Shares SMB:</strong> Enumeración de recursos compartidos usando smbclient sin credenciales (null session). Se identifican los shares disponibles incluyendo el crítico "Replication" con permisos de lectura.</figcaption>
+                    </figure>
 
                     <div class="alert alert-warning">
                         <p>En el caso de HTB Active, identificamos un share llamado <strong>"Replication"</strong> con permisos de lectura disponibles sin autenticación.</p>
@@ -290,6 +300,16 @@ smbclient //10.10.10.100/Replication -N
 smbmap -H 10.10.10.100 -r Replication/active.htb/Policies</code>
                     </div>
 
+                    <figure class="wp-block-image size-full">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-22.png" alt="smbmap recursive exploration Replication share" style="border-radius: 8px; border: 1px solid var(--border-color); margin: 2rem 0;">
+                        <figcaption style="text-align: center; margin-top: 1rem; color: var(--text-secondary); font-style: italic;">🔎 <strong>Exploración Recursiva con smbmap:</strong> Navegación detallada del share "Replication" mostrando la estructura de directorios. Se descubren rutas críticas como active.htb/Policies que contienen archivos de configuración sensibles.</figcaption>
+                    </figure>
+
+                    <figure class="wp-block-image size-full">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-23.png" alt="smbclient interactive connection Replication" style="border-radius: 8px; border: 1px solid var(--border-color); margin: 2rem 0;">
+                        <figcaption style="text-align: center; margin-top: 1rem; color: var(--text-secondary); font-style: italic;">⚙️ <strong>Conexión Interactiva smbclient:</strong> Sesión interactiva en el share Replication permitiendo navegación manual por los directorios. Se confirma acceso de lectura a archivos de Group Policy Preferences.</figcaption>
+                    </figure>
+
                     <h4>Fase 4: Descubrimiento y Extracción de Archivos</h4>
                     <div class="code-block">
                         <div class="code-label">Descarga de archivos sensibles</div>
@@ -301,6 +321,16 @@ smbclient //10.10.10.100/Replication -N
 smb> cd active.htb\Policies\...
 smb> get Groups.xml</code>
                     </div>
+
+                    <figure class="wp-block-image size-full">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-24.png" alt="smbmap download Groups.xml GPP file" style="border-radius: 8px; border: 1px solid var(--border-color); margin: 2rem 0;">
+                        <figcaption style="text-align: center; margin-top: 1rem; color: var(--text-secondary); font-style: italic;">📥 <strong>Descarga de Archivo GPP:</strong> Extracción exitosa del archivo Groups.xml usando smbmap. Este archivo contiene configuraciones de Group Policy Preferences con credenciales cifradas que pueden ser descifradas.</figcaption>
+                    </figure>
+
+                    <figure class="wp-block-image size-full">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-25.png" alt="Groups.xml file content with encrypted password" style="border-radius: 8px; border: 1px solid var(--border-color); margin: 2rem 0;">
+                        <figcaption style="text-align: center; margin-top: 1rem; color: var(--text-secondary); font-style: italic;">📜 <strong>Contenido Groups.xml:</strong> Análisis del archivo descargado mostrando las credenciales cifradas con AES. Se observa el username y el cpassword que contiene la contraseña cifrada lista para descifrar con gpp-decrypt.</figcaption>
+                    </figure>
 
                     <div class="alert alert-danger">
                         <p><strong>Hallazgo crítico:</strong> El archivo <em>Groups.xml</em> contiene contraseñas cifradas con AES que pueden ser descifradas usando herramientas como <strong>gpp-decrypt</strong>.</p>
@@ -318,6 +348,26 @@ gpp-decrypt "cifrado_encontrado_en_xml"
 # Validar credenciales obtenidas
 netexec smb 10.10.10.100 -u 'usuario' -p 'password_descifrado'</code>
                     </div>
+
+                    <figure class="wp-block-image size-full">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-26.png" alt="gpp-decrypt password decryption" style="border-radius: 8px; border: 1px solid var(--border-color); margin: 2rem 0;">
+                        <figcaption style="text-align: center; margin-top: 1rem; color: var(--text-secondary); font-style: italic;">🔓 <strong>Descifrado GPP:</strong> Uso de gpp-decrypt para descifrar la contraseña AES encontrada en Groups.xml. La herramienta revela la contraseña en texto plano del usuario del dominio Active Directory.</figcaption>
+                    </figure>
+
+                    <figure class="wp-block-image size-full">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-27.png" alt="NetExec credential validation HTB Active" style="border-radius: 8px; border: 1px solid var(--border-color); margin: 2rem 0;">
+                        <figcaption style="text-align: center; margin-top: 1rem; color: var(--text-secondary); font-style: italic;">✅ <strong>Validación de Credenciales:</strong> Confirmación exitosa de las credenciales descifradas usando NetExec. Se verifica que las credenciales son válidas para el dominio Active Directory.</figcaption>
+                    </figure>
+
+                    <figure class="wp-block-image size-full">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-28.png" alt="SMB enumeration with valid credentials" style="border-radius: 8px; border: 1px solid var(--border-color); margin: 2rem 0;">
+                        <figcaption style="text-align: center; margin-top: 1rem; color: var(--text-secondary); font-style: italic;">🔍 <strong>Enumeración Avanzada:</strong> Con credenciales válidas, se puede realizar enumeración más profunda del dominio, accediendo a shares adicionales y obteniendo información privilegiada del Active Directory.</figcaption>
+                    </figure>
+
+                    <figure class="wp-block-image size-full">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-29.png" alt="Complete SMB enumeration results summary" style="border-radius: 8px; border: 1px solid var(--border-color); margin: 2rem 0;">
+                        <figcaption style="text-align: center; margin-top: 1rem; color: var(--text-secondary); font-style: italic;">🎯 <strong>Resultado Final:</strong> Resumen completo de la enumeración SMB exitosa en HTB Active. Se logró obtener credenciales válidas del dominio a partir de configuraciones mal protegidas en Group Policy Preferences, demostrando el riesgo de almacenar credenciales cifradas en policies de grupo.</figcaption>
+                    </figure>
                 </div>
             </section>
 
