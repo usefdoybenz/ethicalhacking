@@ -1,0 +1,179 @@
+/* Responsive Images Fix for HackingUsef Blog */
+
+/* Reset de imágenes para responsiveness */
+img {
+    max-width: 90% !important;
+    height: auto !important;
+    width: auto !important;
+    display: block !important;
+    margin: 1.5rem auto !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+    transition: all 0.3s ease !important;
+    object-fit: contain !important;
+}
+
+/* Hover effect para imágenes */
+img:hover {
+    transform: scale(1.02) !important;
+    box-shadow: 0 6px 20px rgba(0, 255, 136, 0.2) !important;
+}
+
+/* Contenedores de imágenes */
+.image-container,
+.wp-block-image,
+.figure,
+figure {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    margin: 1.5rem auto !important;
+    text-align: center !important;
+}
+
+/* Imágenes dentro de párrafos */
+p img {
+    margin: 1rem auto !important;
+    display: block !important;
+}
+
+/* Imágenes en artículos */
+.article-content img,
+.post-content img,
+.content img,
+main img {
+    max-width: 85% !important;
+    height: auto !important;
+    border: 1px solid rgba(0, 255, 136, 0.2) !important;
+    margin: 2rem auto !important;
+    display: block !important;
+}
+
+/* Imágenes grandes - reducir a tamaño manejable */
+img[width] {
+    width: auto !important;
+    max-width: 100% !important;
+}
+
+img[height] {
+    height: auto !important;
+}
+
+/* Screenshots y capturas de pantalla */
+img[alt*="screenshot"],
+img[alt*="captura"],
+img[alt*="imagen"],
+img[src*="screenshot"],
+img[src*="captura"] {
+    max-width: 80% !important;
+    margin: 2rem auto !important;
+    border: 2px solid var(--border-color, #333) !important;
+    border-radius: 12px !important;
+}
+
+/* Imágenes pequeñas - mantener centradas */
+img[width="100"],
+img[width="150"],
+img[width="200"] {
+    max-width: 200px !important;
+    margin: 1rem auto !important;
+}
+
+/* Para móviles */
+@media (max-width: 768px) {
+    img {
+        max-width: 90% !important;
+        margin: 1rem auto !important;
+    }
+    
+    .image-container,
+    .wp-block-image {
+        margin: 1rem auto !important;
+    }
+    
+    /* Imágenes muy grandes en móvil */
+    img[width="500"],
+    img[width="600"],
+    img[width="700"],
+    img[width="800"] {
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+}
+
+/* Para tablets */
+@media (min-width: 769px) and (max-width: 1024px) {
+    img {
+        max-width: 85% !important;
+    }
+}
+
+/* Casos específicos problemáticos */
+/* Arreglar imágenes que se salen del contenedor */
+.container img,
+.section img,
+.example img,
+.code-block img {
+    max-width: 85% !important;
+    width: auto !important;
+    height: auto !important;
+    margin: 1.5rem auto !important;
+    display: block !important;
+}
+
+/* Imágenes en alerts y cajas */
+.alert img,
+.machine-info img,
+.crypto-card img {
+    max-width: 100% !important;
+    margin: 0.5rem auto !important;
+}
+
+/* Prevenir overflow horizontal */
+* {
+    box-sizing: border-box !important;
+}
+
+html, body {
+    overflow-x: hidden !important;
+}
+
+/* Contenedor principal responsive */
+.container {
+    width: 100% !important;
+    max-width: 1000px !important;
+    margin: 0 auto !important;
+    padding: 1rem !important;
+}
+
+/* Asegurar que las imágenes no rompan el layout */
+.section,
+.example,
+.alert {
+    overflow: hidden !important;
+    width: 100% !important;
+}
+
+/* Control estricto para evitar que las imágenes se salgan del texto */
+.container,
+.section,
+main {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+}
+
+/* Forzar que todas las imágenes respeten el contenedor padre */
+img {
+    max-width: min(85%, calc(100vw - 4rem)) !important;
+    width: auto !important;
+    box-sizing: border-box !important;
+}
+
+/* Regla específica para imágenes muy grandes */
+img[width="800"],
+img[width="900"],
+img[width="1000"],
+img[width="1200"] {
+    max-width: 80% !important;
+    width: auto !important;
+}
