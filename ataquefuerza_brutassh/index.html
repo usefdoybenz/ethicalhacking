@@ -281,6 +281,11 @@ hydra -L users.txt -P passwords.txt ssh://10.10.10.184 -t 4 -V
 # [22][ssh] host: 10.10.10.184 login: kyle password: password123</code>
                     </div>
 
+                    <figure class="wp-block-image size-full">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-1.png" alt="Hydra SSH attack HTB Servenom" style="border-radius: 8px; border: 1px solid var(--border-color); margin: 2rem 0;">
+                        <figcaption style="text-align: center; margin-top: 1rem; color: var(--text-secondary); font-style: italic;">💥 <strong>Hydra SSH Brute Force - HTB Servenom:</strong> Ataque exitoso con Hydra contra el puerto SSH de la máquina Servenom (10.10.10.184) usando listas de usuarios y contraseñas personalizadas. Se muestra el progreso del ataque y la detección de credenciales válidas.</figcaption>
+                    </figure>
+
                     <div class="alert alert-info">
                         <p>En este ejemplo, Hydra encontró credenciales válidas: <strong>kyle:password123</strong> después de probar las combinaciones sistemáticamente.</p>
                     </div>
@@ -324,6 +329,11 @@ hydra -l kyle -P /usr/share/wordlists/rockyou.txt ssh://10.10.11.101 -t 4 -V -f
 hydra -l kyle -P /usr/share/wordlists/rockyou.txt ssh://10.10.11.101 -t 4 -V -f -s 22</code>
                     </div>
 
+                    <figure class="wp-block-image size-full">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-2.png" alt="Hydra rockyou attack HTB Writer kyle user" style="border-radius: 8px; border: 1px solid var(--border-color); margin: 2rem 0;">
+                        <figcaption style="text-align: center; margin-top: 1rem; color: var(--text-secondary); font-style: italic;">🎯 <strong>Ataque Dirigido HTB Writer:</strong> Ejecución de Hydra con usuario fijo "kyle" contra diccionario rockyou.txt en la máquina Writer (10.10.11.101). Se observa el proceso de fuerza bruta dirigida con más de 14 millones de contraseñas.</figcaption>
+                    </figure>
+
                     <h4>Validación de Credenciales</h4>
                     <div class="code-block">
                         <div class="code-label">SSH Connection Test</div>
@@ -340,6 +350,11 @@ sudo -l
 ls -la /home/kyle/
 cat /home/kyle/user.txt</code>
                     </div>
+
+                    <figure class="wp-block-image size-full">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-6.png" alt="SSH connection successful HTB Writer kyle" style="border-radius: 8px; border: 1px solid var(--border-color); margin: 2rem 0;">
+                        <figcaption style="text-align: center; margin-top: 1rem; color: var(--text-secondary); font-style: italic;">✅ <strong>Conexión SSH Exitosa:</strong> Validación de las credenciales obtenidas mediante fuerza bruta. Se muestra el acceso SSH exitoso al usuario "kyle" en HTB Writer, confirmando la efectividad del ataque y el acceso al sistema objetivo.</figcaption>
+                    </figure>
 
                     <div class="alert alert-warning">
                         <p>El ataque con rockyou.txt puede tardar horas dependiendo de la posición de la contraseña en el diccionario. Considerar usar versiones optimizadas o filtradas para targets específicos.</p>
@@ -361,7 +376,12 @@ netexec ssh 10.10.11.247 -u admin -p password123
 
 # Verificar múltiples targets
 netexec ssh 10.10.11.0/24 -u admin -p passwords.txt --threads 5</code>
-                </div>
+                    </div>
+
+                    <figure class="wp-block-image size-full">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-3.png" alt="NetExec SSH brute force HTB Wifinetic" style="border-radius: 8px; border: 1px solid var(--border-color); margin: 2rem 0;">
+                        <figcaption style="text-align: center; margin-top: 1rem; color: var(--text-secondary); font-style: italic;">🏢 <strong>NetExec SSH Attack - HTB Wifinetic:</strong> Uso de NetExec (CrackMapExec) para ataques SSH en entornos corporativos contra la máquina Wifinetic (10.10.11.247). Se muestra el proceso de autenticación con listas múltiples de usuarios y contraseñas.</figcaption>
+                    </figure>
 
                 <h3>Medusa como alternativa a Hydra</h3>
                 <div class="code-block">
@@ -371,7 +391,12 @@ medusa -h 10.10.10.184 -U users.txt -P passwords.txt -M ssh -t 4
 
 # Con usuario específico
 medusa -h 10.10.11.101 -u kyle -P rockyou.txt -M ssh -t 4 -f</code>
-                </div>
+                    </div>
+
+                    <figure class="wp-block-image size-full">
+                        <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-5.png" alt="NetExec SSH authentication successful" style="border-radius: 8px; border: 1px solid var(--border-color); margin: 2rem 0;">
+                        <figcaption style="text-align: center; margin-top: 1rem; color: var(--text-secondary); font-style: italic;">✨ <strong>NetExec Authentication Success:</strong> Resultado exitoso del ataque NetExec SSH mostrando credenciales válidas encontradas. Se observa la confirmación de autenticación exitosa con indicadores visuales de acceso logrado al sistema objetivo.</figcaption>
+                    </figure>
 
                 <h3>Optimización de diccionarios</h3>
                 <ul>

